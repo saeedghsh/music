@@ -5,13 +5,13 @@
 </p>
 
 ### TODO
-* [ ] add CLI
+* [ ] encapsulate pinao into a `class` of `instrument`,
+* [ ] fix issue with printing `sori` and `koron` symbols,
 * [ ] add test
 * [ ] hookup the repo with gitbut CI
-* [ ] fix issue with printing `sori` and `koron` symbols,
-* [ ] encapsulate pinao into a `class` of `instrument`,
 * [ ] extend to other instruments
 * [ ] add audio and make it interactive?
+* [ ] Add keys, scales and chords?
 
 
 License

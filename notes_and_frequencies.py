@@ -1,8 +1,7 @@
 """X"""
 from typing import Tuple
 from functools import wraps
-
-A4_FREQUENCY = 440  # Note reference: A4 = 440 Hz
+from notation import A4_FREQUENCY
 
 # In this context a set of "standard notes" is defined as the following.
 # An equal temperament tuning system, where the octave is divided into 24 equal
@@ -74,11 +73,13 @@ def _standardize_note(note: str, accidental: str, octave: int) -> Tuple[str, int
     return full_note, octave
 
 
-def frequency(note: str, accidental: str, octave: int) -> float:
+def compute_frequency(
+    note: str, accidental: str, octave: int, a4_frequency: float = A4_FREQUENCY
+) -> float:
     """Calculate the frequency of a note."""
     # pylint: disable=invalid-name
     full_note, octave = _standardize_note(note, accidental, octave)
     note_index = STANDARD_NOTES_QUADRANTTONES.index(full_note)
     A_index = STANDARD_NOTES_QUADRANTTONES.index("A")
     quadranttone_steps_from_A4 = note_index - A_index + (octave - 4) * 24
-    return A4_FREQUENCY * (2 ** (quadranttone_steps_from_A4 / 24))
+    return a4_frequency * (2 ** (quadranttone_steps_from_A4 / 24))
