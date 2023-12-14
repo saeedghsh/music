@@ -1,13 +1,59 @@
 """X"""
+import os
 from functools import partial
 
+import cv2
 import matplotlib.pyplot as plt
 from matplotlib import patches
 
-from music_instruments import generate_piano_keys
+from notation import Note
+from instruments import generate_piano_keys, generate_tar_notes
+
+IMAGE_PATH = {
+    "tar": {
+        "small": "/home/saeed/code/musical_notes/images/tar_small_1290x362.jpg",
+        "large": "/home/saeed/code/musical_notes/images/tar_large_3910x1097.jpg",
+    }
+}
+
+TAR_SMALL_FRET_POSITION_ROW = {
+    0: 162,
+    1: 206,
+    2: 230,
+    3: 255,
+    4: 295,
+    5: 313,
+    6: 333,
+    7: 372,
+    8: 398,
+    9: 424,
+    10: 448,
+    11: 476,
+    12: 494,
+    13: 513,
+    14: 540,
+    15: 553,
+    16: 568,
+    17: 599,
+    18: 618,
+    19: 625,
+    20: 638,
+    21: 666,
+    22: 679,
+    23: 695,
+    24: 716,
+    25: 734,
+    26: 752,
+    27: 767,
+}
+
+TAR_SMALL_FRET_POSITION_COL = {
+    "min": 150,
+    "max": 208,
+}
 
 
-def _draw_key(
+def _draw_piano_key(
     axis: plt.Axes, x: float, y: float, w: float, h: float, color: str, label: str
 ):
     # pylint: disable=too-many-arguments
@@ -30,17 +76,17 @@ def _draw_key(
     )
 
 
-def _draw_keys(axis: plt.Axes, keys: dict):
+def _draw_piano_keys(axis: plt.Axes, keys: dict):
     white_key_width = 1
     black_key_width = 0.6
     white_key_height = 5
     black_key_height = white_key_height / 2
 
     _draw_white_key = partial(
-        _draw_key, axis=axis, w=white_key_width, h=white_key_height, color="white"
+        _draw_piano_key, axis=axis, w=white_key_width, h=white_key_height, color="white"
     )
     _draw_black_key = partial(
-        _draw_key, axis=axis, w=black_key_width, h=black_key_height, color="black"
+        _draw_piano_key, axis=axis, w=black_key_width, h=black_key_height, color="black"
     )
 
     x = 0
@@ -54,15 +100,96 @@ def _draw_keys(axis: plt.Axes, keys: dict):
             x += white_key_width
 
 
-def _draw_piano(keys: dict):
+def draw_piano(keys: dict):
     _, axis = plt.subplots(figsize=(25, 5))
     white_key_count = len(keys) * (7 / 12)
     axis.set_xlim(0, white_key_count)
     axis.set_ylim(0, 5)
     axis.axis("off")
-    _draw_keys(axis, keys)
+    _draw_piano_keys(axis, keys)
     plt.tight_layout()
     plt.show()
 
 
-_draw_piano(generate_piano_keys())
+# draw_piano(generate_piano_keys())
+
+
+def _draw_tar_notes_and_frequencies(string_number: int, save_to_file: bool = True):
+    if string_number not in range(1, 7):
+        raise ValueError("Tar/Setar strings should be numbered 1-6")
+
+    tar_strings = generate_tar_notes()
+    string_notes = tar_strings[string_number]
+
+    col_min = tar_small_fret_position_col["min"]
+    col_max = tar_small_fret_position_col["max"]
+    extend_fret_to_right = 0
+    horizonal_distance_text_to_fret_line = 20
+
+    color = (20, 20, 245)
+
+    line_thickness = 2
+    line_color = color
+
+    fret_number_scale = 0.5
+    fret_number_color = color
+    fret_number_thickness = 2
+
+    note_scale = 0.5
+    note_color = color
+    note_thickness = 1
+
+    tar_small = image_path["tar"]["small"]
+    img = cv2.imread(tar_small)
+    for fret_number, row in tar_small_fret_position_row.items():
+        fret_line_start_point = (col_min, row)
+        fret_line_end_point = (col_max + extend_fret_to_right, row)
+
+        fret_number_origin = (col_min - horizonal_distance_text_to_fret_line, row)
+        note_origin = (col_max + extend_fret_to_right + 20, row)
+
+        cv2.line(
+            img, fret_line_start_point, fret_line_end_point, line_color, line_thickness
+        )
+
+        # Fret number
+        cv2.putText(
+            img,
+            str(fret_number),
+            fret_number_origin,
+            cv2.FONT_HERSHEY_SIMPLEX,
+            fret_number_scale,
+            fret_number_color,
+            fret_number_thickness,
+        )
+
+        note_name = string_notes[fret_number]
+        letter, accidental, octave = Note.decompose_name(note_name)
+        frequency = Note.compute_frequency(letter, accidental, octave)
+
+        cv2.putText(
+            img,
+            f"{note_name} {frequency:.2f} Hz",
+            note_origin,
+            cv2.FONT_HERSHEY_SIMPLEX,
+            note_scale,
+            note_color,
+            note_thickness,
+        )
+
+    if save_to_file:
+        dir_path, filename = os.path.split(tar_small)
+        base_name, ext = os.path.splitext(filename)
+        new_base_name = base_name + f"_string{string_number}_annotated"
+        output_path = os.path.join(dir_path, new_base_name + ext)
+        cv2.imwrite(output_path, img)
+
+    # Set window name
+    window_name = "Image"
+    cv2.namedWindow(window_name)
+    cv2.imshow(window_name, img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+
+_draw_tar_notes_and_frequencies(string_number=3)

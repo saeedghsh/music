@@ -2,10 +2,85 @@
 from typing import Any, Tuple
 from dataclasses import dataclass
 from math import isclose
-
-from notes_and_frequencies import compute_frequency
+from functools import wraps
 
 A4_FREQUENCY = 440  # Note reference: A4 = 440 Hz
+
+
+# In this context a set of "standard notes" is defined as the following.
+# An equal temperament tuning system, where the octave is divided into 24 equal
+# parts (quadranttone), results in 24 notes. A set of "standard notes of
+# quadranttones" is a set that maps bijectively to corresponding frequencies.
+# * where "sharp" of a note and "flat" of another are the same note, opt for "sharp"
+# * where "koron" of a note and "sori" of another are the same note, opt for "sori"
+# * "E#" and "B#" are not considered as they are represented by "F" and "C"
+STANDARD_NOTES_QUADRANTTONES = [
+    "C",
+    "Cs",
+    "C#",
+    "Dk",
+    "D",
+    "Ds",
+    "D#",
+    "Ek",
+    "E",
+    "Es",
+    "F",
+    "Fs",
+    "F#",
+    "Gk",
+    "G",
+    "Gs",
+    "G#",
+    "Ak",
+    "A",
+    "As",
+    "A#",
+    "Bk",
+    "B",
+    "Bs",
+]
+
+
+def _upper_lower_args(func):
+    @wraps(func)
+    def wrapper(note: str, accidental: str, octave: int) -> float:
+        return func(note.upper(), accidental.lower(), octave)
+
+    return wrapper
+
+
+@_upper_lower_args
+def _standardize_note(letter: str, accidental: str, octave: int) -> Tuple[str, int]:
+    """Return a standard note, given any input note
+
+    Makes sure that the note belong set of "standard notes"
+    """
+    conversion = {
+        "E#": "F",
+        "B#": "C",
+        "Cb": "B",
+        "Fb": "E",
+        "Db": "C#",
+        "Eb": "D#",
+        "Gb": "F#",
+        "Ab": "G#",
+        "Bb": "A#",
+        "Ck": "Bs",
+        "Fk": "Es",
+    }
+    note = f"{letter}{accidental}"
+    if note == "B#":
+        octave += 1
+    if note in conversion:
+        note = conversion[note]
+    # conversion.get(note, note)
+
+    if len(note) == 1:
+        letter, accidental = note, ""
+    if len(note) == 2:
+        letter, accidental = note[0], note[1]
+    return letter, accidental, octave
 
 
 @dataclass
@@ -70,7 +145,7 @@ class Note:
     name: str
     letter: str
     accidental: str
-    octave: Octave
+    octave: int
     frequency: float
 
     def __str__(self) -> str:
@@ -86,28 +161,48 @@ class Note:
         assert octave == self.octave
 
     @staticmethod
+    def compute_frequency(
+        letter: str, accidental: str, octave: int, a4_frequency: float = A4_FREQUENCY
+    ) -> float:
+        """Calculate the frequency of a note."""
+        # pylint: disable=invalid-name
+        letter, accidental, octave = _standardize_note(letter, accidental, octave)
+        note_index = STANDARD_NOTES_QUADRANTTONES.index(f"{letter}{accidental}")
+        A_index = STANDARD_NOTES_QUADRANTTONES.index("A")
+        quadranttone_steps_from_A4 = note_index - A_index + (octave - 4) * 24
+        return a4_frequency * (2 ** (quadranttone_steps_from_A4 / 24))
+
+    @staticmethod
+    def transposition_by_an_octave(note_name: str) -> str:
+        letter, accidental, octave = Note.decompose_name(note_name)
+        new_octave = octave + 1
+        return f"{letter}{accidental}{new_octave}"
+
+    @staticmethod
     def decompose_name(name: str) -> Tuple[str, str, int]:
         """Return letter, accidental and octave from the name
 
         It also validates the name correctness thouroughly.
         """
         if not name[-1].isdigit():
-            raise ValueError("Last char of name must be octave as a number (int)")
-        octave = name[-1]
-        if not -1 <= octave <= 0:
-            raise ValueError("octave is out of range")
+            raise ValueError(f"Octave must be an number/int - note:{name}")
+        octave = int(name[-1])
+        if not -1 <= octave <= 9:
+            raise ValueError(f"octave is out of range - note:{name}, octave:{octave}")
 
         if len(name[:-1]) == 1:
             letter, accidental = name[0].upper(), ""
-        elif len(name[:-1]) == 1:
+        elif len(name[:-1]) == 2:
             letter, accidental = name[0].upper(), name[1].lower()
         else:
-            raise ValueError("Length name cannot be more that 3 characters")
+            raise ValueError(f"name cannot be more that 3 characters - note:{name}")
 
         if letter not in ["A", "B", "C", "D", "E", "F", "G"]:
-            raise ValueError("letter is invalid")
+            raise ValueError(f"invalid letter - note:{name}, letter:{letter}")
         if accidental not in ["#", "s", "", "k", "b"]:
-            raise ValueError("accidental is invalid")
+            raise ValueError(
+                f"invalid accidental - note:{name}, accidental:{accidental}"
+            )
 
         return letter, accidental, octave
 
@@ -115,7 +210,7 @@ class Note:
     def from_name(name: str, a4_frequency: float = A4_FREQUENCY) -> "Note":
         """Create and return an object of type Note from the given name"""
         letter, accidental, octave = Note.decompose_name(name)
-        frequency = compute_frequency(letter, accidental, octave, a4_frequency)
+        frequency = Note.compute_frequency(letter, accidental, octave, a4_frequency)
         return Note(name, letter, accidental, octave, frequency)
 
     def _eq_to_name(self, other_name: str) -> bool:
