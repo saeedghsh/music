@@ -270,10 +270,7 @@ class FrequencyComputer:
         note = f"{letter}{accidental}"
         if note == "B#":
             octave += 1
-        conversion_to_standard_note = FrequencyComputer.conversion_to_standard_note()
-        if note in conversion_to_standard_note:
-            note = conversion_to_standard_note[note]
-        # note = FrequencyComputer.conversion_to_standard_note.get(note, note) # TODO: it should be possible to replace second if right above this line with this get
+        note = FrequencyComputer.conversion_to_standard_note().get(note, note)
 
         if len(note) == 1:
             letter, accidental = note, ""
