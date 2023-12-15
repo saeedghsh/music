@@ -24,7 +24,9 @@ Legend:
 * [ ] add test
 * [ ] hookup the repo with gitbut CI
 
+* [ ] make note name validation a process separate from `Note.decompose_name`
 * [ ] make use of `Note` class everywhere; `instruments.py`, `drawing.py`
+
 * [ ] add an entry point (`main.py`), from which can call drawing functions with proper CLI
 * [ ] move `drawing.py` under `drawing` dir and make a file per instrument
 * [ ] move `instruments.py` under `instruments` dir and make a file per instrument
