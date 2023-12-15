@@ -1,3 +1,4 @@
 *.pyc
 *~
 ignore/
+__init__.py
