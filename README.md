@@ -19,8 +19,11 @@ Legend:
 * [d] DISCARD (temp and perm)
 * [.] HALFASSED
 ```
+* [ ] add test
+* [ ] hookup the repo with gitbut CI
+
 * [ ] change `accidental.unidoce_char` to `symbol` and find a better name for `accidental.shorthand`
-* [ ] `quadranttone` -> `quartertone`
+
 
 * [ ] make use of `Note` class everywhere; `instruments.py`, `drawing.py`
 * [ ] add an entry point (`main.py`), from which can call drawing functions with proper CLI
@@ -29,8 +32,6 @@ Legend:
 * [ ] encapsulate each instrument into a `class` of `instrument`,
 * [ ] right now the accidentals are printed as `{#,b,s,k}` (e.g. tar annotation) fix it so that proper symbols are printed
 * [ ] use `Note.__str__` whereever note is printed, and make sure it is printer properly
-* [ ] add test
-* [ ] hookup the repo with gitbut CI
 * [ ] Add Qt gui?
 * [ ] extend to other instruments, start with Guitar and then Ney
 * [ ] add audio and make it interactive?
@@ -39,7 +40,7 @@ Legend:
 * [d] fix issue with printing `sori` and `koron` symbols,
         -> This turned to be much harder than I expected. Skipping for now
 * [x] add a drawing of Tar and visaulize its notes and frequencies.
-
+* [x] `quartertone` -> `quartertone`
 
 # Reference
 * [Proposal to encode two accidentals for Iranian classical music](https://www.unicode.org/L2/L2020/20159-iran-music-symbols.pdf)

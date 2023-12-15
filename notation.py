@@ -9,12 +9,12 @@ A4_FREQUENCY = 440  # Note reference: A4 = 440 Hz
 
 # In this context a set of "standard notes" is defined as the following.
 # An equal temperament tuning system, where the octave is divided into 24 equal
-# parts (quadranttone), results in 24 notes. A set of "standard notes of
-# quadranttones" is a set that maps bijectively to corresponding frequencies.
+# parts (quartertone), results in 24 notes. A set of "standard notes of
+# quartertone" is a set that maps bijectively to corresponding frequencies.
 # * where "sharp" of a note and "flat" of another are the same note, opt for "sharp"
 # * where "koron" of a note and "sori" of another are the same note, opt for "sori"
 # * "E#" and "B#" are not considered as they are represented by "F" and "C"
-STANDARD_NOTES_QUADRANTTONES = [
+STANDARD_NOTES_QUARTERTONES = [
     "C",
     "Cs",
     "C#",
@@ -173,10 +173,10 @@ class Note:
         """Calculate the frequency of a note."""
         # pylint: disable=invalid-name
         letter, accidental, octave = _standardize_note(letter, accidental, octave)
-        note_index = STANDARD_NOTES_QUADRANTTONES.index(f"{letter}{accidental}")
-        A_index = STANDARD_NOTES_QUADRANTTONES.index("A")
-        quadranttone_steps_from_A4 = note_index - A_index + (octave - 4) * 24
-        return a4_frequency * (2 ** (quadranttone_steps_from_A4 / 24))
+        note_index = STANDARD_NOTES_QUARTERTONES.index(f"{letter}{accidental}")
+        A_index = STANDARD_NOTES_QUARTERTONES.index("A")
+        quartertone_steps_from_A4 = note_index - A_index + (octave - 4) * 24
+        return a4_frequency * (2 ** (quartertone_steps_from_A4 / 24))
 
     @staticmethod
     def transposition_by_an_octave(note_name: str) -> str:
@@ -248,18 +248,18 @@ FREQUENCY_RATIO = {
     "octave": 2 ** (12 / 12),  # 2
     "tone": 2 ** (1 / 6),  # 8 ** (1/24)
     "semitone": 2 ** (1 / 12),  # 4 ** (1/24)
-    "quadranttone": 2 ** (1 / 24),  # 2 ** (1/24)
+    "quartertone": 2 ** (1 / 24),  # 2 ** (1/24)
 }
 
 
 ACCIDENTALS = {
     "sharp": Accidental("sharp", Symbol("#", "\u266F"), FREQUENCY_RATIO["semitone"]),
     "sori": Accidental(
-        "sori", Symbol("s", "\U0001D1E9"), FREQUENCY_RATIO["quadranttone"]
+        "sori", Symbol("s", "\U0001D1E9"), FREQUENCY_RATIO["quartertone"]
     ),
     "natural": Accidental("natural", Symbol("", ""), 1),
     "koron": Accidental(
-        "koron", Symbol("k", "\U0001D1EA"), 1 / FREQUENCY_RATIO["quadranttone"]
+        "koron", Symbol("k", "\U0001D1EA"), 1 / FREQUENCY_RATIO["quartertone"]
     ),
     "flat": Accidental("flat", Symbol("b", "\u266F"), 1 / FREQUENCY_RATIO["semitone"]),
 }

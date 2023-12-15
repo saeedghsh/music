@@ -3,7 +3,7 @@ from notation import Note
 
 
 def generate_all_notes(octave_range: Tuple[int, int] = (0, 9)) -> dict:
-    """Generate all notes (including quadranttone) in give octave ranges"""
+    """Generate all notes (including quartertone) in give octave ranges"""
     notes = {}
     for octave in range(*octave_range):
         for note in ["C", "D", "E", "F", "G", "A", "B"]:
