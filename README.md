@@ -13,13 +13,16 @@
 
 ### TODO
 * [x] add a drawing of Tar and visaulize its notes and frequencies.
+* [ ] fix issue with printing `sori` and `koron` symbols,
+
+* [ ] change `accidental.unidoce_char` to `symbol` and find a better name for `accidental.shorthand`
+* [ ] `quadranttone` -> `quartertone`
 
 * [ ] make use of `Note` class everywhere; `instruments.py`, `drawing.py`
 * [ ] add an entry point (`main.py`), from which can call drawing functions with proper CLI
 * [ ] move `drawing.py` under `drawing` dir and make a file per instrument
 * [ ] move `instruments.py` under `instruments` dir and make a file per instrument
 * [ ] encapsulate each instrument into a `class` of `instrument`,
-* [ ] fix issue with printing `sori` and `koron` symbols,
 * [ ] right now the accidentals are printed as `{#,b,s,k}` (e.g. tar annotation) fix it so that proper symbols are printed
 * [ ] use `Note.__str__` whereever note is printed, and make sure it is printer properly
 * [ ] add test
@@ -29,6 +32,9 @@
 * [ ] add audio and make it interactive?
 * [ ] Add keys, scales and chords?
 
+
+# Reference
+* [Proposal to encode two accidentals for Iranian classical music](https://www.unicode.org/L2/L2020/20159-iran-music-symbols.pdf)
 
 License
 -------
