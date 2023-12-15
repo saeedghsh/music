@@ -84,7 +84,14 @@ def _standardize_note(letter: str, accidental: str, octave: int) -> Tuple[str, i
 
 
 @dataclass
+class Symbol:
+    simplified: str
+    unicode: str
+
+
+@dataclass
 class Accidental:
+
     """Accidentals are symbols that pair with a notes to create new notes.
     Three common accidentals are:
     * the sharp: half-step higher,
@@ -95,12 +102,11 @@ class Accidental:
     * the koron: quarter-step lower"""
 
     name: str
-    short_hand: str
-    unicode_cha: str
+    symbol: Symbol
     frequency_ratio: float
 
     def __str__(self) -> str:
-        return self.short_hand
+        return self.symbol.simplified
 
 
 @dataclass
@@ -247,13 +253,15 @@ FREQUENCY_RATIO = {
 
 
 ACCIDENTALS = {
-    "sharp": Accidental("sharp", "#", "\u266F", FREQUENCY_RATIO["semitone"]),
-    "sori": Accidental("sori", "s", "\U0001D1E9", FREQUENCY_RATIO["quadranttone"]),
-    "natural": Accidental("natural", "", "", 1),
-    "koron": Accidental(
-        "koron", "k", "\U0001D1EA", 1 / FREQUENCY_RATIO["quadranttone"]
+    "sharp": Accidental("sharp", Symbol("#", "\u266F"), FREQUENCY_RATIO["semitone"]),
+    "sori": Accidental(
+        "sori", Symbol("s", "\U0001D1E9"), FREQUENCY_RATIO["quadranttone"]
     ),
-    "flat": Accidental("flat", "b", "\u266F", 1 / FREQUENCY_RATIO["semitone"]),
+    "natural": Accidental("natural", Symbol("", ""), 1),
+    "koron": Accidental(
+        "koron", Symbol("k", "\U0001D1EA"), 1 / FREQUENCY_RATIO["quadranttone"]
+    ),
+    "flat": Accidental("flat", Symbol("b", "\u266F"), 1 / FREQUENCY_RATIO["semitone"]),
 }
 
 OCTAVES = {
