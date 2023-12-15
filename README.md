@@ -17,12 +17,14 @@ Legend:
 * [ ] TODO
 * [x] DONE
 * [d] DISCARD (temp and perm)
+* [p] PAUSED
 * [.] HALFASSED
+
 ```
 * [ ] add test
 * [ ] hookup the repo with gitbut CI
 
-* [ ] right now the accidentals are printed as `{#,b,s,k}` (e.g. tar annotation) fix it so that proper symbols are printed
+* [ ] make a enum for Accidentals.
 
 * [ ] change `accidental.unidoce_char` to `symbol` and find a better name for `accidental.shorthand`
 * [ ] make use of `Note` class everywhere; `instruments.py`, `drawing.py`
@@ -38,6 +40,8 @@ Legend:
 * [ ] add audio and make it interactive?
 * [ ] Add keys, scales and chords?
 
+* [p] right now the accidentals are printed as `{#,b,s,k}` (e.g. tar annotation) fix it so that proper symbols are printed.
+      This might be not feasible for koron and sori right now, but should be doable for sharp and flat.
 * [x] Make frequency computer a separate class from note
 * [d] fix issue with printing `sori` and `koron` symbols,
         -> This turned to be much harder than I expected. Skipping for now        
