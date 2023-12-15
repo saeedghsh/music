@@ -1,15 +1,32 @@
 """X"""
+from enum import Enum
 from typing import Any, Tuple, List, Dict
 from dataclasses import dataclass
 from math import isclose
 
+
 A4_FREQUENCY = 440  # Note reference: A4 = 440 Hz
+
+FREQUENCY_RATIO = {
+    "octave": 2 ** (12 / 12),  # 2
+    "tone": 2 ** (1 / 6),  # 8 ** (1/24)
+    "semitone": 2 ** (1 / 12),  # 4 ** (1/24)
+    "quartertone": 2 ** (1 / 24),  # 2 ** (1/24)
+}
 
 
 @dataclass
 class Symbol:
     simplified: str
     unicode: str
+
+
+class AccidentalSymbol(Enum):
+    SHARP = Symbol("#", "\u266F")
+    SORI = Symbol("s", "\U0001D1E9")
+    NATURAL = Symbol("", "")
+    KORON = Symbol("k", "\U0001D1EA")
+    FLAT = Symbol("b", "\u266F")
 
 
 @dataclass
@@ -30,6 +47,16 @@ class Accidental:
 
     def __str__(self) -> str:
         return self.symbol.simplified
+
+
+class AccidentalNote(Enum):
+    SHARP = Accidental("sharp", AccidentalSymbol.SHARP, FREQUENCY_RATIO["semitone"])
+    SORI = Accidental("sori", AccidentalSymbol.SORI, FREQUENCY_RATIO["quartertone"])
+    NATURAL = Accidental("natural", AccidentalSymbol.NATURAL, 1)
+    KORON = Accidental(
+        "koron", AccidentalSymbol.KORON, 1 / FREQUENCY_RATIO["quartertone"]
+    )
+    FLAT = (Accidental("flat", AccidentalSymbol.FLAT, 1 / FREQUENCY_RATIO["semitone"]),)
 
 
 @dataclass
@@ -251,26 +278,6 @@ class FrequencyComputer:
         quartertone_steps_from_A4 = note_index - A_index + (octave - 4) * 24
         return a4_frequency * (2 ** (quartertone_steps_from_A4 / 24))
 
-
-FREQUENCY_RATIO = {
-    "octave": 2 ** (12 / 12),  # 2
-    "tone": 2 ** (1 / 6),  # 8 ** (1/24)
-    "semitone": 2 ** (1 / 12),  # 4 ** (1/24)
-    "quartertone": 2 ** (1 / 24),  # 2 ** (1/24)
-}
-
-
-ACCIDENTALS = {
-    "sharp": Accidental("sharp", Symbol("#", "\u266F"), FREQUENCY_RATIO["semitone"]),
-    "sori": Accidental(
-        "sori", Symbol("s", "\U0001D1E9"), FREQUENCY_RATIO["quartertone"]
-    ),
-    "natural": Accidental("natural", Symbol("", ""), 1),
-    "koron": Accidental(
-        "koron", Symbol("k", "\U0001D1EA"), 1 / FREQUENCY_RATIO["quartertone"]
-    ),
-    "flat": Accidental("flat", Symbol("b", "\u266F"), 1 / FREQUENCY_RATIO["semitone"]),
-}
 
 OCTAVES = {
     -1: Octave("subsubcontra", -1),

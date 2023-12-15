@@ -24,8 +24,6 @@ Legend:
 * [ ] add test
 * [ ] hookup the repo with gitbut CI
 
-* [ ] make a enum for Accidentals.
-
 * [ ] change `accidental.unidoce_char` to `symbol` and find a better name for `accidental.shorthand`
 * [ ] make use of `Note` class everywhere; `instruments.py`, `drawing.py`
 * [ ] add an entry point (`main.py`), from which can call drawing functions with proper CLI
@@ -40,6 +38,7 @@ Legend:
 * [ ] add audio and make it interactive?
 * [ ] Add keys, scales and chords?
 
+* [x] make a enum for Accidentals.
 * [p] right now the accidentals are printed as `{#,b,s,k}` (e.g. tar annotation) fix it so that proper symbols are printed.
       This might be not feasible for koron and sori right now, but should be doable for sharp and flat.
 * [x] Make frequency computer a separate class from note

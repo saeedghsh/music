@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from matplotlib import patches
 
 from notation import Note, FrequencyComputer
-from instruments import generate_piano_keys, generate_tar_notes
+
 
 INSTRUMENTS = {
     "tar": {
@@ -111,14 +111,11 @@ def draw_piano(keys: dict):
     plt.show()
 
 
-# draw_piano(generate_piano_keys())
-
-
-def _draw_tar_notes_and_frequencies(string_number: int, save_to_file: bool = True):
+def draw_tar_notes_and_frequencies(
+    tar_strings: dict, string_number: int, save_to_file: bool = True
+):
     if string_number not in range(1, 7):
         raise ValueError("Tar/Setar strings should be numbered 1-6")
-
-    tar_strings = generate_tar_notes()
     string_notes = tar_strings[string_number]
 
     col_min = INSTRUMENTS["tar"]["small_image"]["fret_position_col"]["min"]
@@ -191,6 +188,3 @@ def _draw_tar_notes_and_frequencies(string_number: int, save_to_file: bool = Tru
     cv2.imshow(window_name, img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
-
-
-_draw_tar_notes_and_frequencies(string_number=3, save_to_file=False)
