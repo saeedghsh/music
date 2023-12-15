@@ -7,12 +7,12 @@ from math import isclose
 
 A4_FREQUENCY = 440  # Note reference: A4 = 440 Hz
 
-FREQUENCY_RATIO = {
-    "octave": 2 ** (12 / 12),  # 2
-    "tone": 2 ** (1 / 6),  # 8 ** (1/24)
-    "semitone": 2 ** (1 / 12),  # 4 ** (1/24)
-    "quartertone": 2 ** (1 / 24),  # 2 ** (1/24)
-}
+
+class MusicalInterval(Enum):
+    OCTAVE = 2 ** (12 / 12)  # 2
+    TONE = 2 ** (1 / 6)  # 8 ** (1/24)
+    SEMITONE = 2 ** (1 / 12)  # 4 ** (1/24)
+    QUARTERTONE = 2 ** (1 / 24)  # 2 ** (1/24)
 
 
 @dataclass
@@ -87,13 +87,13 @@ class AccidentalSymbol(Enum):
 
 
 class AccidentalNote(Enum):
-    SHARP = Accidental("sharp", AccidentalSymbol.SHARP, FREQUENCY_RATIO["semitone"])
-    SORI = Accidental("sori", AccidentalSymbol.SORI, FREQUENCY_RATIO["quartertone"])
+    SHARP = Accidental("sharp", AccidentalSymbol.SHARP, MusicalInterval.SEMITONE.value)
+    SORI = Accidental("sori", AccidentalSymbol.SORI, MusicalInterval.QUARTERTONE.value)
     NATURAL = Accidental("natural", AccidentalSymbol.NATURAL, 1)
     KORON = Accidental(
-        "koron", AccidentalSymbol.KORON, 1 / FREQUENCY_RATIO["quartertone"]
+        "koron", AccidentalSymbol.KORON, 1 / MusicalInterval.QUARTERTONE.value
     )
-    FLAT = (Accidental("flat", AccidentalSymbol.FLAT, 1 / FREQUENCY_RATIO["semitone"]),)
+    FLAT = Accidental("flat", AccidentalSymbol.FLAT, 1 / MusicalInterval.SEMITONE.value)
 
 
 class OctaveRegister(Enum):
@@ -204,13 +204,16 @@ class FrequencyComputer:
 
     @staticmethod
     def standard_notes_quartertones() -> List[str]:
-        # In this context a set of "standard notes" is defined as the following.
-        # An equal temperament tuning system, where the octave is divided into 24 equal
-        # parts (quartertone), results in 24 notes. A set of "standard notes of
-        # quartertone" is a set that maps bijectively to corresponding frequencies.
-        # * where "sharp" of a note and "flat" of another are the same note, opt for "sharp"
-        # * where "koron" of a note and "sori" of another are the same note, opt for "sori"
-        # * "E#" and "B#" are not considered as they are represented by "F" and "C"
+        """Return an ordered list of 24 notes in an Octave, equally separated by quartertone
+
+        In this context a set of "standard notes" is defined as the following.
+        An equal temperament tuning system, where the octave is divided into 24 equal
+        parts (quartertone), results in 24 notes. A set of "standard notes of
+        quartertone" is a set that maps bijectively to corresponding frequencies.
+        * where "sharp" of a note and "flat" of another are the same note, opt for "sharp"
+        * where "koron" of a note and "sori" of another are the same note, opt for "sori"
+        * "E#" and "B#" are not considered as they are represented by "F" and "C"
+        """
         return [
             "C",
             "Cs",
@@ -240,6 +243,7 @@ class FrequencyComputer:
 
     @staticmethod
     def conversion_to_standard_note() -> Dict[str, str]:
+        """Return a dict for converting identical notes."""
         return {
             "E#": "F",
             "B#": "C",
