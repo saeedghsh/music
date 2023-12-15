@@ -12,8 +12,17 @@
 
 
 ### TODO
+Legend:
+```
+* [ ] TODO
+* [x] DONE
+* [d] DISCARD (temp and perm)
+* [.] HALFASSED
+```
+
 * [x] add a drawing of Tar and visaulize its notes and frequencies.
-* [ ] fix issue with printing `sori` and `koron` symbols,
+* [d] fix issue with printing `sori` and `koron` symbols,
+        -> This turned to be much harder than I expected. Skipping for now
 
 * [ ] change `accidental.unidoce_char` to `symbol` and find a better name for `accidental.shorthand`
 * [ ] `quadranttone` -> `quartertone`
