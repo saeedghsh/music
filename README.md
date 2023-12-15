@@ -12,29 +12,30 @@
 
 
 # TODO
-Legend:
 ```
+Legend
 * [ ] TODO
 * [x] DONE
-* [d] DISCARD (temp and perm)
-* [p] PAUSED
-* [.] HALFASSED
-
+* [x] [d] DISCARD (temp and perm)
+* [x] [p] PAUSED
+* [x] [.] HALFASSED
 ```
+
 * [ ] add test
 * [ ] hookup the repo with gitbut CI
 
 * [ ] make note name validation a process separate from `Note.decompose_name`
-* [ ] make use of `Note` class everywhere; `instruments.py`, `drawing.py`
-
+* [ ] make use of `Note` class everywhere; `FrequencyCOmputer`, `instruments.py`, `drawing.py`
 * [ ] add an entry point (`main.py`), from which can call drawing functions with proper CLI
 * [ ] move `drawing.py` under `drawing` dir and make a file per instrument
 * [ ] move `instruments.py` under `instruments` dir and make a file per instrument
+
 * [ ] encapsulate each instrument into a `class` of `instrument`,
 
 * [ ] use `Note.__str__` whereever note is printed, and make sure it is printer properly
 * [ ] use cv2 ot qt for piano drawing
 * [ ] Add Qt gui?
+
 * [ ] extend to other instruments, start with Guitar and then Ney
 * [ ] add audio and make it interactive?
 * [ ] Add keys, scales and chords?
@@ -42,10 +43,10 @@ Legend:
 * [x] change `accidental.unidoce_char` to `symbol` and find a better name for `accidental.shorthand`
 * [x] make a enum for Octave.
 * [x] make a enum for Accidentals.
-* [p] right now the accidentals are printed as `{#,b,s,k}` (e.g. tar annotation) fix it so that proper symbols are printed.
+* [x] [p] right now the accidentals are printed as `{#,b,s,k}` (e.g. tar annotation) fix it so that proper symbols are printed.
       This might be not feasible for koron and sori right now, but should be doable for sharp and flat.
 * [x] Make frequency computer a separate class from note
-* [d] fix issue with printing `sori` and `koron` symbols,
+* [x] [d] fix issue with printing `sori` and `koron` symbols,
         -> This turned to be much harder than I expected. Skipping for now        
 * [x] add a drawing of Tar and visaulize its notes and frequencies.
 * [x] `quartertone` -> `quartertone`
