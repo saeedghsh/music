@@ -97,13 +97,3 @@ def generate_tar_notes():  # -> Dict[int, Dict[int, Note]]:
         for fret_number, note in string1.items()
     }
     return {1: string1, 2: string2, 3: string3, 4: string4, 5: string5, 6: string6}
-
-
-def print_tar_notes_and_frequencies(tar_strings: dict, string_number: int):
-    if string_number not in range(1, 7):
-        raise ValueError("Tar/Setar strings should be numbered 1-6")
-    string_notes = tar_strings[string_number]
-    for fret_number, note_name in string_notes.items():
-        letter, accidental, octave = Note.decompose_name(note_name)
-        frequency = FrequencyComputer.compute_frequency(letter, accidental, octave)
-        print(f"{fret_number}\t{note_name}:\t{frequency} Hz")
