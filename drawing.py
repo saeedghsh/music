@@ -9,47 +9,47 @@ from matplotlib import patches
 from notation import Note
 from instruments import generate_piano_keys, generate_tar_notes
 
-IMAGE_PATH = {
+INSTRUMENTS = {
     "tar": {
-        "small": "/home/saeed/code/musical_notes/images/tar_small_1290x362.jpg",
-        "large": "/home/saeed/code/musical_notes/images/tar_large_3910x1097.jpg",
+        "small_image": {
+            "path": "images/tar_small_1290x362.jpg",
+            "fret_position_row": {
+                0: 162,
+                1: 206,
+                2: 230,
+                3: 255,
+                4: 295,
+                5: 313,
+                6: 333,
+                7: 372,
+                8: 398,
+                9: 424,
+                10: 448,
+                11: 476,
+                12: 494,
+                13: 513,
+                14: 540,
+                15: 553,
+                16: 568,
+                17: 599,
+                18: 618,
+                19: 625,
+                20: 638,
+                21: 666,
+                22: 679,
+                23: 695,
+                24: 716,
+                25: 734,
+                26: 752,
+                27: 767,
+            },
+            "fret_position_col": {
+                "min": 150,
+                "max": 208,
+            },
+        },
+        "large_image": {"path": "images/tar_large_3910x1097.jpg"},
     }
-}
-
-TAR_SMALL_FRET_POSITION_ROW = {
-    0: 162,
-    1: 206,
-    2: 230,
-    3: 255,
-    4: 295,
-    5: 313,
-    6: 333,
-    7: 372,
-    8: 398,
-    9: 424,
-    10: 448,
-    11: 476,
-    12: 494,
-    13: 513,
-    14: 540,
-    15: 553,
-    16: 568,
-    17: 599,
-    18: 618,
-    19: 625,
-    20: 638,
-    21: 666,
-    22: 679,
-    23: 695,
-    24: 716,
-    25: 734,
-    26: 752,
-    27: 767,
-}
-
-TAR_SMALL_FRET_POSITION_COL = {
-    "min": 150,
-    "max": 208,
 }
 
 
@@ -121,8 +121,8 @@ def _draw_tar_notes_and_frequencies(string_number: int, save_to_file: bool = Tru
     tar_strings = generate_tar_notes()
     string_notes = tar_strings[string_number]
 
-    col_min = tar_small_fret_position_col["min"]
-    col_max = tar_small_fret_position_col["max"]
+    col_min = INSTRUMENTS["tar"]["small_image"]["fret_position_col"]["min"]
+    col_max = INSTRUMENTS["tar"]["small_image"]["fret_position_col"]["max"]
     extend_fret_to_right = 0
     horizonal_distance_text_to_fret_line = 20
 
@@ -139,9 +139,10 @@ def _draw_tar_notes_and_frequencies(string_number: int, save_to_file: bool = Tru
     note_color = color
     note_thickness = 1
 
-    tar_small = image_path["tar"]["small"]
+    tar_small = INSTRUMENTS["tar"]["small_image"]["path"]
     img = cv2.imread(tar_small)
-    for fret_number, row in tar_small_fret_position_row.items():
+    fret_position_row = INSTRUMENTS["tar"]["small_image"]["fret_position_row"]
+    for fret_number, row in fret_position_row.items():
         fret_line_start_point = (col_min, row)
         fret_line_end_point = (col_max + extend_fret_to_right, row)
 
@@ -192,4 +193,4 @@ def _draw_tar_notes_and_frequencies(string_number: int, save_to_file: bool = Tru
     cv2.destroyAllWindows()
 
 
-_draw_tar_notes_and_frequencies(string_number=3)
+# _draw_tar_notes_and_frequencies(string_number=3, save_to_file=False)
