@@ -38,6 +38,7 @@ Legend:
 * [ ] add audio and make it interactive?
 * [ ] Add keys, scales and chords?
 
+* [x] make a enum for Octave.
 * [x] make a enum for Accidentals.
 * [p] right now the accidentals are printed as `{#,b,s,k}` (e.g. tar annotation) fix it so that proper symbols are printed.
       This might be not feasible for koron and sori right now, but should be doable for sharp and flat.

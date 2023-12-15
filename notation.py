@@ -21,14 +21,6 @@ class Symbol:
     unicode: str
 
 
-class AccidentalSymbol(Enum):
-    SHARP = Symbol("#", "\u266F")
-    SORI = Symbol("s", "\U0001D1E9")
-    NATURAL = Symbol("", "")
-    KORON = Symbol("k", "\U0001D1EA")
-    FLAT = Symbol("b", "\u266F")
-
-
 @dataclass
 class Accidental:
 
@@ -47,16 +39,6 @@ class Accidental:
 
     def __str__(self) -> str:
         return self.symbol.simplified
-
-
-class AccidentalNote(Enum):
-    SHARP = Accidental("sharp", AccidentalSymbol.SHARP, FREQUENCY_RATIO["semitone"])
-    SORI = Accidental("sori", AccidentalSymbol.SORI, FREQUENCY_RATIO["quartertone"])
-    NATURAL = Accidental("natural", AccidentalSymbol.NATURAL, 1)
-    KORON = Accidental(
-        "koron", AccidentalSymbol.KORON, 1 / FREQUENCY_RATIO["quartertone"]
-    )
-    FLAT = (Accidental("flat", AccidentalSymbol.FLAT, 1 / FREQUENCY_RATIO["semitone"]),)
 
 
 @dataclass
@@ -89,11 +71,43 @@ class Octave:
             Octave: self._eq_to_octave,
         }
         other_type = type(other)
-        if other_type not in type_dispatch.keys():
+        if other_type not in type_dispatch:
             raise NotImplementedError(
                 f"Type {other_type} is not supported for comparison"
             )
         return type_dispatch[other_type](other)
+
+
+class AccidentalSymbol(Enum):
+    SHARP = Symbol("#", "\u266F")
+    SORI = Symbol("s", "\U0001D1E9")
+    NATURAL = Symbol("", "")
+    KORON = Symbol("k", "\U0001D1EA")
+    FLAT = Symbol("b", "\u266F")
+
+
+class AccidentalNote(Enum):
+    SHARP = Accidental("sharp", AccidentalSymbol.SHARP, FREQUENCY_RATIO["semitone"])
+    SORI = Accidental("sori", AccidentalSymbol.SORI, FREQUENCY_RATIO["quartertone"])
+    NATURAL = Accidental("natural", AccidentalSymbol.NATURAL, 1)
+    KORON = Accidental(
+        "koron", AccidentalSymbol.KORON, 1 / FREQUENCY_RATIO["quartertone"]
+    )
+    FLAT = (Accidental("flat", AccidentalSymbol.FLAT, 1 / FREQUENCY_RATIO["semitone"]),)
+
+
+class OctaveRegister(Enum):
+    SUBSUBCONTRA = Octave("subsubcontra", -1)
+    SUBCONTRA = Octave("sub-contra", 0)
+    CONTRA = Octave("contra", 1)
+    GREAT = Octave("great", 2)
+    SMALL = Octave("small", 3)
+    ONELINED = Octave("one-lined", 4)
+    TWOLINED = Octave("two-lined", 5)
+    THREELINED = Octave("three-lined", 6)
+    FOURLINED = Octave("four-lined", 7)
+    FIVELINED = Octave("five-lined", 8)
+    SIXLINED = Octave("six-lined", 9)
 
 
 @dataclass
@@ -277,18 +291,3 @@ class FrequencyComputer:
         A_index = standard_notes.index("A")
         quartertone_steps_from_A4 = note_index - A_index + (octave - 4) * 24
         return a4_frequency * (2 ** (quartertone_steps_from_A4 / 24))
-
-
-OCTAVES = {
-    -1: Octave("subsubcontra", -1),
-    0: Octave("sub-contra", 0),
-    1: Octave("contra", 1),
-    2: Octave("great", 2),
-    3: Octave("small", 3),
-    4: Octave("one-lined", 4),
-    5: Octave("two-lined", 5),
-    6: Octave("three-lined", 6),
-    7: Octave("four-lined", 7),
-    8: Octave("five-lined", 8),
-    9: Octave("six-lined", 9),
-}
