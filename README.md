@@ -22,6 +22,8 @@ Legend:
 * [ ] add test
 * [ ] hookup the repo with gitbut CI
 
+* [ ] Make frequency computer a separate class from note
+
 * [ ] change `accidental.unidoce_char` to `symbol` and find a better name for `accidental.shorthand`
 
 
