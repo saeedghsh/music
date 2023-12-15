@@ -1,5 +1,5 @@
 from typing import Tuple
-from notation import Note
+from notation import Note, FrequencyComputer
 
 
 def generate_all_notes(octave_range: Tuple[int, int] = (0, 9)) -> dict:
@@ -8,7 +8,7 @@ def generate_all_notes(octave_range: Tuple[int, int] = (0, 9)) -> dict:
     for octave in range(*octave_range):
         for note in ["C", "D", "E", "F", "G", "A", "B"]:
             for accidental in ["b", "k", "", "s", "#"]:
-                notes[(note, accidental, octave)] = Note.compute_frequency(
+                notes[(note, accidental, octave)] = FrequencyComputer.compute_frequency(
                     note, accidental, octave
                 )
     return notes
@@ -23,7 +23,7 @@ def generate_piano_keys(octave_range: Tuple[int, int] = (0, 9)) -> dict:
                 if f"{note}{accidental}" in ["E#", "B#"]:
                     continue
                 key = (note, accidental, octave)
-                keys[key] = Note.compute_frequency(*key)
+                keys[key] = FrequencyComputer.compute_frequency(*key)
     return keys
 
 
@@ -107,7 +107,7 @@ def _print_tar_notes_and_frequencies(string_number: int):
     string_notes = tar_strings[string_number]
     for fret_number, note_name in string_notes.items():
         letter, accidental, octave = Note.decompose_name(note_name)
-        frequency = Note.compute_frequency(letter, accidental, octave)
+        frequency = FrequencyComputer.compute_frequency(letter, accidental, octave)
         print(f"{fret_number}\t{note_name}:\t{frequency} Hz")
 
 

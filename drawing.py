@@ -6,7 +6,7 @@ import cv2
 import matplotlib.pyplot as plt
 from matplotlib import patches
 
-from notation import Note
+from notation import Note, FrequencyComputer
 from instruments import generate_piano_keys, generate_tar_notes
 
 INSTRUMENTS = {
@@ -166,7 +166,7 @@ def _draw_tar_notes_and_frequencies(string_number: int, save_to_file: bool = Tru
 
         note_name = string_notes[fret_number]
         letter, accidental, octave = Note.decompose_name(note_name)
-        frequency = Note.compute_frequency(letter, accidental, octave)
+        frequency = FrequencyComputer.compute_frequency(letter, accidental, octave)
 
         cv2.putText(
             img,
@@ -193,4 +193,4 @@ def _draw_tar_notes_and_frequencies(string_number: int, save_to_file: bool = Tru
     cv2.destroyAllWindows()
 
 
-# _draw_tar_notes_and_frequencies(string_number=3, save_to_file=False)
+_draw_tar_notes_and_frequencies(string_number=3, save_to_file=False)
