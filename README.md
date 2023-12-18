@@ -31,8 +31,8 @@ Legend
 * [ ] move `instruments.py` under `instruments` dir and make a file per instrument
 
 * [ ] encapsulate each instrument into a `class` of `instrument`,
-
-* [ ] Add different fret count systems for Setar / Tar (25, 27, and 28)
+ 
+* [ ] `generate_tar_notes` only supports the tuning of `C-G-C`. generalize the tuning.
 * [ ] Add common tuning for different keys ("Dastgah"): Wikipedia has a list (Double check)
 * [ ] add "fret round" for Tar and Setar 
   ```python
@@ -80,6 +80,7 @@ Legend
 * [ ] add audio and make it interactive?
 * [ ] Add keys, scales and chords?
 
+* [x] Add different fret count systems for Setar / Tar (25, 27, and 28)
 * [x] change `accidental.unidoce_char` to `symbol` and find a better name for `accidental.shorthand`
 * [x] make a enum for Octave.
 * [x] make a enum for Accidentals.

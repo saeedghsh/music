@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Tuple, Dict
 from notation import Note, FrequencyComputer
 
 
@@ -27,9 +27,13 @@ def generate_piano_keys(octave_range: Tuple[int, int] = (0, 9)) -> dict:
     return keys
 
 
-def generate_tar_notes():  # -> Dict[int, Dict[int, Note]]:
+def generate_tar_notes(fret_count: int = 27) -> Dict[int, Dict[int, str]]:
     """Tar and Setar"""
-    string1 = {
+    if fret_count not in [25, 27, 28]:
+        raise ValueError(
+            f"Valid values for fret count are [25, 27, 28], provided: {fret_count}"
+        )
+    string_1_28_fret = {
         0: "C4",
         1: "C#4",
         2: "Dk4",
@@ -58,9 +62,9 @@ def generate_tar_notes():  # -> Dict[int, Dict[int, Note]]:
         25: "F5",
         26: "F#5",
         27: "G5",
+        28: "G#5",
     }
-    string2 = string1
-    string3 = {
+    string_3_28_fret = {
         0: "G3",
         1: "G#3",
         2: "Ak3",
@@ -89,11 +93,31 @@ def generate_tar_notes():  # -> Dict[int, Dict[int, Note]]:
         25: "C5",
         26: "C#5",
         27: "D5",
-    }  # "G3"
-    string4 = string3
-    string5 = string1
-    string6 = {
-        fret_number: Note.transposition_by_an_octave(note)
-        for fret_number, note in string1.items()
+        28: "D#5",
     }
-    return {1: string1, 2: string2, 3: string3, 4: string4, 5: string5, 6: string6}
+    if fret_count == 25:
+        fret_numbers = [n for n in range(0, 28) if n not in [8, 19]]
+    if fret_count == 27:
+        fret_numbers = list(range(0, 28))
+    if fret_count == 28:
+        fret_numbers = list(range(0, 29))
+
+    strings = {}
+    strings[1] = {
+        fret_number: fret_note
+        for fret_number, fret_note in string_1_28_fret.items()
+        if fret_number in fret_numbers
+    }
+    strings[3] = {
+        fret_number: fret_note
+        for fret_number, fret_note in string_3_28_fret.items()
+        if fret_number in fret_numbers
+    }
+    strings[2] = strings[1]
+    strings[4] = strings[3]
+    strings[5] = strings[1]
+    strings[6] = {
+        fret_number: Note.transposition_by_an_octave(note)
+        for fret_number, note in strings[1].items()
+    }
+    return strings

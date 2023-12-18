@@ -13,7 +13,7 @@ INSTRUMENTS = {
     "tar": {
         "small_image": {
             "path": "images/tar_small_1290x362.jpg",
-            "fret_position_row": {
+            "fret_position_row_27_fret": {
                 0: 162,
                 1: 206,
                 2: 230,
@@ -116,10 +116,15 @@ def draw_tar_notes_and_frequencies(
 ):
     if string_number not in range(1, 7):
         raise ValueError("Tar/Setar strings should be numbered 1-6")
-    string_notes = tar_strings[string_number]
 
-    col_min = INSTRUMENTS["tar"]["small_image"]["fret_position_col"]["min"]
-    col_max = INSTRUMENTS["tar"]["small_image"]["fret_position_col"]["max"]
+    string_notes = tar_strings[string_number]
+    if len(string_notes) != 28:
+        raise NotImplementedError(
+            "Curretnly only 27-fret count (28 including open-hand) is supported."
+        )
+
+    col_min = INSTRUMENTS["tar"]["small_image"]["fret_position_row_27_fret"]["min"]
+    col_max = INSTRUMENTS["tar"]["small_image"]["fret_position_row_27_fret"]["max"]
     extend_fret_to_right = 0
     horizonal_distance_text_to_fret_line = 20
 
