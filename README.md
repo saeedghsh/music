@@ -32,6 +32,46 @@ Legend
 
 * [ ] encapsulate each instrument into a `class` of `instrument`,
 
+* [ ] Add different fret count systems for Setar / Tar (25, 27, and 28)
+* [ ] Add common tuning for different keys ("Dastgah"): Wikipedia has a list (Double check)
+* [ ] add "fret round" for Tar and Setar 
+  ```python
+  # fret round count - 25 fret - according to Wikipedia ( Double check)
+  {
+    1:3,
+    2:4,
+    3:4,
+    4:4,
+    5:3,
+    6:4,
+    7:4,
+    8:?,
+    9:3,
+    10:3,
+    11:4,
+    12:[3,4],
+    13:4,
+    14:3,
+    15:4,
+    16:3,
+    17:3,
+    18:4,
+    19:?,
+    20:[3,4],
+    21:4,
+    22:4,
+    23:3,
+    24:3,
+    25:4,
+    26:3,
+    27:4,
+    28:?,
+  }
+  ```
+
+
+* [ ] add "fret string thickness" for Tar and Setar
+
 * [ ] use `Note.__str__` whereever note is printed, and make sure it is printer properly
 * [ ] use cv2 ot qt for piano drawing
 * [ ] Add Qt gui?
@@ -53,6 +93,7 @@ Legend
 
 # Reference
 * [Proposal to encode two accidentals for Iranian classical music](https://www.unicode.org/L2/L2020/20159-iran-music-symbols.pdf)
+* [Setar](https://fa.wikipedia.org/wiki/%D8%B3%D9%87%E2%80%8C%D8%AA%D8%A7%D8%B1) (Farsi entry).
 
 # License
 ```
