@@ -24,6 +24,9 @@ Legend
 * [ ] add test
 * [ ] hookup the repo with gitbut CI
 
+* [ ] Add Setar Photo.
+* [ ] Add Fret tying schema/drawing
+
 * [ ] make note name validation a process separate from `Note.decompose_name`
 * [ ] make use of `Note` class everywhere; `FrequencyCOmputer`, `instruments.py`, `drawing.py`
 * [ ] add an entry point (`main.py`), from which can call drawing functions with proper CLI
