@@ -10,21 +10,52 @@ I started a python script to calculte the note frequencies for that purpose, ...
 
 
 ## Example
-Piano entry point:
+Entry point examples:
 ```bash
 python3 -m entry_points.piano -v
+python3 -m entry_points.tar -v -p --fret-count 27 --string-number 1
 ```
 
-
-* Synthesizing all keys and notes of piano
+* Piano entry point output:
 <p align="center">
     <img src="https://github.com/saeedghsh/musical_notes/blob/master/images/pinao_keys_frquencies.png">
 </p>
 
-* Annotating the frets of Tar with note and frequency (string 1 version)
+* Tar entry point output:
 <p align="center">
-    <img src="https://github.com/saeedghsh/musical_notes/blob/master/images/tar_small_1290x362_string1_annotated.jpg">
+    <img src="https://github.com/saeedghsh/musical_notes/blob/master/images/tar_small_1290x362_string1_annotated.jpg" height="500">
 </p>
+
+```bash
+0	C4:	261.6255653005986 Hz
+1	C#4:	277.1826309768721 Hz
+2	Dk4:	285.30470202322215 Hz
+3	D4:	293.6647679174076 Hz
+4	Eb4:	311.1269837220809 Hz
+5	Ek4:	320.24370022528126 Hz
+6	E4:	329.6275569128699 Hz
+7	F4:	349.2282314330039 Hz
+8	Fs4:	359.46139971304194 Hz
+9	F#4:	369.9944227116344 Hz
+10	Gk4:	380.83608684270297 Hz
+11	G4:	391.99543598174927 Hz
+12	Ab4:	415.3046975799451 Hz
+13	Ak4:	427.4740541075866 Hz
+14	A4:	440.0 Hz
+15	Bb4:	466.1637615180899 Hz
+16	Bk4:	479.82340237271336 Hz
+17	B4:	493.8833012561241 Hz
+18	C5:	523.2511306011972 Hz
+19	C#5:	554.3652619537442 Hz
+20	Dk5:	570.6094040464443 Hz
+21	D5:	587.3295358348151 Hz
+22	Eb5:	622.2539674441618 Hz
+23	Ek5:	640.4874004505624 Hz
+24	E5:	659.2551138257398 Hz
+25	F5:	698.4564628660078 Hz
+26	F#5:	739.9888454232688 Hz
+27	G5:	783.9908719634985 Hz
+```
 
 
 # TODO
@@ -39,7 +70,6 @@ Legend
 
 ### Imediate/Essential
 * [ ] add test
-* [ ] add entry points for Tar
 
 ### CI
 * [ ] CI: hookup the repo with gitbut CI
@@ -106,6 +136,7 @@ Legend
 * [ ] Add keys, scales and chords?
 
 ### Done
+* [x] add entry points for Tar
 * [x] add entry points for Piano
 * [x] Add different fret count systems for Setar / Tar (25, 27, and 28)
 * [x] change `accidental.unidoce_char` to `symbol` and find a better name for `accidental.shorthand`
