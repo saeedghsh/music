@@ -9,6 +9,13 @@ Therfore a hash-like table listing all notes available for conventional western 
 I started a python script to calculte the note frequencies for that purpose, ... and kinda got carried away... hence this repo.
 
 
+## Example
+Piano entry point:
+```bash
+python3 -m entry_points.piano -v
+```
+
+
 * Synthesizing all keys and notes of piano
 <p align="center">
     <img src="https://github.com/saeedghsh/musical_notes/blob/master/images/pinao_keys_frquencies.png">
@@ -32,7 +39,7 @@ Legend
 
 ### Imediate/Essential
 * [ ] add test
-* [ ] add entry points (`main.py`), from which can call drawing functions with proper CLI, etc
+* [ ] add entry points for Tar
 
 ### CI
 * [ ] CI: hookup the repo with gitbut CI
@@ -99,6 +106,7 @@ Legend
 * [ ] Add keys, scales and chords?
 
 ### Done
+* [x] add entry points for Piano
 * [x] Add different fret count systems for Setar / Tar (25, 27, and 28)
 * [x] change `accidental.unidoce_char` to `symbol` and find a better name for `accidental.shorthand`
 * [x] make a enum for Octave.
