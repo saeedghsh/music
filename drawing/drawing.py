@@ -6,7 +6,7 @@ import cv2
 import matplotlib.pyplot as plt
 from matplotlib import patches
 
-from notation import Note, FrequencyComputer
+from core.notation import Note, FrequencyComputer
 
 
 INSTRUMENTS = {
@@ -123,8 +123,8 @@ def draw_tar_notes_and_frequencies(
             "Curretnly only 27-fret count (28 including open-hand) is supported."
         )
 
-    col_min = INSTRUMENTS["tar"]["small_image"]["fret_position_row_27_fret"]["min"]
-    col_max = INSTRUMENTS["tar"]["small_image"]["fret_position_row_27_fret"]["max"]
+    col_min = INSTRUMENTS["tar"]["small_image"]["fret_position_col"]["min"]
+    col_max = INSTRUMENTS["tar"]["small_image"]["fret_position_col"]["max"]
     extend_fret_to_right = 0
     horizonal_distance_text_to_fret_line = 20
 
@@ -143,7 +143,7 @@ def draw_tar_notes_and_frequencies(
 
     tar_small = INSTRUMENTS["tar"]["small_image"]["path"]
     img = cv2.imread(tar_small)
-    fret_position_row = INSTRUMENTS["tar"]["small_image"]["fret_position_row"]
+    fret_position_row = INSTRUMENTS["tar"]["small_image"]["fret_position_row_27_fret"]
     for fret_number, row in fret_position_row.items():
         fret_line_start_point = (col_min, row)
         fret_line_end_point = (col_max + extend_fret_to_right, row)

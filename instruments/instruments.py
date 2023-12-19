@@ -1,5 +1,5 @@
 from typing import Tuple, Dict
-from notation import Note, FrequencyComputer
+from core.notation import Note, FrequencyComputer
 
 
 def generate_all_notes(octave_range: Tuple[int, int] = (0, 9)) -> dict:
