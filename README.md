@@ -69,17 +69,17 @@ Legend
 ```
 
 ### Imediate/Essential
-* [ ] add test
+* [ ] add test. (Essential because otherwise refactoring would be hell)
 
 ### CI
 * [ ] CI: hookup the repo with gitbut CI
-* [x] CI: pylint
 * [ ] CI: formatter
 * [ ] CI: tests
 * [ ] CI: make CI green
 
 ### Improve/Refactring
-* [ ] `transposition_by_an_octave` to `transpose_by(interval: MusicalInterval, steps: int)`
+* [ ] `transposition_by_an_octave` to `transpose_by(interval: MusicalInterval, steps: int)`.  
+      This is a prerequisit for an easy implementation of the "tuning variation" on Tar/Setar.
 * [ ] make note name validation a process separate from `Note.decompose_name`
 * [ ] make use of `Note` class everywhere; `FrequencyCOmputer`, `instruments.py`, `drawing.py`
 * [ ] move `drawing.py` under `drawing` dir and make a file per instrument
@@ -89,7 +89,7 @@ Legend
 * [ ] use `cv2` (or `qt`) for piano drawing
 
 ### Improve/Extention
-* [ ] `generate_tar_notes` only supports the tuning of `C-G-C`. generalize the tuning.
+* [ ] `generate_tar_notes` only supports the tuning of `C4-C4-G3-G3-C4-C3`. generalize the tuning.
 * [ ] add common tuning for different keys ("Dastgah"): Wikipedia has a list (Double check)
 * [ ] add Setar Photo.
 * [ ] add Fret tying schema/drawing
@@ -136,6 +136,7 @@ Legend
 * [ ] Add keys, scales and chords?
 
 ### Done
+* [x] CI: pylint
 * [x] add entry points for Tar
 * [x] add entry points for Piano
 * [x] Add different fret count systems for Setar / Tar (25, 27, and 28)
