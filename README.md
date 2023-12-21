@@ -69,7 +69,10 @@ Legend
 ```
 
 ### Imediate/Essential
-* [ ] add test. (Essential because otherwise refactoring would be hell)
+* [ ] entry point scripts need test for the visualizers | change the visualizers to only save to file for simple testing
+* [ ] add test: complete coverage
+* [ ] add pytest-cov for pytest coverage
+
 
 ### CI
 * [ ] CI: hookup the repo with gitbut CI
@@ -136,6 +139,7 @@ Legend
 * [ ] Add keys, scales and chords?
 
 ### Done
+* [x] add test: entry points
 * [x] CI: pylint
 * [x] add entry points for Tar
 * [x] add entry points for Piano
