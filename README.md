@@ -69,6 +69,7 @@ Legend
 ```
 
 ### Imediate/Essential
+* [ ] add `requirement.txt`! otherwise the tests will keep failing on github
 * [ ] entry point scripts need test for the visualizers | change the visualizers to only save to file for simple testing
 * [ ] add test: complete coverage
 * [ ] add pytest-cov for pytest coverage
