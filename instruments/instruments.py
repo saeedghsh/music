@@ -27,11 +27,15 @@ def generate_piano_keys(octave_range: Tuple[int, int] = (0, 9)) -> dict:
     return keys
 
 
-def generate_tar_notes(fret_count: int = 27) -> Dict[int, Dict[int, str]]:
+def generate_tar_notes(fret_count: int = 27, string_number: int = 1) -> Dict[int, str]:
     """Tar and Setar"""
     if fret_count not in [25, 27, 28]:
         raise ValueError(
             f"Valid values for fret count are [25, 27, 28], provided: {fret_count}"
+        )
+    if string_number not in [1, 2, 3, 4, 5, 6]:
+        raise ValueError(
+            f"Valid values for string number are [1, ..., 6], provided: {string_number}"
         )
     string_1_28_fret = {
         0: "C4",
@@ -120,4 +124,4 @@ def generate_tar_notes(fret_count: int = 27) -> Dict[int, Dict[int, str]]:
         fret_number: Note.transposition_by_an_octave(note)
         for fret_number, note in strings[1].items()
     }
-    return strings
+    return strings[string_number]

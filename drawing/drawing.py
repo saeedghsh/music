@@ -111,13 +111,7 @@ def draw_piano(keys: dict):
     plt.show()
 
 
-def draw_tar_notes_and_frequencies(
-    tar_strings: dict, string_number: int, save_to_file: bool = True
-):
-    if string_number not in range(1, 7):
-        raise ValueError("Tar/Setar strings should be numbered 1-6")
-
-    string_notes = tar_strings[string_number]
+def draw_tar_notes_and_frequencies(string_notes: dict, save_to_file: bool = True):
     if len(string_notes) != 28:
         raise NotImplementedError(
             "Curretnly only 27-fret count (28 including open-hand) is supported."

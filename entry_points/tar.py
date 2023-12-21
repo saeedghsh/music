@@ -1,4 +1,5 @@
 """Visualize a Piano"""
+import os
 import sys
 from typing import Sequence
 import argparse
@@ -8,11 +9,8 @@ from instruments.instruments import generate_tar_notes
 from drawing.drawing import draw_tar_notes_and_frequencies
 
 
-def _print_tar_notes_and_frequencies(tar_strings: dict, string_number: int):
+def _print_tar_notes_and_frequencies(string_notes: dict):
     # TODO: move this to instrument.tar
-    if string_number not in range(1, 7):
-        raise ValueError("Tar/Setar strings should be numbered 1-6")
-    string_notes = tar_strings[string_number]
     for fret_number, note_name in string_notes.items():
         letter, accidental, octave = Note.decompose_name(note_name)
         frequency = FrequencyComputer.compute_frequency(letter, accidental, octave)
@@ -56,22 +54,18 @@ def _parse_arguments(argv: Sequence[str]):
     return parser.parse_args(argv)
 
 
-def _main(argv: Sequence[str]):
+def main(argv: Sequence[str]):
+    # pylint: disable=missing-function-docstring
     arguments = _parse_arguments(argv)
-    tar_strings = generate_tar_notes(arguments.fret_count)
-
+    string_notes = generate_tar_notes(arguments.fret_count, arguments.string_number)
     if arguments.print_out:
-        _print_tar_notes_and_frequencies(
-            tar_strings, string_number=arguments.string_number
-        )
-
+        _print_tar_notes_and_frequencies(string_notes)
     if arguments.visualize:
         draw_tar_notes_and_frequencies(
-            tar_strings,
-            string_number=arguments.string_number,
-            save_to_file=arguments.save_to_file,
+            string_notes, save_to_file=arguments.save_to_file
         )
+    return os.EX_OK
 
 
 if __name__ == "__main__":
-    sys.exit(_main(sys.argv[1:]))
+    sys.exit(main(sys.argv[1:]))
