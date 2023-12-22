@@ -12,8 +12,13 @@ I started a python script to calculte the note frequencies for that purpose, ...
 ## Example
 Entry point examples:
 ```bash
-python3 -m entry_points.piano -v
-python3 -m entry_points.tar -v -p --fret-count 27 --string-number 1
+$ python3 -m entry_points.piano -v
+$ python3 -m entry_points.tar -v -p --fret-count 27 --string-number 1
+```
+
+Tests:
+```bash
+$ pytest
 ```
 
 * Piano entry point output:
