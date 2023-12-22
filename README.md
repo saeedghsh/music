@@ -16,11 +16,6 @@ $ python3 -m entry_points.piano -v
 $ python3 -m entry_points.tar -v -p --fret-count 27 --string-number 1
 ```
 
-Tests:
-```bash
-$ pytest
-```
-
 * Piano entry point output:
 <p align="center">
     <img src="https://github.com/saeedghsh/musical_notes/blob/master/images/pinao_keys_frquencies.png">
@@ -62,6 +57,15 @@ $ pytest
 27	G5:	783.9908719634985 Hz
 ```
 
+Tests:
+```bash
+$ pytest
+```
+
+Pylint:
+```bash
+$ pylint $(git ls-files '*.py')
+```
 
 # TODO
 ```

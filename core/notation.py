@@ -9,6 +9,8 @@ A4_FREQUENCY = 440  # Note reference: A4 = 440 Hz
 
 
 class MusicalInterval(Enum):
+    """An enum of common intervals expressed as frequency ratio"""
+
     OCTAVE = 2 ** (12 / 12)  # 2
     TONE = 2 ** (1 / 6)  # 8 ** (1/24)
     SEMITONE = 2 ** (1 / 12)  # 4 ** (1/24)
@@ -17,6 +19,8 @@ class MusicalInterval(Enum):
 
 @dataclass
 class Symbol:
+    """A representation for the symbols of the Accidentals"""
+
     simplified: str
     unicode: str
 
@@ -39,6 +43,28 @@ class Accidental:
 
     def __str__(self) -> str:
         return self.symbol.simplified
+
+
+class AccidentalSymbol(Enum):
+    """An enum of symbols of common accidental"""
+
+    SHARP = Symbol("#", "\u266F")
+    SORI = Symbol("s", "\U0001D1E9")
+    NATURAL = Symbol("", "")
+    KORON = Symbol("k", "\U0001D1EA")
+    FLAT = Symbol("b", "\u266F")
+
+
+class AccidentalNote(Enum):
+    """An enum of common accidental"""
+
+    SHARP = Accidental("sharp", AccidentalSymbol.SHARP, MusicalInterval.SEMITONE.value)
+    SORI = Accidental("sori", AccidentalSymbol.SORI, MusicalInterval.QUARTERTONE.value)
+    NATURAL = Accidental("natural", AccidentalSymbol.NATURAL, 1)
+    KORON = Accidental(
+        "koron", AccidentalSymbol.KORON, 1 / MusicalInterval.QUARTERTONE.value
+    )
+    FLAT = Accidental("flat", AccidentalSymbol.FLAT, 1 / MusicalInterval.SEMITONE.value)
 
 
 @dataclass
@@ -78,25 +104,9 @@ class Octave:
         return type_dispatch[other_type](other)
 
 
-class AccidentalSymbol(Enum):
-    SHARP = Symbol("#", "\u266F")
-    SORI = Symbol("s", "\U0001D1E9")
-    NATURAL = Symbol("", "")
-    KORON = Symbol("k", "\U0001D1EA")
-    FLAT = Symbol("b", "\u266F")
-
-
-class AccidentalNote(Enum):
-    SHARP = Accidental("sharp", AccidentalSymbol.SHARP, MusicalInterval.SEMITONE.value)
-    SORI = Accidental("sori", AccidentalSymbol.SORI, MusicalInterval.QUARTERTONE.value)
-    NATURAL = Accidental("natural", AccidentalSymbol.NATURAL, 1)
-    KORON = Accidental(
-        "koron", AccidentalSymbol.KORON, 1 / MusicalInterval.QUARTERTONE.value
-    )
-    FLAT = Accidental("flat", AccidentalSymbol.FLAT, 1 / MusicalInterval.SEMITONE.value)
-
-
 class OctaveRegister(Enum):
+    """An enum of common Octaves"""
+
     SUBSUBCONTRA = Octave("subsubcontra", -1)
     SUBCONTRA = Octave("sub-contra", 0)
     CONTRA = Octave("contra", 1)
@@ -112,6 +122,8 @@ class OctaveRegister(Enum):
 
 @dataclass
 class Note:
+    """A representation of musical note with hepler functions"""
+
     name: str
     letter: str
     accidental: str
@@ -132,6 +144,7 @@ class Note:
 
     @staticmethod
     def transposition_by_an_octave(note_name: str) -> str:
+        """Transposes a note to an octave higher"""
         letter, accidental, octave = Note.decompose_name(note_name)
         new_octave = octave + 1
         return f"{letter}{accidental}{new_octave}"
@@ -174,6 +187,8 @@ class Note:
         return Note(name, letter, accidental, octave, frequency)
 
     def _eq_to_name(self, other_name: str) -> bool:
+        # pylint: disable=fixme
+
         # TODO: Should convert self and other both to a standard form
         # for instance to make sure E# == F is True
         return self.name == other_name
@@ -191,7 +206,7 @@ class Note:
             Note: self._eq_to_note,
         }
         other_type = type(other)
-        if other_type not in type_dispatch.keys():
+        if other_type not in type_dispatch:
             raise NotImplementedError(
                 f"Type {other_type} is not supported for comparison"
             )
@@ -199,6 +214,8 @@ class Note:
 
 
 class FrequencyComputer:
+    """A class of only static methods, collecting all functions regarding frequency computation"""
+
     def __init__(self) -> None:
         pass
 

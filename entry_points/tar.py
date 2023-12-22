@@ -10,6 +10,7 @@ from drawing.drawing import draw_tar_notes_and_frequencies
 
 
 def _print_tar_notes_and_frequencies(string_notes: dict):
+    # pylint: disable=fixme
     # TODO: move this to instrument.tar
     for fret_number, note_name in string_notes.items():
         letter, accidental, octave = Note.decompose_name(note_name)

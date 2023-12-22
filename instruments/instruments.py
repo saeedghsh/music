@@ -1,3 +1,4 @@
+"""A place to represent notes of instruments from the basics"""
 from typing import Tuple, Dict
 from core.notation import Note, FrequencyComputer
 

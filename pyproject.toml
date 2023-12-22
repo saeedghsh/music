@@ -1,8 +1,8 @@
 [tool.pytest.ini_options]
-testpaths = [
-    "tests"
-]
+testpaths = ["tests"]
 addopts = "-v"
-python_files = [
-    "test_*.py"
-]
+python_files = ["test_*.py"]
+
+[tool.pylint]
+init-hook="import os, sys; sys.path.append(os.getcwd())"
+max-line-length=100

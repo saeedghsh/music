@@ -19,4 +19,8 @@ jobs:
         pip install -r requirements.txt
     - name: Run pylint
       run: |
-        pylint $(git ls-files '*.py')
+        pylint $(git ls-files 'core/*.py')
+        pylint $(git ls-files 'drawing/*.py')
+        pylint $(git ls-files 'entry_points/*.py')
+        pylint $(git ls-files 'instruments/*.py')
+        pylint $(git ls-files 'tests/*.py')

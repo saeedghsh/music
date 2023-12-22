@@ -1,4 +1,4 @@
-"""X"""
+"""Some drawing utils"""
 import os
 from functools import partial
 
@@ -101,6 +101,7 @@ def _draw_piano_keys(axis: plt.Axes, keys: dict):
 
 
 def draw_piano(keys: dict):
+    # pylint: disable=missing-function-docstring
     _, axis = plt.subplots(figsize=(25, 5))
     white_key_count = len(keys) * (7 / 12)
     axis.set_xlim(0, white_key_count)
@@ -111,7 +112,10 @@ def draw_piano(keys: dict):
     plt.show()
 
 
-def draw_tar_notes_and_frequencies(string_notes: dict, save_to_file: bool = True):
+def draw_tar_notes_and_frequencies(string_notes: list, save_to_file: bool = True):
+    # pylint: disable=missing-function-docstring
+    # pylint: disable=no-member
+    # pylint: disable=too-many-locals
     if len(string_notes) != 28:
         raise NotImplementedError(
             "Curretnly only 27-fret count (28 including open-hand) is supported."
@@ -177,7 +181,7 @@ def draw_tar_notes_and_frequencies(string_notes: dict, save_to_file: bool = True
     if save_to_file:
         dir_path, filename = os.path.split(tar_small)
         base_name, ext = os.path.splitext(filename)
-        new_base_name = base_name + f"_string{string_number}_annotated"
+        new_base_name = base_name + "_string_annotated"
         output_path = os.path.join(dir_path, new_base_name + ext)
         cv2.imwrite(output_path, img)
 
