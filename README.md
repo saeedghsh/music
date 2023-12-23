@@ -78,7 +78,7 @@ Legend
 ```
 
 ### Imediate/Essential
-* [ ] entry point scripts need test for the visualizers | change the visualizers to only save to file for simple testing
+* [ ] Pinao entry point scripts need test for the visualizers
 * [ ] add test: complete coverage
 * [ ] add pytest-cov for pytest coverage
 
@@ -146,6 +146,7 @@ Legend
 * [ ] Add keys, scales and chords?
 
 ### Done
+* [x] Pinao entry point scripts need test for the visualizers
 * [x] use `cv2` (or `qt`) for piano drawing
 * [x] move `drawing.py` under `drawing` dir and make a file per instrument
 * [x] CI: hookup the repo with gitbut CI
