@@ -6,7 +6,7 @@ import argparse
 
 from core.notation import Note, FrequencyComputer
 from instruments.instruments import generate_tar_notes
-from drawing.tar import draw_tar_notes_and_frequencies
+from drawing.tar import annotate_tar_image
 
 
 def _print_tar_notes_and_frequencies(string_notes: dict):
@@ -35,6 +35,12 @@ def _parse_arguments(argv: Sequence[str]):
         help="The string number",
     )
     parser.add_argument(
+        "-p",
+        "--print-out",
+        action="store_true",
+        help="Print out to terminal",
+    )
+    parser.add_argument(
         "-v",
         "--visualize",
         action="store_true",
@@ -47,23 +53,24 @@ def _parse_arguments(argv: Sequence[str]):
         help="Save the visualization to file (works only in combination with -v)",
     )
     parser.add_argument(
-        "-p",
-        "--print-out",
-        action="store_true",
-        help="Print out to terminal",
+        "-f",
+        "--file-path",
+        type=str,
+        required=False,
+        help="for saving",
     )
     return parser.parse_args(argv)
 
 
 def main(argv: Sequence[str]):
     # pylint: disable=missing-function-docstring
-    arguments = _parse_arguments(argv)
-    string_notes = generate_tar_notes(arguments.fret_count, arguments.string_number)
-    if arguments.print_out:
+    args = _parse_arguments(argv)
+    string_notes = generate_tar_notes(args.fret_count, args.string_number)
+    if args.print_out:
         _print_tar_notes_and_frequencies(string_notes)
-    if arguments.visualize:
-        draw_tar_notes_and_frequencies(
-            string_notes, save_to_file=arguments.save_to_file
+    if args.visualize or args.save_to_file:
+        annotate_tar_image(
+            string_notes, args.visualize, args.save_to_file, args.file_path
         )
     return os.EX_OK
 

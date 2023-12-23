@@ -13,7 +13,12 @@ I started a python script to calculte the note frequencies for that purpose, ...
 Entry point examples:
 ```bash
 $ python3 -m entry_points.piano -v
-$ python3 -m entry_points.tar -v -p --fret-count 27 --string-number 1
+$ python3 -m entry_points.piano -s -f <path-to-save-file>
+$ python3 -m entry_points.piano -v -s -f <path-to-save-file>
+
+$ python3 -m entry_points.tar --fret-count 27 --string-number 1 -p
+$ python3 -m entry_points.tar --fret-count 27 --string-number 1 -v
+$ python3 -m entry_points.tar --fret-count 27 --string-number 1 -v -s -f <path-to-save-file>
 ```
 
 * Piano entry point output:
@@ -23,7 +28,7 @@ $ python3 -m entry_points.tar -v -p --fret-count 27 --string-number 1
 
 * Tar entry point output:
 <p align="center">
-    <img src="https://github.com/saeedghsh/musical_notes/blob/master/images/tar_small_1290x362_string1_annotated.jpg" height="500">
+    <img src="https://github.com/saeedghsh/musical_notes/blob/master/images/tar_small_1290x362_string1_annotated.png" height="500">
 </p>
 
 ```bash
@@ -78,7 +83,6 @@ Legend
 ```
 
 ### Imediate/Essential
-* [ ] Pinao entry point scripts need test for the visualizers
 * [ ] add test: complete coverage
 * [ ] add pytest-cov for pytest coverage
 
@@ -90,10 +94,10 @@ Legend
       This is a prerequisit for an easy implementation of the "tuning variation" on Tar/Setar.
 * [ ] make note name validation a process separate from `Note.decompose_name`
 * [ ] make use of `Note` class everywhere; `FrequencyCOmputer`, `instruments.py`, `drawing.py`
-* [ ] fix `drawing/tar.py`
 * [ ] encapsulate each instrument into a `class` of `instrument`,
 * [ ] move `instruments.py` under `instruments` dir and make a file per instrument
 * [ ] use `Note.__str__` whereever note is printed, and make sure it is printer properly
+* [ ] right we only annonate tar in drawing, should we draw something wo/ existing photos?
 
 ### Improve/Extention
 * [ ] `generate_tar_notes` only supports the tuning of `C4-C4-G3-G3-C4-C3`. generalize the tuning.
@@ -102,42 +106,16 @@ Legend
 ### Documentations
 * [ ] add Setar Photo.
 * [ ] add Fret tying schema/drawing
+* [ ] add "fret string thickness" for Tar and Setar
 * [ ] add "fret round" for Tar and Setar
 ```python
-  # fret round count for Setar - 25 fret - according to Wikipedia ( Double check)
+  # fret round count for Setar - 25 fret - according to Wikipedia (double check)
   {
-    1:3,
-    2:4,
-    3:4,
-    4:4,
-    5:3,
-    6:4,
-    7:4,
-    8:?,
-    9:3,
-    10:3,
-    11:4,
-    12:[3,4],
-    13:4,
-    14:3,
-    15:4,
-    16:3,
-    17:3,
-    18:4,
-    19:?,
-    20:[3,4],
-    21:4,
-    22:4,
-    23:3,
-    24:3,
-    25:4,
-    26:3,
-    27:4,
-    28:?,
+    1:3, 2:4, 3:4, 4:4, 5:3, 6:4, 7:4, 8:?, 9:3, 10:3,
+    11:4, 12:[3,4], 13:4, 14:3, 15:4, 16:3, 17:3, 18:4, 19:?, 20:[3,4],
+    21:4, 22:4, 23:3, 24:3, 25:4, 26:3, 27:4, 28:?,
   }
   ```
-
-* [ ] add "fret string thickness" for Tar and Setar
 
 ### Future Work
 * [ ] Add Qt gui?
@@ -146,6 +124,8 @@ Legend
 * [ ] Add keys, scales and chords?
 
 ### Done
+* [x] fix `drawing/tar.py`
+* [x] Tar entry point scripts need test for the visualizers
 * [x] Pinao entry point scripts need test for the visualizers
 * [x] use `cv2` (or `qt`) for piano drawing
 * [x] move `drawing.py` under `drawing` dir and make a file per instrument

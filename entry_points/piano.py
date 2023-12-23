@@ -16,6 +16,7 @@ def _parse_arguments(argv: Sequence[str]):
         "-f",
         "--file-path",
         type=str,
+        required=False,
         help="for saving",
     )
     return parser.parse_args(argv)

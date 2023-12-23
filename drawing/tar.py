@@ -1,9 +1,11 @@
-"""Some drawing utils"""
-import os
+"""Tar drawing utils"""
+# pylint: disable=no-member
+from typing import Optional, Tuple
+
+import numpy as np
 import cv2
 
 from core.notation import Note, FrequencyComputer
-
 
 INSTRUMENTS = {
     "tar": {
@@ -48,83 +50,64 @@ INSTRUMENTS = {
     }
 }
 
+_COLOR = (0, 0, 0)
 
-def draw_tar_notes_and_frequencies(string_notes: list, save_to_file: bool = True):
-    # pylint: disable=missing-function-docstring
-    # pylint: disable=no-member
-    # pylint: disable=too-many-locals
+_FONT_SCALE = 0.5
+_FONT_THICKNESS = 1
+_FONT_FACE = cv2.FONT_HERSHEY_SIMPLEX
+_FRET_LABEL_COLOR = _COLOR
+_FRET_LINE_THICKNESS = 2
+_FRET_LINE_COLOR = _COLOR
+
+
+def _draw_fret(image: np.ndarray, pt1: Tuple[int, int], pt2: Tuple[int, int]):
+    cv2.line(image, pt1, pt2, _FRET_LINE_COLOR, _FRET_LINE_THICKNESS)
+
+
+def _fret_label(string_notes: list, fret_number: int) -> str:
+    note = string_notes[fret_number]
+    letter, accidental, octave = Note.decompose_name(note)
+    frequency = FrequencyComputer.compute_frequency(letter, accidental, octave)
+    return f"{note}: {frequency:.2f} Hz"
+
+
+def _print_fret_label(image: np.ndarray, label: str, position: Tuple[int, int]):
+    cv2.putText(
+        image,
+        label,
+        position,
+        _FONT_FACE,
+        _FONT_SCALE,
+        _FRET_LABEL_COLOR,
+        _FONT_THICKNESS,
+    )
+
+
+def annotate_tar_image(
+    string_notes: list, show: bool, save: bool, file_path: Optional[str]
+):
+    """Annotate a tar image, show and/or save per argument setting"""
     if len(string_notes) != 28:
         raise NotImplementedError(
             "Curretnly only 27-fret count (28 including open-hand) is supported."
         )
 
+    tar_img = cv2.imread(INSTRUMENTS["tar"]["small_image"]["path"])
     col_min = INSTRUMENTS["tar"]["small_image"]["fret_position_col"]["min"]
     col_max = INSTRUMENTS["tar"]["small_image"]["fret_position_col"]["max"]
-    extend_fret_to_right = 0
-    horizonal_distance_text_to_fret_line = 20
-
-    color = (20, 20, 245)
-
-    line_thickness = 2
-    line_color = color
-
-    fret_number_scale = 0.5
-    fret_number_color = color
-    fret_number_thickness = 2
-
-    note_scale = 0.5
-    note_color = color
-    note_thickness = 1
-
-    tar_small = INSTRUMENTS["tar"]["small_image"]["path"]
-    img = cv2.imread(tar_small)
-    fret_position_row = INSTRUMENTS["tar"]["small_image"]["fret_position_row_27_fret"]
-    for fret_number, row in fret_position_row.items():
-        fret_line_start_point = (col_min, row)
-        fret_line_end_point = (col_max + extend_fret_to_right, row)
-
-        fret_number_origin = (col_min - horizonal_distance_text_to_fret_line, row)
-        note_origin = (col_max + extend_fret_to_right + 20, row)
-
-        cv2.line(
-            img, fret_line_start_point, fret_line_end_point, line_color, line_thickness
+    fret_positions_row = INSTRUMENTS["tar"]["small_image"]["fret_position_row_27_fret"]
+    for fret_number, row in fret_positions_row.items():
+        _draw_fret(tar_img, (col_min, row), (col_max, row))
+        _print_fret_label(
+            tar_img, _fret_label(string_notes, fret_number), (col_max + 20, row)
         )
 
-        # Fret number
-        cv2.putText(
-            img,
-            str(fret_number),
-            fret_number_origin,
-            cv2.FONT_HERSHEY_SIMPLEX,
-            fret_number_scale,
-            fret_number_color,
-            fret_number_thickness,
-        )
+    if save:
+        if file_path is None:
+            raise ValueError("Is save is True, file_path cannot be None")
+        cv2.imwrite(file_path, tar_img)
 
-        note_name = string_notes[fret_number]
-        letter, accidental, octave = Note.decompose_name(note_name)
-        frequency = FrequencyComputer.compute_frequency(letter, accidental, octave)
-
-        cv2.putText(
-            img,
-            f"{note_name} {frequency:.2f} Hz",
-            note_origin,
-            cv2.FONT_HERSHEY_SIMPLEX,
-            note_scale,
-            note_color,
-            note_thickness,
-        )
-
-    if save_to_file:
-        dir_path, filename = os.path.split(tar_small)
-        base_name, ext = os.path.splitext(filename)
-        new_base_name = base_name + "_string_annotated"
-        output_path = os.path.join(dir_path, new_base_name + ext)
-        cv2.imwrite(output_path, img)
-
-    # Set window name
-    window_name = "Image"
-    cv2.namedWindow(window_name)
-    cv2.imshow(window_name, img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    if show:
+        cv2.imshow("Annotated Tar", tar_img)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
