@@ -6,7 +6,7 @@ I don't like inaccuracies, so instead, I decided to find the accurate location o
 To this end I needed to calculate the frequency of the [notes](https://en.wikipedia.org/wiki/Musical_note) corresponding to each fret.
 Iranian music, and consequently the Setar, has [quarter tones](https://en.wikipedia.org/wiki/Quarter_tone) [accidentals](https://en.wikipedia.org/wiki/Accidental_(music)) ([Koron](https://en.wikipedia.org/wiki/Koron_(music)) and [Sori](https://en.wikipedia.org/wiki/Sori_(music))).
 Therfore a hash-like table listing all notes available for conventional western musical instruments with [semitone](https://en.wikipedia.org/wiki/Semitone) granularity was not enough.
-I started a python script to calculte the note frequencies for that purpose, ... and kinda got carried away... hence this repo.
+I started a python script to calculate the note frequencies for that purpose, ... and kinda got carried away... hence this repo.
 
 
 ## Example
@@ -14,11 +14,10 @@ Entry point examples:
 ```bash
 $ python3 -m entry_points.piano -v
 $ python3 -m entry_points.piano -s -f <path-to-save-file>
-$ python3 -m entry_points.piano -v -s -f <path-to-save-file>
 
 $ python3 -m entry_points.tar --fret-count 27 --string-number 1 -p
 $ python3 -m entry_points.tar --fret-count 27 --string-number 1 -v
-$ python3 -m entry_points.tar --fret-count 27 --string-number 1 -v -s -f <path-to-save-file>
+$ python3 -m entry_points.tar --fret-count 27 --string-number 1 -s -f <path-to-save-file>
 ```
 
 * Piano entry point output:
@@ -73,14 +72,6 @@ $ pylint $(git ls-files '*.py')
 ```
 
 # TODO
-```
-Legend
-* [ ] TODO
-* [x] DONE
-* [x] [d] DISCARD (temp and perm)
-* [x] [p] PAUSED
-* [x] [.] HALFASSED
-```
 
 ### Imediate/Essential
 * [ ] add test: complete coverage
@@ -150,7 +141,7 @@ Legend
 * [x] `quartertone` -> `quartertone`
 
 # Reference
-* [Proposal to encode two accidentals for Iranian classical music](https://www.unicode.org/L2/L2020/20159-iran-music-symbols.pdf)
+* Proposal to encode two accidentals for Iranian classical music: [Unicode proposal](https://www.unicode.org/L2/L2020/20159-iran-music-symbols.pdf).
 * Setar on Wikipedai: [Farsi entry]((https://fa.wikipedia.org/wiki/%D8%B3%D9%87%E2%80%8C%D8%AA%D8%A7%D8%B1)) and [English entry](https://en.wikipedia.org/wiki/Setar).
 
 # License
