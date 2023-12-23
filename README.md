@@ -98,12 +98,13 @@ Legend
 ### Improve/Extention
 * [ ] `generate_tar_notes` only supports the tuning of `C4-C4-G3-G3-C4-C3`. generalize the tuning.
 * [ ] add common tuning for different keys ("Dastgah"): Wikipedia has a list (Double check)
+
+### Documentations
 * [ ] add Setar Photo.
 * [ ] add Fret tying schema/drawing
 * [ ] add "fret round" for Tar and Setar
-* [ ] add "fret string thickness" for Tar and Setar
-  ```python
-  # fret round count - 25 fret - according to Wikipedia ( Double check)
+```python
+  # fret round count for Setar - 25 fret - according to Wikipedia ( Double check)
   {
     1:3,
     2:4,
@@ -135,6 +136,8 @@ Legend
     28:?,
   }
   ```
+
+* [ ] add "fret string thickness" for Tar and Setar
 
 ### Future Work
 * [ ] Add Qt gui?
