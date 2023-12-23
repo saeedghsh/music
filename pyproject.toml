@@ -6,3 +6,8 @@ python_files = ["test_*.py"]
 [tool.pylint]
 init-hook="import os, sys; sys.path.append(os.getcwd())"
 max-line-length=100
+
+[tool.pylint.messages_control]
+disable = [
+    "duplicate-code",
+]
