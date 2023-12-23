@@ -4,7 +4,7 @@ import sys
 from typing import Sequence
 import argparse
 
-from instruments.instruments import generate_piano_keys
+from instruments.pinao import generate_piano_keys
 from drawing.pinao import draw_piano
 
 

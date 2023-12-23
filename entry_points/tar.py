@@ -5,7 +5,7 @@ from typing import Sequence
 import argparse
 
 from core.notation import Note, FrequencyComputer
-from instruments.instruments import generate_tar_notes
+from instruments.tar import generate_tar_notes
 from drawing.tar import annotate_tar_image
 
 

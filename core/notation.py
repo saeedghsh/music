@@ -309,3 +309,15 @@ class FrequencyComputer:
         A_index = standard_notes.index("A")
         quartertone_steps_from_A4 = note_index - A_index + (octave - 4) * 24
         return a4_frequency * (2 ** (quartertone_steps_from_A4 / 24))
+
+
+def _generate_all_notes(octave_range: Tuple[int, int] = (0, 9)) -> dict:
+    """Generate all notes (including quartertone) in give octave ranges"""
+    notes = {}
+    for octave in range(*octave_range):
+        for note in ["C", "D", "E", "F", "G", "A", "B"]:
+            for accidental in ["b", "k", "", "s", "#"]:
+                notes[(note, accidental, octave)] = FrequencyComputer.compute_frequency(
+                    note, accidental, octave
+                )
+    return notes

@@ -81,6 +81,7 @@ $ pylint $(git ls-files '*.py')
 * [ ] CI: formatter
 
 ### Improve/Refactring
+* [ ] uniform the function signatures and the way they operate for stuff under `instruments.py`
 * [ ] `transposition_by_an_octave` to `transpose_by(interval: MusicalInterval, steps: int)`.  
       This is a prerequisit for an easy implementation of the "tuning variation" on Tar/Setar.
 * [ ] make note name validation a process separate from `Note.decompose_name`
