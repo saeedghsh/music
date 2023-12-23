@@ -6,7 +6,7 @@ import argparse
 
 from core.notation import Note, FrequencyComputer
 from instruments.instruments import generate_tar_notes
-from drawing.drawing import draw_tar_notes_and_frequencies
+from drawing.tar import draw_tar_notes_and_frequencies
 
 
 def _print_tar_notes_and_frequencies(string_notes: dict):

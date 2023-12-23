@@ -18,7 +18,7 @@ $ python3 -m entry_points.tar -v -p --fret-count 27 --string-number 1
 
 * Piano entry point output:
 <p align="center">
-    <img src="https://github.com/saeedghsh/musical_notes/blob/master/images/pinao_keys_frquencies.png">
+    <img src="https://github.com/saeedghsh/musical_notes/blob/master/images/pinao_keys_frequencies.png">
 </p>
 
 * Tar entry point output:
@@ -90,11 +90,10 @@ Legend
       This is a prerequisit for an easy implementation of the "tuning variation" on Tar/Setar.
 * [ ] make note name validation a process separate from `Note.decompose_name`
 * [ ] make use of `Note` class everywhere; `FrequencyCOmputer`, `instruments.py`, `drawing.py`
-* [ ] move `drawing.py` under `drawing` dir and make a file per instrument
+* [ ] fix `drawing/tar.py`
 * [ ] encapsulate each instrument into a `class` of `instrument`,
 * [ ] move `instruments.py` under `instruments` dir and make a file per instrument
 * [ ] use `Note.__str__` whereever note is printed, and make sure it is printer properly
-* [ ] use `cv2` (or `qt`) for piano drawing
 
 ### Improve/Extention
 * [ ] `generate_tar_notes` only supports the tuning of `C4-C4-G3-G3-C4-C3`. generalize the tuning.
@@ -144,6 +143,8 @@ Legend
 * [ ] Add keys, scales and chords?
 
 ### Done
+* [x] use `cv2` (or `qt`) for piano drawing
+* [x] move `drawing.py` under `drawing` dir and make a file per instrument
 * [x] CI: hookup the repo with gitbut CI
 * [x] CI: tests
 * [x] CI: make CI green
