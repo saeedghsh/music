@@ -1,6 +1,6 @@
 """Tar drawing utils"""
 # pylint: disable=no-member
-from typing import Optional, Tuple, Dict
+from typing import Dict, Optional, Tuple
 
 import cv2
 import numpy as np

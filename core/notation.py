@@ -2,7 +2,7 @@
 from dataclasses import dataclass
 from enum import Enum
 from math import isclose
-from typing import Any, Dict, List, Tuple, Callable
+from typing import Any, Callable, Dict, List, Tuple
 
 A4_FREQUENCY = 440  # Note reference: A4 = 440 Hz
 
