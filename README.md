@@ -1,9 +1,16 @@
 # Playground for fiddle with musical notes
 
+[![black](https://github.com/saeedghsh/musical_notes/actions/workflows/formatting.yml/badge.svg?branch=master)](https://github.com/saeedghsh/musical_notes/actions/workflows/formatting.yml)
+[![pylint](https://github.com/saeedghsh/musical_notes/actions/workflows/pylint.yml/badge.svg?branch=master)](https://github.com/saeedghsh/musical_notes/actions/workflows/pylint.yml)
+[![pytest](https://github.com/saeedghsh/musical_notes/actions/workflows/pytest.yml/badge.svg?branch=master)](https://github.com/saeedghsh/musical_notes/actions/workflows/pytest.yml)
+[![pytest-cov](https://github.com/saeedghsh/musical_notes/actions/workflows/pytest-cov.yml/badge.svg?branch=master)](https://github.com/saeedghsh/musical_notes/actions/workflows/pytest-cov.yml)
+[![mypy](https://github.com/saeedghsh/musical_notes/actions/workflows/type-check.yml/badge.svg?branch=master)](https://github.com/saeedghsh/musical_notes/actions/workflows/type-check.yml)
+
 I wanted to redo the [frets](https://en.wikipedia.org/wiki/Fret) of my [Setar](https://en.wikipedia.org/wiki/Setar).
 Common instructions are based on length of the [strings](https://en.wikipedia.org/wiki/String_(music)) and the distance of each fret from the [nut](https://en.wikipedia.org/wiki/Nut_(string_instrument)).
 I don't like inaccuracies, so instead, I decided to find the accurate location of each fret based on the frquency.
-To this end I needed to calculate the frequency of the [notes](https://en.wikipedia.org/wiki/Musical_note) corresponding to each fret.
+To this end I needed to calculate the frequency of the [notes](https://en.wikipedia.org/wiki/Musical_note) corresponding to each fret.  
+
 Iranian music, and consequently the Setar, has [quarter tones](https://en.wikipedia.org/wiki/Quarter_tone) [accidentals](https://en.wikipedia.org/wiki/Accidental_(music)) ([Koron](https://en.wikipedia.org/wiki/Koron_(music)) and [Sori](https://en.wikipedia.org/wiki/Sori_(music))).
 Therfore a hash-like table listing all notes available for conventional western musical instruments with [semitone](https://en.wikipedia.org/wiki/Semitone) granularity was not enough.
 I started a python script to calculate the note frequencies for that purpose, ... and kinda got carried away... hence this repo.
