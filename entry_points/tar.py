@@ -1,12 +1,12 @@
 """Visualize a Piano"""
+import argparse
 import os
 import sys
 from typing import Sequence
-import argparse
 
-from core.notation import Note, FrequencyComputer
-from instruments.tar import generate_tar_notes
+from core.notation import FrequencyComputer, Note
 from drawing.tar import annotate_tar_image
+from instruments.tar import generate_tar_notes
 
 
 def _print_tar_notes_and_frequencies(string_notes: dict):
@@ -69,9 +69,7 @@ def main(argv: Sequence[str]):
     if args.print_out:
         _print_tar_notes_and_frequencies(string_notes)
     if args.visualize or args.save_to_file:
-        annotate_tar_image(
-            string_notes, args.visualize, args.save_to_file, args.file_path
-        )
+        annotate_tar_image(string_notes, args.visualize, args.save_to_file, args.file_path)
     return os.EX_OK
 
 

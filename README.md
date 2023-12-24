@@ -61,11 +61,13 @@ $ python3 -m entry_points.tar --fret-count 27 --string-number 1 -s -f <path-to-s
 27	G5:	783.9908719634985 Hz
 ```
 
-Tests, coverage and linter:
+Tests, coverage, linter:
 ```bash
 $ pytest
 $ pylint $(git ls-files '*.py')
 $ pytest --cov=. --cov-report html; firefox htmlcov/index.html
+$ black . --check
+$ isort . --check-only
 ```
 
 # TODO
@@ -74,10 +76,10 @@ $ pytest --cov=. --cov-report html; firefox htmlcov/index.html
 * [ ] add test: complete coverage
 
 ### CI
-* [ ] CI: formatter + "import sort"
 * [ ] CI: static type checker
 
 ### Improve/Refactring
+* [ ] fix all todos in the code. `pylint` is currently suppress so not to flag them, remove suppressions.
 * [ ] uniform the function signatures and the way they operate for stuff under `instruments.py`
 * [ ] `transposition_by_an_octave` to `transpose_by(interval: MusicalInterval, steps: int)`.  
       This is a prerequisit for an easy implementation of the "tuning variation" on Tar/Setar.
@@ -110,6 +112,7 @@ $ pytest --cov=. --cov-report html; firefox htmlcov/index.html
 * [ ] add audio and make it interactive?
 
 ### Done
+* [x] CI: formatter + "import sort"
 * [x] move `instruments.py` under `instruments` dir and make a file per instrument
 * [x] add pytest-cov for pytest coverage
 * [x] fix `drawing/tar.py`

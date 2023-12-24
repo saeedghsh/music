@@ -1,11 +1,11 @@
 """Visualize a Piano"""
+import argparse
 import os
 import sys
 from typing import Sequence
-import argparse
 
-from instruments.pinao import generate_piano_keys
 from drawing.pinao import draw_piano
+from instruments.pinao import generate_piano_keys
 
 
 def _parse_arguments(argv: Sequence[str]):

@@ -1,11 +1,11 @@
-name: Pylint
+name: Linter
 
 on:
   push:
   pull_request:
 
 jobs:
-  linter:
+  linting:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4

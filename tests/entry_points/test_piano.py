@@ -1,6 +1,7 @@
 """Test Piano entry point script"""
 # pylint: disable=missing-function-docstring
 import os
+
 import pytest
 
 from entry_points.piano import main

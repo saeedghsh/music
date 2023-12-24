@@ -1,9 +1,8 @@
 """X"""
-from enum import Enum
-from typing import Any, Tuple, List, Dict
 from dataclasses import dataclass
+from enum import Enum
 from math import isclose
-
+from typing import Any, Dict, List, Tuple
 
 A4_FREQUENCY = 440  # Note reference: A4 = 440 Hz
 
@@ -61,9 +60,7 @@ class AccidentalNote(Enum):
     SHARP = Accidental("sharp", AccidentalSymbol.SHARP, MusicalInterval.SEMITONE.value)
     SORI = Accidental("sori", AccidentalSymbol.SORI, MusicalInterval.QUARTERTONE.value)
     NATURAL = Accidental("natural", AccidentalSymbol.NATURAL, 1)
-    KORON = Accidental(
-        "koron", AccidentalSymbol.KORON, 1 / MusicalInterval.QUARTERTONE.value
-    )
+    KORON = Accidental("koron", AccidentalSymbol.KORON, 1 / MusicalInterval.QUARTERTONE.value)
     FLAT = Accidental("flat", AccidentalSymbol.FLAT, 1 / MusicalInterval.SEMITONE.value)
 
 
@@ -98,9 +95,7 @@ class Octave:
         }
         other_type = type(other)
         if other_type not in type_dispatch:
-            raise NotImplementedError(
-                f"Type {other_type} is not supported for comparison"
-            )
+            raise NotImplementedError(f"Type {other_type} is not supported for comparison")
         return type_dispatch[other_type](other)
 
 
@@ -171,9 +166,7 @@ class Note:
         if letter not in ["A", "B", "C", "D", "E", "F", "G"]:
             raise ValueError(f"invalid letter - note:{name}, letter:{letter}")
         if accidental not in ["#", "s", "", "k", "b"]:
-            raise ValueError(
-                f"invalid accidental - note:{name}, accidental:{accidental}"
-            )
+            raise ValueError(f"invalid accidental - note:{name}, accidental:{accidental}")
 
         return letter, accidental, octave
 
@@ -181,9 +174,7 @@ class Note:
     def from_name(name: str, a4_frequency: float = A4_FREQUENCY) -> "Note":
         """Create and return an object of type Note from the given name"""
         letter, accidental, octave = Note.decompose_name(name)
-        frequency = FrequencyComputer.compute_frequency(
-            letter, accidental, octave, a4_frequency
-        )
+        frequency = FrequencyComputer.compute_frequency(letter, accidental, octave, a4_frequency)
         return Note(name, letter, accidental, octave, frequency)
 
     def _eq_to_name(self, other_name: str) -> bool:
@@ -207,9 +198,7 @@ class Note:
         }
         other_type = type(other)
         if other_type not in type_dispatch:
-            raise NotImplementedError(
-                f"Type {other_type} is not supported for comparison"
-            )
+            raise NotImplementedError(f"Type {other_type} is not supported for comparison")
         return type_dispatch[other_type](other)
 
 
@@ -301,9 +290,7 @@ class FrequencyComputer:
     ) -> float:
         """Calculate the frequency of a note."""
         # pylint: disable=invalid-name
-        letter, accidental, octave = FrequencyComputer.standardize_note(
-            letter, accidental, octave
-        )
+        letter, accidental, octave = FrequencyComputer.standardize_note(letter, accidental, octave)
         standard_notes = FrequencyComputer.standard_notes_quartertones()
         note_index = standard_notes.index(f"{letter}{accidental}")
         A_index = standard_notes.index("A")

@@ -1,14 +1,13 @@
 """Representation of the Tar"""
 from typing import Dict
+
 from core.notation import Note
 
 
 def generate_tar_notes(fret_count: int = 27, string_number: int = 1) -> Dict[int, str]:
     """Tar and Setar"""
     if fret_count not in [25, 27, 28]:
-        raise ValueError(
-            f"Valid values for fret count are [25, 27, 28], provided: {fret_count}"
-        )
+        raise ValueError(f"Valid values for fret count are [25, 27, 28], provided: {fret_count}")
     if string_number not in [1, 2, 3, 4, 5, 6]:
         raise ValueError(
             f"Valid values for string number are [1, ..., 6], provided: {string_number}"

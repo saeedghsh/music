@@ -1,11 +1,10 @@
 """Piano drawing utils"""
 # pylint: disable=no-member
 from functools import partial
-from typing import Tuple, Optional
+from typing import Optional, Tuple
 
 import cv2
 import numpy as np
-
 
 _WHITE_KEY_HEIGHT = 300
 _WHITE_KEY_WIDTH = int(0.1 * _WHITE_KEY_HEIGHT)

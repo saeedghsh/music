@@ -2,10 +2,10 @@
 # pylint: disable=no-member
 from typing import Optional, Tuple
 
-import numpy as np
 import cv2
+import numpy as np
 
-from core.notation import Note, FrequencyComputer
+from core.notation import FrequencyComputer, Note
 
 INSTRUMENTS = {
     "tar": {
@@ -83,9 +83,7 @@ def _print_fret_label(image: np.ndarray, label: str, position: Tuple[int, int]):
     )
 
 
-def annotate_tar_image(
-    string_notes: list, show: bool, save: bool, file_path: Optional[str]
-):
+def annotate_tar_image(string_notes: list, show: bool, save: bool, file_path: Optional[str]):
     """Annotate a tar image, show and/or save per argument setting"""
     if len(string_notes) != 28:
         raise NotImplementedError(
@@ -98,9 +96,7 @@ def annotate_tar_image(
     fret_positions_row = INSTRUMENTS["tar"]["small_image"]["fret_position_row_27_fret"]
     for fret_number, row in fret_positions_row.items():
         _draw_fret(tar_img, (col_min, row), (col_max, row))
-        _print_fret_label(
-            tar_img, _fret_label(string_notes, fret_number), (col_max + 20, row)
-        )
+        _print_fret_label(tar_img, _fret_label(string_notes, fret_number), (col_max + 20, row))
 
     if save:
         if file_path is None:

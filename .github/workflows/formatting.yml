@@ -1,11 +1,11 @@
-name: Testing
+name: Formatter
 
 on:
   push:
   pull_request:
 
 jobs:
-  run-tests:
+  check-formatting:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -17,6 +17,9 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-    - name: Run pytest
+    - name: Check Python formatting with Black
       run: |
-        pytest
+        black --check .
+    - name: Check import order with isort
+      run: |
+        isort . --check-only

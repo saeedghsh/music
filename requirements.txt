@@ -1,6 +1,8 @@
 pylint
 pytest
 pytest-cov
+black
+isort
 numpy
 matplotlib
 opencv-python

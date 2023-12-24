@@ -1,5 +1,6 @@
 """Representation of the Piano"""
 from typing import Tuple
+
 from core.notation import FrequencyComputer
 
 
