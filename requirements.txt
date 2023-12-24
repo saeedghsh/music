@@ -1,5 +1,6 @@
 pylint
 pytest
-opencv-python
-matplotlib
 pytest-cov
+numpy
+matplotlib
+opencv-python
