@@ -5,12 +5,12 @@ on:
   pull_request:
 
 jobs:
-  build:
+  linter:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Set up Python
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v5
       with:
         python-version: '3.10'
     - name: Install dependencies
@@ -19,8 +19,4 @@ jobs:
         pip install -r requirements.txt
     - name: Run pylint
       run: |
-        pylint $(git ls-files 'core/*.py')
-        pylint $(git ls-files 'drawing/*.py')
-        pylint $(git ls-files 'entry_points/*.py')
-        pylint $(git ls-files 'instruments/*.py')
-        pylint $(git ls-files 'tests/*.py')
+        pylint $(git ls-files '*.py')

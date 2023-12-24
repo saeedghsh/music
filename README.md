@@ -61,21 +61,18 @@ $ python3 -m entry_points.tar --fret-count 27 --string-number 1 -s -f <path-to-s
 27	G5:	783.9908719634985 Hz
 ```
 
-Tests:
+Tests, coverage and linter:
 ```bash
 $ pytest
+$ pylint $(git ls-files '*.py')
+$ pytest --cov=. --cov-report html; firefox htmlcov/index.html
 ```
 
-Pylint:
-```bash
-$ pylint $(git ls-files '*.py')
-```
 
 # TODO
 
 ### Imediate/Essential
 * [ ] add test: complete coverage
-* [ ] add pytest-cov for pytest coverage
 
 ### CI
 * [ ] CI: formatter
@@ -116,6 +113,7 @@ $ pylint $(git ls-files '*.py')
 * [ ] Add keys, scales and chords?
 
 ### Done
+* [x] add pytest-cov for pytest coverage
 * [x] fix `drawing/tar.py`
 * [x] Tar entry point scripts need test for the visualizers
 * [x] Pinao entry point scripts need test for the visualizers

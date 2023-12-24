@@ -1,4 +1,9 @@
+ignore/
+
 *.pyc
 *~
-ignore/
 __init__.py
+
+htmlcov/
+.coverage
+coverage.xml
