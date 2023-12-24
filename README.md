@@ -68,14 +68,14 @@ $ pylint $(git ls-files '*.py')
 $ pytest --cov=. --cov-report html; firefox htmlcov/index.html
 ```
 
-
 # TODO
 
 ### Imediate/Essential
 * [ ] add test: complete coverage
 
 ### CI
-* [ ] CI: formatter
+* [ ] CI: formatter + "import sort"
+* [ ] CI: static type checker
 
 ### Improve/Refactring
 * [ ] uniform the function signatures and the way they operate for stuff under `instruments.py`
@@ -84,13 +84,8 @@ $ pytest --cov=. --cov-report html; firefox htmlcov/index.html
 * [ ] make note name validation a process separate from `Note.decompose_name`
 * [ ] make use of `Note` class everywhere; `FrequencyCOmputer`, `instruments.py`, `drawing.py`
 * [ ] encapsulate each instrument into a `class` of `instrument`,
-* [ ] move `instruments.py` under `instruments` dir and make a file per instrument
 * [ ] use `Note.__str__` whereever note is printed, and make sure it is printer properly
 * [ ] right we only annonate tar in drawing, should we draw something wo/ existing photos?
-
-### Improve/Extention
-* [ ] `generate_tar_notes` only supports the tuning of `C4-C4-G3-G3-C4-C3`. generalize the tuning.
-* [ ] add common tuning for different keys ("Dastgah"): Wikipedia has a list (Double check)
 
 ### Documentations
 * [ ] add Setar Photo.
@@ -107,12 +102,15 @@ $ pytest --cov=. --cov-report html; firefox htmlcov/index.html
   ```
 
 ### Future Work
+* [ ] `generate_tar_notes` only supports the tuning of `C4-C4-G3-G3-C4-C3`. generalize the tuning.
+* [ ] add common tuning for different keys ("Dastgah"): Wikipedia has a list (Double check)
+* [ ] Add keys, scales and chords?
 * [ ] Add Qt gui?
 * [ ] extend to other instruments, start with Guitar and then Ney?
 * [ ] add audio and make it interactive?
-* [ ] Add keys, scales and chords?
 
 ### Done
+* [x] move `instruments.py` under `instruments` dir and make a file per instrument
 * [x] add pytest-cov for pytest coverage
 * [x] fix `drawing/tar.py`
 * [x] Tar entry point scripts need test for the visualizers
