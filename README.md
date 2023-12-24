@@ -61,22 +61,20 @@ $ python3 -m entry_points.tar --fret-count 27 --string-number 1 -s -f <path-to-s
 27	G5:	783.9908719634985 Hz
 ```
 
-Tests, coverage, linter:
+Tests, coverage, linter, formatter, static type check:
 ```bash
 $ pytest
 $ pylint $(git ls-files '*.py')
 $ pytest --cov=. --cov-report html; firefox htmlcov/index.html
 $ black . --check
 $ isort . --check-only
+$ mypy . --explicit-package-bases
 ```
 
 # TODO
 
 ### Imediate/Essential
 * [ ] add test: complete coverage
-
-### CI
-* [ ] CI: static type checker
 
 ### Improve/Refactring
 * [ ] fix all todos in the code. `pylint` is currently suppress so not to flag them, remove suppressions.
@@ -112,6 +110,7 @@ $ isort . --check-only
 * [ ] add audio and make it interactive?
 
 ### Done
+* [x] CI: static type checker
 * [x] CI: formatter + "import sort"
 * [x] move `instruments.py` under `instruments` dir and make a file per instrument
 * [x] add pytest-cov for pytest coverage

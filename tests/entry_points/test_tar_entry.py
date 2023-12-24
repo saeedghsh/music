@@ -4,7 +4,7 @@ import os
 
 import pytest
 
-from entry_points.tar import main
+from entry_points.tar_entry import main
 
 
 @pytest.mark.parametrize("string_number", [1, 2, 3, 4, 5, 6])

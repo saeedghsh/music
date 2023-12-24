@@ -5,8 +5,8 @@ import sys
 from typing import Sequence
 
 from core.notation import FrequencyComputer, Note
-from drawing.tar import annotate_tar_image
-from instruments.tar import generate_tar_notes
+from drawing.tar_drawing import annotate_tar_image
+from instruments.tar_instrument import generate_tar_notes
 
 
 def _print_tar_notes_and_frequencies(string_notes: dict):

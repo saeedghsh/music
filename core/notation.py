@@ -1,8 +1,8 @@
-"""X"""
+"""The basic musical notations and notions"""
 from dataclasses import dataclass
 from enum import Enum
 from math import isclose
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Tuple, Callable
 
 A4_FREQUENCY = 440  # Note reference: A4 = 440 Hz
 
@@ -57,11 +57,11 @@ class AccidentalSymbol(Enum):
 class AccidentalNote(Enum):
     """An enum of common accidental"""
 
-    SHARP = Accidental("sharp", AccidentalSymbol.SHARP, MusicalInterval.SEMITONE.value)
-    SORI = Accidental("sori", AccidentalSymbol.SORI, MusicalInterval.QUARTERTONE.value)
-    NATURAL = Accidental("natural", AccidentalSymbol.NATURAL, 1)
-    KORON = Accidental("koron", AccidentalSymbol.KORON, 1 / MusicalInterval.QUARTERTONE.value)
-    FLAT = Accidental("flat", AccidentalSymbol.FLAT, 1 / MusicalInterval.SEMITONE.value)
+    SHARP = Accidental("sharp", AccidentalSymbol.SHARP.value, MusicalInterval.SEMITONE.value)
+    SORI = Accidental("sori", AccidentalSymbol.SORI.value, MusicalInterval.QUARTERTONE.value)
+    NATURAL = Accidental("natural", AccidentalSymbol.NATURAL.value, 1)
+    KORON = Accidental("koron", AccidentalSymbol.KORON.value, 1 / MusicalInterval.QUARTERTONE.value)
+    FLAT = Accidental("flat", AccidentalSymbol.FLAT.value, 1 / MusicalInterval.SEMITONE.value)
 
 
 @dataclass
@@ -88,7 +88,7 @@ class Octave:
         return self.name == other.name and self.number == other.number
 
     def __eq__(self, other: Any) -> bool:
-        type_dispatch = {
+        type_dispatch: Dict[type, Callable] = {
             str: self._eq_to_name,
             int: self._eq_to_number,
             Octave: self._eq_to_octave,
@@ -191,7 +191,7 @@ class Note:
         return self._eq_to_name(other.name) and self._eq_to_frequency(other.frequency)
 
     def __eq__(self, other: Any) -> bool:
-        type_dispatch = {
+        type_dispatch: Dict[type, Callable] = {
             str: self._eq_to_name,
             float: self._eq_to_frequency,
             Note: self._eq_to_note,
@@ -265,7 +265,7 @@ class FrequencyComputer:
         }
 
     @staticmethod
-    def standardize_note(letter: str, accidental: str, octave: int) -> Tuple[str, int]:
+    def standardize_note(letter: str, accidental: str, octave: int) -> Tuple[str, str, int]:
         """Return a standard note, given any input note
 
         Makes sure that the note belong set of "standard notes"

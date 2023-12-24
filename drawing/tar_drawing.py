@@ -1,13 +1,13 @@
 """Tar drawing utils"""
 # pylint: disable=no-member
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Dict
 
 import cv2
 import numpy as np
 
 from core.notation import FrequencyComputer, Note
 
-INSTRUMENTS = {
+INSTRUMENTS: Dict[str, dict] = {
     "tar": {
         "small_image": {
             "path": "images/tar_small_1290x362.jpg",
@@ -64,7 +64,7 @@ def _draw_fret(image: np.ndarray, pt1: Tuple[int, int], pt2: Tuple[int, int]):
     cv2.line(image, pt1, pt2, _FRET_LINE_COLOR, _FRET_LINE_THICKNESS)
 
 
-def _fret_label(string_notes: list, fret_number: int) -> str:
+def _fret_label(string_notes: Dict[int, str], fret_number: int) -> str:
     note = string_notes[fret_number]
     letter, accidental, octave = Note.decompose_name(note)
     frequency = FrequencyComputer.compute_frequency(letter, accidental, octave)
@@ -83,7 +83,9 @@ def _print_fret_label(image: np.ndarray, label: str, position: Tuple[int, int]):
     )
 
 
-def annotate_tar_image(string_notes: list, show: bool, save: bool, file_path: Optional[str]):
+def annotate_tar_image(
+    string_notes: Dict[int, str], show: bool, save: bool, file_path: Optional[str]
+):
     """Annotate a tar image, show and/or save per argument setting"""
     if len(string_notes) != 28:
         raise NotImplementedError(

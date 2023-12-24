@@ -3,6 +3,8 @@ pytest
 pytest-cov
 black
 isort
+mypy
 numpy
 matplotlib
 opencv-python
+opencv-stubs

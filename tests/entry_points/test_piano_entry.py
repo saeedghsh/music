@@ -4,7 +4,7 @@ import os
 
 import pytest
 
-from entry_points.piano import main
+from entry_points.piano_entry import main
 
 
 def test_main_smoke_test():

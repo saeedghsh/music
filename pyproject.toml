@@ -4,13 +4,11 @@ addopts = "-v"
 python_files = ["test_*.py"]
 
 [tool.pylint]
-init-hook="import os, sys; sys.path.append(os.getcwd())"
-max-line-length=100
+init-hook = "import os, sys; sys.path.append(os.getcwd())"
+max-line-length = 100
 
 [tool.pylint.messages_control]
-disable = [
-    "duplicate-code",
-]
+disable = ["duplicate-code"]
 
 [tool.black]
 line-length = 100
@@ -33,3 +31,6 @@ exclude = '''
 
 [tool.isort]
 profile = "black"
+
+[tool.mypy]
+exclude = '^ignore/' # a local folder I want to skip type checking

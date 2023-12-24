@@ -23,7 +23,7 @@ _FONT_SCALE = 0.0015 * _WHITE_KEY_HEIGHT
 def _text_on_key(
     image: np.ndarray,
     text: str,
-    posistion: Tuple[int],
+    posistion: Tuple[int, int],
     key_color: str,
     key_height: int,
 ):
@@ -81,7 +81,7 @@ def _image_size(keys: dict) -> Tuple[int, int]:
     return piano_width, piano_height
 
 
-def _key_color(key: Tuple[str, str, int]) -> bool:
+def _key_color(key: Tuple[str, str, int]) -> str:
     _, accidental, _ = key
     return "black" if accidental == "#" else "white"
 
@@ -95,7 +95,7 @@ def draw_piano(keys: dict, show: bool, save: bool, file_path: Optional[str]):
     """Create an image to draw the piano"""
 
     width, height = _image_size(keys)
-    piano = np.ones((height, width, 3), dtype=np.uint8) * 255
+    piano = np.ones((height, width, 3), dtype=np.uint8) * np.uint8(255)
 
     x = 0
     for key, freq in keys.items():
