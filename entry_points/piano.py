@@ -4,8 +4,8 @@ import os
 import sys
 from typing import Sequence
 
-from drawing.pinao import draw_piano
-from instruments.pinao import generate_piano_keys
+from drawing.piano import draw_piano
+from instruments.piano import generate_piano_keys
 
 
 def _parse_arguments(argv: Sequence[str]):
