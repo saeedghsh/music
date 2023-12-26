@@ -5,7 +5,7 @@ from typing import Dict, Optional, Tuple
 import cv2
 import numpy as np
 
-from core.notation import FrequencyComputer, Note
+from core.notation import compute_frequency, decompose_note_name
 
 INSTRUMENTS: Dict[str, dict] = {
     "tar": {
@@ -66,8 +66,8 @@ def _draw_fret(image: np.ndarray, pt1: Tuple[int, int], pt2: Tuple[int, int]):
 
 def _fret_label(string_notes: Dict[int, str], fret_number: int) -> str:
     note = string_notes[fret_number]
-    letter, accidental, octave = Note.decompose_name(note)
-    frequency = FrequencyComputer.compute_frequency(letter, accidental, octave)
+    letter, accidental, octave = decompose_note_name(note)
+    frequency = compute_frequency(letter, accidental, octave)
     return f"{note}: {frequency:.2f} Hz"
 
 

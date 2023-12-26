@@ -4,7 +4,7 @@ import os
 import sys
 from typing import Sequence
 
-from core.notation import FrequencyComputer, Note
+from core.notation import compute_frequency, decompose_note_name
 from drawing.tar_drawing import annotate_tar_image
 from instruments.tar_instrument import generate_tar_notes
 
@@ -13,8 +13,8 @@ def _print_tar_notes_and_frequencies(string_notes: dict):
     # pylint: disable=fixme
     # TODO: move this to instrument.tar
     for fret_number, note_name in string_notes.items():
-        letter, accidental, octave = Note.decompose_name(note_name)
-        frequency = FrequencyComputer.compute_frequency(letter, accidental, octave)
+        letter, accidental, octave = decompose_note_name(note_name)
+        frequency = compute_frequency(letter, accidental, octave)
         print(f"{fret_number}\t{note_name}:\t{frequency} Hz")
 
 

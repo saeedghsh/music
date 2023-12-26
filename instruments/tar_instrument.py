@@ -1,7 +1,7 @@
 """Representation of the Tar"""
 from typing import Dict
 
-from core.notation import Note
+from core.notation import transposition_by_an_octave
 
 
 def generate_tar_notes(fret_count: int = 27, string_number: int = 1) -> Dict[int, str]:
@@ -96,7 +96,6 @@ def generate_tar_notes(fret_count: int = 27, string_number: int = 1) -> Dict[int
     strings[4] = strings[3]
     strings[5] = strings[1]
     strings[6] = {
-        fret_number: Note.transposition_by_an_octave(note)
-        for fret_number, note in strings[1].items()
+        fret_number: transposition_by_an_octave(note) for fret_number, note in strings[1].items()
     }
     return strings[string_number]
