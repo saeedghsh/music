@@ -25,6 +25,39 @@ def test_main_smoke_test_base_and_print_out(fret_count: int, string_number: int)
 
 
 @pytest.mark.parametrize("string_number", [1, 2, 3, 4, 5, 6])
+def test_main_file_show(mocker, string_number: int):
+    mocker.patch("cv2.imshow")
+    mocker.patch("cv2.waitKey", return_value=ord("q"))
+    mocker.patch("cv2.destroyAllWindows")
+    args = [
+        "--fret-count",
+        str(27),
+        "--string-number",
+        str(string_number),
+        "-v",
+    ]
+    result = main(args)
+    assert result == os.EX_OK
+
+
+@pytest.mark.parametrize("string_number", [1, 2, 3, 4, 5, 6])
+@pytest.mark.parametrize("fret_count", [25, 28])
+def test_main_file_show_not_implemented(mocker, fret_count: int, string_number: int):
+    mocker.patch("cv2.imshow")
+    mocker.patch("cv2.waitKey", return_value=ord("q"))
+    mocker.patch("cv2.destroyAllWindows")
+    args = [
+        "--fret-count",
+        str(fret_count),
+        "--string-number",
+        str(string_number),
+        "-v",
+    ]
+    with pytest.raises(NotImplementedError):
+        main(args)
+
+
+@pytest.mark.parametrize("string_number", [1, 2, 3, 4, 5, 6])
 def test_main_file_save(tmp_path: str, string_number: int):
     output_file = os.path.join(tmp_path, "annotated_tar.png")
     args = [
@@ -33,9 +66,11 @@ def test_main_file_save(tmp_path: str, string_number: int):
         "--string-number",
         str(string_number),
         "-s",
-        "-f",
-        output_file,
     ]
+    with pytest.raises(ValueError):
+        main(args)
+
+    args.extend(["-f", output_file])
     result = main(args)
     assert result == os.EX_OK
     assert os.path.isfile(output_file)
