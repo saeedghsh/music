@@ -22,7 +22,7 @@ def test_main_file_save(tmp_path: str):
     ]
     result = main(args)
     assert result == os.EX_OK
-    assert os.path.isfile(output_file), "File was not created"
+    assert os.path.isfile(output_file)
 
 
 if __name__ == "__main__":
