@@ -122,6 +122,7 @@ def test_decompose_note_name_valid(name, expected):
         "H2",  # Invalid letter
         "G#10",  # Octave out of range
         "D##4",  # Invalid accidental
+        "D^3",  # Invalid accidental
         "8A",  # Incorrect format
         "Csharp4",  # Incorrect accidental format
     ],
