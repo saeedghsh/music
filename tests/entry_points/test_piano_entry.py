@@ -13,13 +13,24 @@ def test_main_smoke_test():
     assert result == os.EX_OK
 
 
+def test_main_file_show(mocker):
+    mocker.patch("cv2.imshow")
+    mocker.patch("cv2.waitKey", return_value=ord("q"))
+    mocker.patch("cv2.destroyAllWindows")
+    args = ["-v"]
+    result = main(args)
+    assert result == os.EX_OK
+
+
 def test_main_file_save(tmp_path: str):
     output_file = os.path.join(tmp_path, "piano.png")
     args = [
         "-s",
-        "-f",
-        output_file,
     ]
+    with pytest.raises(ValueError):
+        main(args)
+
+    args.extend(["-f", output_file])
     result = main(args)
     assert result == os.EX_OK
     assert os.path.isfile(output_file)
