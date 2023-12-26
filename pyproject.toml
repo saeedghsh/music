@@ -34,3 +34,6 @@ profile = "black"
 
 [tool.mypy]
 exclude = '^ignore/' # a local folder I want to skip type checking
+
+[tool.coverage.run]
+omit = ["*/tests/*"]
