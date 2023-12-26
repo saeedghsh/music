@@ -317,13 +317,3 @@ class Note:
         if other_type not in type_dispatch:
             raise NotImplementedError(f"Type {other_type} is not supported for comparison")
         return type_dispatch[other_type](other)
-
-
-def _generate_all_notes(octave_range: Tuple[int, int] = (0, 9)) -> dict:
-    """Generate all notes (including quartertone) in give octave ranges"""
-    notes = {}
-    for octave in range(*octave_range):
-        for note in ["C", "D", "E", "F", "G", "A", "B"]:
-            for accidental in ["b", "k", "", "s", "#"]:
-                notes[(note, accidental, octave)] = compute_frequency(note, accidental, octave)
-    return notes
