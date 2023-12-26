@@ -9,14 +9,18 @@ from entry_points.tar_entry import main
 
 @pytest.mark.parametrize("string_number", [1, 2, 3, 4, 5, 6])
 @pytest.mark.parametrize("fret_count", [25, 27, 28])
-def test_main_smoke_test(fret_count: int, string_number: int):
-    args = [
+def test_main_smoke_test_base_and_print_out(fret_count: int, string_number: int):
+    args_base = [
         "--fret-count",
         str(fret_count),
         "--string-number",
         str(string_number),
     ]
-    result = main(args)
+    result = main(args_base)
+    assert result == os.EX_OK
+
+    args_print_out = args_base + ["-p"]
+    result = main(args_print_out)
     assert result == os.EX_OK
 
 

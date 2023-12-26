@@ -1,7 +1,11 @@
 """Representation of the Tar"""
 from typing import Dict
 
-from core.notation import transposition_by_an_octave
+from core.notation import (
+    compute_frequency,
+    decompose_note_name,
+    transposition_by_an_octave,
+)
 
 
 def generate_tar_notes(fret_count: int = 27, string_number: int = 1) -> Dict[int, str]:
@@ -99,3 +103,11 @@ def generate_tar_notes(fret_count: int = 27, string_number: int = 1) -> Dict[int
         fret_number: transposition_by_an_octave(note) for fret_number, note in strings[1].items()
     }
     return strings[string_number]
+
+
+def print_tar_notes_and_frequencies(string_notes: dict):
+    """Print out note names and frequencys of the string"""
+    for fret_number, note_name in string_notes.items():
+        letter, accidental, octave = decompose_note_name(note_name)
+        frequency = compute_frequency(letter, accidental, octave)
+        print(f"{fret_number}\t{note_name}:\t{frequency} Hz")
