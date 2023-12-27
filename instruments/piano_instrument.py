@@ -11,6 +11,8 @@ def generate_piano_keys(octave_range: Tuple[int, int] = (0, 8)) -> dict:
     """
     # pylint: disable=fixme
     # TODO: this implementation does not generate any standard piano (i.e. 88-97-108 keys)
+    if octave_range[0] >= octave_range[1]:
+        raise ValueError("Upper range must be greater than lower range")
     keys = {}
     for octave in range(*octave_range):
         for note in ["C", "D", "E", "F", "G", "A", "B"]:
