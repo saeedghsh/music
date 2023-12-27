@@ -1,10 +1,17 @@
 """Test Piano entry point script"""
 # pylint: disable=missing-function-docstring
 import os
+import subprocess
 
 import pytest
 
 from entry_points.piano_entry import main
+
+
+def test_entry_point_script_smoke_test():
+    cmd = ["python3", "-m", "entry_points.piano_entry"]
+    result = subprocess.run(cmd, capture_output=True, check=False)
+    assert result.returncode == 0
 
 
 def test_main_smoke_test():

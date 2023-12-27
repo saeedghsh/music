@@ -1,10 +1,17 @@
 """Test Tar entry point script"""
 # pylint: disable=missing-function-docstring
 import os
+import subprocess
 
 import pytest
 
 from entry_points.tar_entry import main
+
+
+def test_entry_point_script_smoke_test():
+    cmd = ["python3", "-m", "entry_points.tar_entry"]
+    result = subprocess.run(cmd, capture_output=True, check=False)
+    assert result.returncode == 0
 
 
 @pytest.mark.parametrize("string_number", [1, 2, 3, 4, 5, 6])

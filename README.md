@@ -19,12 +19,12 @@ I started a python script to calculate the note frequencies for that purpose, ..
 ## Example
 Entry point examples:
 ```bash
-$ python3 -m entry_points.piano -v
-$ python3 -m entry_points.piano -s -f <path-to-save-file>
+$ python3 -m entry_points.piano_entry -v
+$ python3 -m entry_points.piano_entry -s -f <path-to-save-file>
 
-$ python3 -m entry_points.tar --fret-count 27 --string-number 1 -p
-$ python3 -m entry_points.tar --fret-count 27 --string-number 1 -v
-$ python3 -m entry_points.tar --fret-count 27 --string-number 1 -s -f <path-to-save-file>
+$ python3 -m entry_points.tar_entry --fret-count 27 --string-number 1 -p
+$ python3 -m entry_points.tar_entry --fret-count 27 --string-number 1 -v
+$ python3 -m entry_points.tar_entry --fret-count 27 --string-number 1 -s -f <path-to-save-file>
 ```
 
 * Piano entry point output:
@@ -80,9 +80,6 @@ $ mypy . --explicit-package-bases
 
 # TODO
 
-### Imediate/Essential
-* [ ] add test: complete coverage
-
 ### Improve/Refactring
 * [ ] split `core/notation`, maybe into `notation`, `frequency`, etc. ...
 * [ ] fix all todos in the code. `pylint` is currently suppress so not to flag them, remove suppressions.
@@ -94,6 +91,8 @@ $ mypy . --explicit-package-bases
 * [ ] encapsulate each instrument into a `class` of `instrument`,
 * [ ] use `Note.__str__` whereever note is printed, and make sure it is printer properly
 * [ ] right we only annonate tar in drawing, should we draw something wo/ existing photos?
+* [ ] `drawing` module is not acutally tested and only covered through entry point unit tests. Add unittest for that.
+
 
 ### Documentations
 * [ ] add Setar Photo.
@@ -118,6 +117,7 @@ $ mypy . --explicit-package-bases
 * [ ] add audio and make it interactive?
 
 ### Done
+* [x] add test: complete coverage
 * [x] CI: static type checker
 * [x] CI: formatter + "import sort"
 * [x] move `instruments.py` under `instruments` dir and make a file per instrument
