@@ -5,10 +5,7 @@ import sys
 from typing import Sequence
 
 from drawing.tar_drawing import annotate_tar_image
-from instruments.tar_instrument import (
-    generate_tar_notes,
-    print_tar_notes_and_frequencies,
-)
+from instruments.tar_instrument import generate_tar_notes, print_string_notes
 
 
 def _parse_arguments(argv: Sequence[str]):
@@ -60,7 +57,7 @@ def main(argv: Sequence[str]):
     args = _parse_arguments(argv)
     string_notes = generate_tar_notes(args.fret_count, args.string_number)
     if args.print_out:
-        print_tar_notes_and_frequencies(string_notes)
+        print_string_notes(string_notes)
     if args.visualize or args.save_to_file:
         annotate_tar_image(string_notes, args.visualize, args.save_to_file, args.file_path)
     return os.EX_OK

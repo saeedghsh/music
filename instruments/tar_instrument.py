@@ -105,7 +105,7 @@ def generate_tar_notes(fret_count: int = 27, string_number: int = 1) -> Dict[int
     return strings[string_number]
 
 
-def print_tar_notes_and_frequencies(string_notes: dict):
+def print_string_notes(string_notes: dict):
     """Print out note names and frequencys of the string"""
     for fret_number, note_name in string_notes.items():
         letter, accidental, octave = decompose_note_name(note_name)
