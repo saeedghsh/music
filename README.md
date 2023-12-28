@@ -81,15 +81,17 @@ $ mypy . --explicit-package-bases
 # TODO
 
 ### Improve/Refactring
-* [ ] split `core/notation`, maybe into `notation`, `frequency`, etc. ...
-* [ ] fix all todos in the code. `pylint` is currently suppress so not to flag them, remove suppressions.
-* [ ] uniform the function signatures and the way they operate for stuff under `instruments.py`
-* [ ] `transposition_by_an_octave` to `transpose_by(interval: MusicalInterval, steps: int)`.  
-      This is a prerequisit for an easy implementation of the "tuning variation" on Tar/Setar.
-* [ ] make note name validation a process separate from `decompose_note_name`
 * [ ] make use of `Note` class everywhere; `FrequencyCOmputer`, `instruments.py`, `drawing.py`
-* [ ] encapsulate each instrument into a `class` of `instrument`,
 * [ ] use `Note.__str__` whereever note is printed, and make sure it is printer properly
+* [ ] make note name validation a process separate from `decompose_note_name`
+* [ ] split `core/notation`, maybe into `notation`, `frequency`, etc. ...
+* [ ] uniform the function signatures and the way they operate for stuff under `instruments.py`
+* [ ] `transposition_by_an_octave` to `transpose_by(interval: MusicalInterval, steps: int)`.
+      This is a prerequisit for an easy implementation of the "tuning variation" on Tar/Setar.
+* [ ] a mapping function between note and frequency, given the base note frequency.
+* [ ] a mapping function between ratio of string length to ratin of resulting frequencies (are they the same?)
+* [ ] encapsulate each instrument into a `class` of `instrument`,
+* [ ] fix all todos in the code. `pylint` is currently suppress so not to flag them, remove suppressions.
 * [ ] right we only annonate tar in drawing, should we draw something wo/ existing photos?
 * [ ] `drawing` module is not acutally tested and only covered through entry point unit tests. Add unittest for that.
 
