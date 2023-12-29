@@ -5,8 +5,6 @@ from enum import Enum
 from math import isclose
 from typing import Any, Callable, Dict, Tuple
 
-A4_FREQUENCY = 440  # Note reference: A4 = 440 Hz
-
 STANDARD_NOTES_QUARTERTONE = [
     "C",
     "Cs",
