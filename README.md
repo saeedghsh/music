@@ -1,4 +1,4 @@
-# Playground for fiddle with musical notes
+# Playground for fiddling with musical notes
 
 [![GPLv3 License](https://img.shields.io/badge/license-GPLv3-blue.svg)](https://github.com/saeedghsh/musical_notes/blob/master/LICENSE)  
 [![black](https://github.com/saeedghsh/musical_notes/actions/workflows/formatting.yml/badge.svg?branch=master)](https://github.com/saeedghsh/musical_notes/actions/workflows/formatting.yml)
@@ -34,42 +34,49 @@ $ python3 -m entry_points.tar_entry --fret-count 27 --string-number 1 -s -f <pat
 </p>
 
 * Tar entry point output:
+    <details>
+        <summary> print-out</summary>
+
+        ```bash
+        0	C4:	261.6255653005986 Hz
+        1	C#4:	277.1826309768721 Hz
+        2	Dk4:	285.30470202322215 Hz
+        3	D4:	293.6647679174076 Hz
+        4	Eb4:	311.1269837220809 Hz
+        5	Ek4:	320.24370022528126 Hz
+        6	E4:	329.6275569128699 Hz
+        7	F4:	349.2282314330039 Hz
+        8	Fs4:	359.46139971304194 Hz
+        9	F#4:	369.9944227116344 Hz
+        10	Gk4:	380.83608684270297 Hz
+        11	G4:	391.99543598174927 Hz
+        12	Ab4:	415.3046975799451 Hz
+        13	Ak4:	427.4740541075866 Hz
+        14	A4:	440.0 Hz
+        15	Bb4:	466.1637615180899 Hz
+        16	Bk4:	479.82340237271336 Hz
+        17	B4:	493.8833012561241 Hz
+        18	C5:	523.2511306011972 Hz
+        19	C#5:	554.3652619537442 Hz
+        20	Dk5:	570.6094040464443 Hz
+        21	D5:	587.3295358348151 Hz
+        22	Eb5:	622.2539674441618 Hz
+        23	Ek5:	640.4874004505624 Hz
+        24	E5:	659.2551138257398 Hz
+        25	F5:	698.4564628660078 Hz
+        26	F#5:	739.9888454232688 Hz
+        27	G5:	783.9908719634985 Hz
+        ```
+
+    </details>
+
 <p align="center">
     <img src="https://github.com/saeedghsh/musical_notes/blob/master/images/tar_small_1290x362_string1_annotated.png" height="500">
 </p>
 
-```bash
-0	C4:	261.6255653005986 Hz
-1	C#4:	277.1826309768721 Hz
-2	Dk4:	285.30470202322215 Hz
-3	D4:	293.6647679174076 Hz
-4	Eb4:	311.1269837220809 Hz
-5	Ek4:	320.24370022528126 Hz
-6	E4:	329.6275569128699 Hz
-7	F4:	349.2282314330039 Hz
-8	Fs4:	359.46139971304194 Hz
-9	F#4:	369.9944227116344 Hz
-10	Gk4:	380.83608684270297 Hz
-11	G4:	391.99543598174927 Hz
-12	Ab4:	415.3046975799451 Hz
-13	Ak4:	427.4740541075866 Hz
-14	A4:	440.0 Hz
-15	Bb4:	466.1637615180899 Hz
-16	Bk4:	479.82340237271336 Hz
-17	B4:	493.8833012561241 Hz
-18	C5:	523.2511306011972 Hz
-19	C#5:	554.3652619537442 Hz
-20	Dk5:	570.6094040464443 Hz
-21	D5:	587.3295358348151 Hz
-22	Eb5:	622.2539674441618 Hz
-23	Ek5:	640.4874004505624 Hz
-24	E5:	659.2551138257398 Hz
-25	F5:	698.4564628660078 Hz
-26	F#5:	739.9888454232688 Hz
-27	G5:	783.9908719634985 Hz
-```
 
-Tests, coverage, linter, formatter, static type check:
+
+## Tests, coverage, linter, formatter, static type check
 ```bash
 $ black . --check
 $ isort . --check-only
@@ -82,18 +89,15 @@ $ pytest --cov=. # $ pytest --cov=. --cov-report html; firefox htmlcov/index.htm
 # TODO
 
 ### Improve/Refactoring
-* [ ] make use of `Note` class everywhere; `FrequencyCOmputer`, `instruments.py`, `drawing.py`
-* [ ] use `Note.__str__` where-ever note is printed, and make sure it is printer properly
-* [ ] make note name validation a process separate from `decompose_note_name`
 * [ ] split `core/notation`, maybe into `notation`, `frequency`, etc. ...
+* [ ] make note name validation a process separate from `decompose_note_name`
 * [ ] uniform the function signatures and the way they operate for stuff under `instruments.py`
 * [ ] `transposition_by_an_octave` to `transpose_by(interval: MusicalInterval, steps: int)`.
       This is a prerequisite for an easy implementation of the "tuning variation" on Tar/Setar.
 * [ ] a mapping function between note and frequency, given the base note frequency.
 * [ ] a mapping function between ratio of string length to ratio of resulting frequencies (are they the same?)
-* [ ] encapsulate each instrument into a `class` of `instrument`,
 * [ ] fix all TODOs in the code. `pylint` is currently suppress so not to flag them, remove suppressions.
-* [ ] right we only annotate tar in drawing, should we draw something wo/ existing photos?
+* [ ] right now we only annotate tar in drawing, should we draw something wo/ existing photos?
 * [ ] `drawing` module is not actually tested and only covered through entry point unit tests. Add unittest for that.
 
 
@@ -118,38 +122,6 @@ $ pytest --cov=. # $ pytest --cov=. --cov-report html; firefox htmlcov/index.htm
 * [ ] Add Qt gui?
 * [ ] extend to other instruments, start with Guitar and then Ney?
 * [ ] add audio and make it interactive?
-
-### Done
-* [x] remove `A4_FREQUENCY` from all low-level functions
-* [x] add test: complete coverage
-* [x] CI: static type checker
-* [x] CI: formatter + "import sort"
-* [x] move `instruments.py` under `instruments` dir and make a file per instrument
-* [x] add pytest-cov for pytest coverage
-* [x] fix `drawing/tar.py`
-* [x] Tar entry point scripts need test for the visualizers
-* [x] Piano entry point scripts need test for the visualizers
-* [x] use `cv2` (or `qt`) for piano drawing
-* [x] move `drawing.py` under `drawing` dir and make a file per instrument
-* [x] CI: hookup the repo with github CI
-* [x] CI: tests
-* [x] CI: make CI green
-* [x] add `requirement.txt`! otherwise the tests will keep failing on github
-* [x] add test: entry points
-* [x] CI: pylint
-* [x] add entry points for Tar
-* [x] add entry points for Piano
-* [x] Add different fret count systems for Setar / Tar (25, 27, and 28)
-* [x] change `accidental.unidoce_char` to `symbol` and find a better name for `accidental.shorthand`
-* [x] make a enum for Octave.
-* [x] make a enum for Accidentals.
-* [x] [p] right now the accidentals are printed as `{#,b,s,k}` (e.g. tar annotation) fix it so that proper symbols are printed.
-      This might be not feasible for Koron and Sori right now, but should be doable for sharp and flat.
-* [x] Make frequency computer a separate class from note
-* [x] [d] fix issue with printing `sori` and `koron` symbols,
-        -> This turned to be much harder than I expected. Skipping for now        
-* [x] add a drawing of Tar and visualize its notes and frequencies.
-* [x] `quartertone` -> `quartertone`
 
 # Reference
 * Proposal to encode two accidentals for Iranian classical music: [Unicode proposal](https://www.unicode.org/L2/L2020/20159-iran-music-symbols.pdf).
