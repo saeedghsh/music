@@ -23,7 +23,7 @@ _FONT_SCALE = 0.0015 * _WHITE_KEY_HEIGHT
 def _text_on_key(
     image: np.ndarray,
     text: str,
-    posistion: Tuple[int, int],
+    position: Tuple[int, int],
     key_color: str,
     key_height: int,
 ):
@@ -46,10 +46,10 @@ def _text_on_key(
         cv2.LINE_AA,
     )
     rotated_img = cv2.rotate(text_img, cv2.ROTATE_90_COUNTERCLOCKWISE)
-    y_pos = posistion[1] + key_height - rotated_img.shape[0]
+    y_pos = position[1] + key_height - rotated_img.shape[0]
     image[
         y_pos : y_pos + rotated_img.shape[0],
-        posistion[0] : posistion[0] + rotated_img.shape[1],
+        position[0] : position[0] + rotated_img.shape[1],
     ] = rotated_img
 
 

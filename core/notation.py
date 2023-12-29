@@ -127,7 +127,7 @@ def _trailing_number(s: str) -> int:
 def decompose_note_name(name: str) -> Tuple[str, str, int]:
     """Return letter, accidental and octave from the name
 
-    It also validates the name correctness thouroughly.
+    It also validates the name correctness thoroughly.
     """
     octave = _trailing_number(name)
     if not -1 <= octave <= 9:
@@ -156,7 +156,7 @@ def transposition_by_an_octave(note_name: str) -> str:
     return f"{letter}{accidental}{new_octave}"
 
 
-def standard_notes_quartertones() -> List[str]:
+def standard_notes_quartertone() -> List[str]:
     """Return an ordered list of 24 notes in an Octave, equally separated by quartertone
 
     In this context a set of "standard notes" is defined as the following.
@@ -238,7 +238,7 @@ def compute_frequency(
     """Calculate the frequency of a note."""
     # pylint: disable=invalid-name
     letter, accidental, octave = standardize_note(letter, accidental, octave)
-    standard_notes = standard_notes_quartertones()
+    standard_notes = standard_notes_quartertone()
     note_index = standard_notes.index(f"{letter}{accidental}")
     A_index = standard_notes.index("A")
     quartertone_steps_from_A4 = note_index - A_index + (octave - 4) * 24

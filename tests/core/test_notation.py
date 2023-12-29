@@ -15,7 +15,7 @@ from core.notation import (
     Symbol,
     conversion_to_standard_note,
     decompose_note_name,
-    standard_notes_quartertones,
+    standard_notes_quartertone,
     standardize_note,
     transposition_by_an_octave,
 )
@@ -154,7 +154,7 @@ def test_transposition_by_an_octave_invalid(note_name):
         transposition_by_an_octave(note_name)
 
 
-def test_standard_notes_quartertones():
+def test_standard_notes_quartertone():
     expected_notes = [
         "C",
         "Cs",
@@ -181,7 +181,7 @@ def test_standard_notes_quartertones():
         "B",
         "Bs",
     ]
-    assert standard_notes_quartertones() == expected_notes
+    assert standard_notes_quartertone() == expected_notes
 
 
 def test_conversion_to_standard_note():

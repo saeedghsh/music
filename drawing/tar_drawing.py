@@ -89,7 +89,7 @@ def annotate_tar_image(
     """Annotate a tar image, show and/or save per argument setting"""
     if len(string_notes) != 28:
         raise NotImplementedError(
-            "Curretnly only 27-fret count (28 including open-hand) is supported."
+            "Currently only 27-fret count (28 including open-hand) is supported."
         )
 
     tar_img = cv2.imread(INSTRUMENTS["tar"]["small_image"]["path"])

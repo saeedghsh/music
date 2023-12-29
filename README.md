@@ -8,11 +8,11 @@
 
 I wanted to redo the [frets](https://en.wikipedia.org/wiki/Fret) of my [Setar](https://en.wikipedia.org/wiki/Setar).
 Common instructions are based on length of the [strings](https://en.wikipedia.org/wiki/String_(music)) and the distance of each fret from the [nut](https://en.wikipedia.org/wiki/Nut_(string_instrument)).
-I don't like inaccuracies, so instead, I decided to find the accurate location of each fret based on the frquency.
+I don't like inaccuracies, so instead, I decided to find the accurate location of each fret based on the frequency.
 To this end I needed to calculate the frequency of the [notes](https://en.wikipedia.org/wiki/Musical_note) corresponding to each fret.  
 
 Iranian music, and consequently the Setar, has [quarter tones](https://en.wikipedia.org/wiki/Quarter_tone) [accidentals](https://en.wikipedia.org/wiki/Accidental_(music)) ([Koron](https://en.wikipedia.org/wiki/Koron_(music)) and [Sori](https://en.wikipedia.org/wiki/Sori_(music))).
-Therfore a hash-like table listing all notes available for conventional western musical instruments with [semitone](https://en.wikipedia.org/wiki/Semitone) granularity was not enough.
+Therefor a hash-like table listing all notes available for conventional western musical instruments with [semitone](https://en.wikipedia.org/wiki/Semitone) granularity was not enough.
 I started a python script to calculate the note frequencies for that purpose, ... and kinda got carried away... hence this repo.
 
 
@@ -72,7 +72,7 @@ Tests, coverage, linter, formatter, static type check:
 ```bash
 $ pytest
 $ pylint $(git ls-files '*.py')
-$ pytest --cov=. --cov-report html; firefox htmlcov/index.html
+$ pytest --cov=. # $ pytest --cov=. --cov-report html; firefox htmlcov/index.html
 $ black . --check
 $ isort . --check-only
 $ mypy . --explicit-package-bases
@@ -80,20 +80,20 @@ $ mypy . --explicit-package-bases
 
 # TODO
 
-### Improve/Refactring
+### Improve/Refactoring
 * [ ] make use of `Note` class everywhere; `FrequencyCOmputer`, `instruments.py`, `drawing.py`
-* [ ] use `Note.__str__` whereever note is printed, and make sure it is printer properly
+* [ ] use `Note.__str__` where-ever note is printed, and make sure it is printer properly
 * [ ] make note name validation a process separate from `decompose_note_name`
 * [ ] split `core/notation`, maybe into `notation`, `frequency`, etc. ...
 * [ ] uniform the function signatures and the way they operate for stuff under `instruments.py`
 * [ ] `transposition_by_an_octave` to `transpose_by(interval: MusicalInterval, steps: int)`.
-      This is a prerequisit for an easy implementation of the "tuning variation" on Tar/Setar.
+      This is a prerequisite for an easy implementation of the "tuning variation" on Tar/Setar.
 * [ ] a mapping function between note and frequency, given the base note frequency.
-* [ ] a mapping function between ratio of string length to ratin of resulting frequencies (are they the same?)
+* [ ] a mapping function between ratio of string length to ratio of resulting frequencies (are they the same?)
 * [ ] encapsulate each instrument into a `class` of `instrument`,
-* [ ] fix all todos in the code. `pylint` is currently suppress so not to flag them, remove suppressions.
-* [ ] right we only annonate tar in drawing, should we draw something wo/ existing photos?
-* [ ] `drawing` module is not acutally tested and only covered through entry point unit tests. Add unittest for that.
+* [ ] fix all TODOs in the code. `pylint` is currently suppress so not to flag them, remove suppressions.
+* [ ] right we only annotate tar in drawing, should we draw something wo/ existing photos?
+* [ ] `drawing` module is not actually tested and only covered through entry point unit tests. Add unittest for that.
 
 
 ### Documentations
@@ -126,10 +126,10 @@ $ mypy . --explicit-package-bases
 * [x] add pytest-cov for pytest coverage
 * [x] fix `drawing/tar.py`
 * [x] Tar entry point scripts need test for the visualizers
-* [x] Pinao entry point scripts need test for the visualizers
+* [x] Piano entry point scripts need test for the visualizers
 * [x] use `cv2` (or `qt`) for piano drawing
 * [x] move `drawing.py` under `drawing` dir and make a file per instrument
-* [x] CI: hookup the repo with gitbut CI
+* [x] CI: hookup the repo with github CI
 * [x] CI: tests
 * [x] CI: make CI green
 * [x] add `requirement.txt`! otherwise the tests will keep failing on github
@@ -142,16 +142,16 @@ $ mypy . --explicit-package-bases
 * [x] make a enum for Octave.
 * [x] make a enum for Accidentals.
 * [x] [p] right now the accidentals are printed as `{#,b,s,k}` (e.g. tar annotation) fix it so that proper symbols are printed.
-      This might be not feasible for koron and sori right now, but should be doable for sharp and flat.
+      This might be not feasible for Koron and Sori right now, but should be doable for sharp and flat.
 * [x] Make frequency computer a separate class from note
 * [x] [d] fix issue with printing `sori` and `koron` symbols,
         -> This turned to be much harder than I expected. Skipping for now        
-* [x] add a drawing of Tar and visaulize its notes and frequencies.
+* [x] add a drawing of Tar and visualize its notes and frequencies.
 * [x] `quartertone` -> `quartertone`
 
 # Reference
 * Proposal to encode two accidentals for Iranian classical music: [Unicode proposal](https://www.unicode.org/L2/L2020/20159-iran-music-symbols.pdf).
-* Setar on Wikipedai: [Farsi entry]((https://fa.wikipedia.org/wiki/%D8%B3%D9%87%E2%80%8C%D8%AA%D8%A7%D8%B1)) and [English entry](https://en.wikipedia.org/wiki/Setar).
+* Setar on Wikipedia: [Farsi entry]((https://fa.wikipedia.org/wiki/%D8%B3%D9%87%E2%80%8C%D8%AA%D8%A7%D8%B1)) and [English entry](https://en.wikipedia.org/wiki/Setar).
 
 # License
 ```
