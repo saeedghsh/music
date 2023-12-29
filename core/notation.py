@@ -3,9 +3,36 @@ import re
 from dataclasses import dataclass
 from enum import Enum
 from math import isclose
-from typing import Any, Callable, Dict, List, Tuple
+from typing import Any, Callable, Dict, Tuple
 
 A4_FREQUENCY = 440  # Note reference: A4 = 440 Hz
+
+STANDARD_NOTES_QUARTERTONE = [
+    "C",
+    "Cs",
+    "C#",
+    "Dk",
+    "D",
+    "Ds",
+    "D#",
+    "Ek",
+    "E",
+    "Es",
+    "F",
+    "Fs",
+    "F#",
+    "Gk",
+    "G",
+    "Gs",
+    "G#",
+    "Ak",
+    "A",
+    "As",
+    "A#",
+    "Bk",
+    "B",
+    "Bs",
+]
 
 
 class MusicalInterval(Enum):
@@ -124,7 +151,7 @@ def _trailing_number(s: str) -> int:
     raise ValueError(f"No integer found at the end of '{s}'")
 
 
-def decompose_note_name(name: str) -> Tuple[str, str, int]:
+def _decompose_note_name(name: str) -> Tuple[str, str, int]:
     """Return letter, accidental and octave from the name
 
     It also validates the name correctness thoroughly.
@@ -149,46 +176,7 @@ def decompose_note_name(name: str) -> Tuple[str, str, int]:
     return letter, accidental, octave
 
 
-def standard_notes_quartertone() -> List[str]:
-    """Return an ordered list of 24 notes in an Octave, equally separated by quartertone
-
-    In this context a set of "standard notes" is defined as the following.
-    An equal temperament tuning system, where the octave is divided into 24 equal
-    parts (quartertone), results in 24 notes. A set of "standard notes of
-    quartertone" is a set that maps bijectively to corresponding frequencies.
-    * where "sharp" of a note and "flat" of another are the same note, opt for "sharp"
-    * where "koron" of a note and "sori" of another are the same note, opt for "sori"
-    * "E#" and "B#" are not considered as they are represented by "F" and "C"
-    """
-    return [
-        "C",
-        "Cs",
-        "C#",
-        "Dk",
-        "D",
-        "Ds",
-        "D#",
-        "Ek",
-        "E",
-        "Es",
-        "F",
-        "Fs",
-        "F#",
-        "Gk",
-        "G",
-        "Gs",
-        "G#",
-        "Ak",
-        "A",
-        "As",
-        "A#",
-        "Bk",
-        "B",
-        "Bs",
-    ]
-
-
-def conversion_to_standard_note() -> Dict[str, str]:
+def _conversion_to_standard_note() -> Dict[str, str]:
     """Return a dict for converting identical notes."""
     return {
         "E#": "F",
@@ -205,18 +193,18 @@ def conversion_to_standard_note() -> Dict[str, str]:
     }
 
 
-def standardize_note(letter: str, accidental: str, octave: int) -> Tuple[str, str, int]:
+def _standardize_note(letter: str, accidental: str, octave: int) -> Tuple[str, str, int]:
     """Return a standard note, given any input note
 
     Makes sure that the note belong set of "standard notes"
     """
     # Using decompose_note_name to assure name is valid
-    _ = decompose_note_name(f"{letter}{accidental}{octave}")
+    _ = _decompose_note_name(f"{letter}{accidental}{octave}")
 
     note = f"{letter}{accidental}"
     if note == "B#":
         octave += 1
-    note = conversion_to_standard_note().get(note, note)
+    note = _conversion_to_standard_note().get(note, note)
 
     if len(note) == 1:
         letter, accidental = note, ""
@@ -225,13 +213,12 @@ def standardize_note(letter: str, accidental: str, octave: int) -> Tuple[str, st
     return letter, accidental, octave
 
 
-def compute_frequency(letter: str, accidental: str, octave: int, a4_frequency: float) -> float:
+def _compute_frequency(letter: str, accidental: str, octave: int, a4_frequency: float) -> float:
     """Calculate the frequency of a note."""
     # pylint: disable=invalid-name
-    letter, accidental, octave = standardize_note(letter, accidental, octave)
-    standard_notes = standard_notes_quartertone()
-    note_index = standard_notes.index(f"{letter}{accidental}")
-    A_index = standard_notes.index("A")
+    letter, accidental, octave = _standardize_note(letter, accidental, octave)
+    note_index = STANDARD_NOTES_QUARTERTONE.index(f"{letter}{accidental}")
+    A_index = STANDARD_NOTES_QUARTERTONE.index("A")
     quartertone_steps_from_A4 = note_index - A_index + (octave - 4) * 24
     return a4_frequency * (2 ** (quartertone_steps_from_A4 / 24))
 
@@ -253,7 +240,7 @@ class Note:
         return f"{self.name}: {self.frequency} Hz"
 
     def __post_init__(self):
-        letter, accidental, octave = decompose_note_name(self.name)
+        letter, accidental, octave = _decompose_note_name(self.name)
         assert letter == self.letter
         assert accidental == self.accidental
         assert octave == self.octave
@@ -261,8 +248,8 @@ class Note:
     @staticmethod
     def from_name(name: str, a4_frequency: float) -> "Note":
         """Create and return an object of type Note from the given name"""
-        letter, accidental, octave = decompose_note_name(name)
-        frequency = compute_frequency(letter, accidental, octave, a4_frequency)
+        letter, accidental, octave = _decompose_note_name(name)
+        frequency = _compute_frequency(letter, accidental, octave, a4_frequency)
         return Note(name, letter, accidental, octave, frequency)
 
     def _eq_to_name(self, other_name: str) -> bool:
@@ -270,7 +257,7 @@ class Note:
             self_standardize_letter,
             self_standardize_accidental,
             self_standardize_octave,
-        ) = standardize_note(self.letter, self.accidental, self.octave)
+        ) = _standardize_note(self.letter, self.accidental, self.octave)
         self_standardize_note_name = "".join(
             [
                 self_standardize_letter,
@@ -282,7 +269,7 @@ class Note:
             other_standardize_letter,
             other_standardize_accidental,
             other_standardize_octave,
-        ) = standardize_note(*decompose_note_name(other_name))
+        ) = _standardize_note(*_decompose_note_name(other_name))
         other_standardize_note_name = "".join(
             [
                 other_standardize_letter,

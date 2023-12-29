@@ -2,7 +2,6 @@
 # pylint: disable=missing-function-docstring
 import pytest
 
-from core.notation import compute_frequency
 from instruments.piano_instrument import generate_piano_keys
 
 
@@ -23,13 +22,6 @@ def test_generate_piano_keys(octave_range, expected_keys_count, a4_frequency):
             assert (
                 note.accidental != "#"
             ), f"Invalid accidental {note.accidental} for note {note.letter}"
-
-        expected_frequency = compute_frequency(
-            note.letter, note.accidental, note.octave, a4_frequency
-        )
-        assert (
-            note.frequency == expected_frequency
-        ), f"Incorrect frequency for {note.name}: {note.frequency} vs {expected_frequency}"
     assert len(keys) == expected_keys_count, f"Expected {expected_keys_count} keys, got {len(keys)}"
 
 

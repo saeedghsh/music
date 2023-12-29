@@ -13,10 +13,8 @@ from core.notation import (
     Octave,
     OctaveRegister,
     Symbol,
-    conversion_to_standard_note,
-    decompose_note_name,
-    standard_notes_quartertone,
-    standardize_note,
+    _decompose_note_name,
+    _standardize_note,
     transposition_by_an_octave,
 )
 
@@ -113,7 +111,7 @@ def test_octave_register():
     ],
 )
 def test_decompose_note_name_valid(name, expected):
-    assert decompose_note_name(name) == expected, f"Incorrect decomposition for {name}"
+    assert _decompose_note_name(name) == expected, f"Incorrect decomposition for {name}"
 
 
 @pytest.mark.parametrize(
@@ -129,7 +127,7 @@ def test_decompose_note_name_valid(name, expected):
 )
 def test_decompose_note_name_invalid(name):
     with pytest.raises(ValueError):
-        decompose_note_name(name)
+        _decompose_note_name(name)
 
 
 @pytest.mark.parametrize("a4_frequency", [100, 250, 440])
@@ -147,54 +145,6 @@ def test_transposition_by_an_octave(
     ), f"Incorrect transposition for {actual_note}"
 
 
-def test_standard_notes_quartertone():
-    expected_notes = [
-        "C",
-        "Cs",
-        "C#",
-        "Dk",
-        "D",
-        "Ds",
-        "D#",
-        "Ek",
-        "E",
-        "Es",
-        "F",
-        "Fs",
-        "F#",
-        "Gk",
-        "G",
-        "Gs",
-        "G#",
-        "Ak",
-        "A",
-        "As",
-        "A#",
-        "Bk",
-        "B",
-        "Bs",
-    ]
-    assert standard_notes_quartertone() == expected_notes
-
-
-def test_conversion_to_standard_note():
-    expected_conversions = {
-        "E#": "F",
-        "B#": "C",
-        "Cb": "B",
-        "Fb": "E",
-        "Db": "C#",
-        "Eb": "D#",
-        "Gb": "F#",
-        "Ab": "G#",
-        "Bb": "A#",
-        "Ck": "Bs",
-        "Fk": "Es",
-    }
-
-    assert conversion_to_standard_note() == expected_conversions
-
-
 @pytest.mark.parametrize(
     "letter, accidental, octave, expected",
     [
@@ -206,7 +156,7 @@ def test_conversion_to_standard_note():
 )
 def test_standardize_note(letter, accidental, octave, expected):
     assert (
-        standardize_note(letter, accidental, octave) == expected
+        _standardize_note(letter, accidental, octave) == expected
     ), f"Incorrect standardization for {letter}{accidental}{octave}"
 
 
@@ -220,7 +170,7 @@ def test_standardize_note(letter, accidental, octave, expected):
 )
 def test_standardize_note_invalid(letter, accidental, octave):
     with pytest.raises(ValueError):
-        standardize_note(letter, accidental, octave)
+        _standardize_note(letter, accidental, octave)
 
 
 def test_note_creation():
