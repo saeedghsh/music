@@ -1,10 +1,11 @@
 """Representation of the Piano"""
 from typing import Dict, Tuple
 
+from core.frequency import Frequency
 from core.notation import Note
 
 
-def generate_piano_keys(octave_range: Tuple[int, int], a4_frequency: float) -> Dict[str, Note]:
+def generate_piano_keys(octave_range: Tuple[int, int], a4_frequency: Frequency) -> Dict[str, Note]:
     """Generate all notes for piano keys in give octave ranges
 
     NOTE: start of octave_range is inclusive and end of it is exclusive

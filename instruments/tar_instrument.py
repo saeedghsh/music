@@ -1,6 +1,7 @@
 """Representation of the Tar"""
 from typing import Dict, Sequence
 
+from core.frequency import Frequency
 from core.notation import Note, transposition_by_an_octave
 
 
@@ -16,7 +17,7 @@ def _fret_numbers(fret_count: int) -> Sequence[int]:
     return fret_numbers
 
 
-def _generate_tar_strings(fret_count: int, a4_frequency: float) -> Dict[int, Dict[int, Note]]:
+def _generate_tar_strings(fret_count: int, a4_frequency: Frequency) -> Dict[int, Dict[int, Note]]:
     string_1_28_fret = {
         0: Note.from_name("C4", a4_frequency),
         1: Note.from_name("C#4", a4_frequency),
@@ -101,7 +102,7 @@ def _generate_tar_strings(fret_count: int, a4_frequency: float) -> Dict[int, Dic
 
 
 def generate_tar_string(
-    fret_count: int, string_number: int, a4_frequency: float
+    fret_count: int, string_number: int, a4_frequency: Frequency
 ) -> Dict[int, Note]:
     """Tar and Setar"""
     if string_number not in [1, 2, 3, 4, 5, 6]:

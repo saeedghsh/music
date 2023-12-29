@@ -4,6 +4,7 @@ from math import isclose
 
 import pytest
 
+from core.frequency import Frequency
 from core.notation import (
     Accidental,
     AccidentalNote,
@@ -17,6 +18,8 @@ from core.notation import (
     _standardize_note,
     transposition_by_an_octave,
 )
+
+A4_FREQUENCY = Frequency(440)
 
 
 def test_musical_interval_values():
@@ -130,13 +133,13 @@ def test_decompose_note_name_invalid(name):
         _decompose_note_name(name)
 
 
-@pytest.mark.parametrize("a4_frequency", [100, 250, 440])
+@pytest.mark.parametrize("a4_frequency", [Frequency(100), Frequency(250), Frequency(440)])
 @pytest.mark.parametrize(
     "actual_note_name, expected_note_name",
     [("A4", "A5"), ("G#3", "G#4"), ("Fs2", "Fs3"), ("Dk-1", "Dk0")],
 )
 def test_transposition_by_an_octave(
-    actual_note_name: str, expected_note_name: str, a4_frequency: float
+    actual_note_name: str, expected_note_name: str, a4_frequency: Frequency
 ):
     actual_note = Note.from_name(actual_note_name, a4_frequency)
     expected_note = Note.from_name(expected_note_name, a4_frequency)
@@ -174,37 +177,34 @@ def test_standardize_note_invalid(letter, accidental, octave):
 
 
 def test_note_creation():
-    a4_frequency = 440.0
-    note = Note("A4", "A", "", 4, 440.0, a4_frequency)
+    note = Note("A4", "A", "", 4, A4_FREQUENCY, A4_FREQUENCY)
     assert note.name == "A4"
     assert note.letter == "A"
     assert note.accidental == ""
     assert note.octave == 4
-    assert isclose(note.frequency, 440.0)
+    assert note.frequency == 440.0
 
 
 def test_note_creation_fail():
-    a4_frequency = 440
     with pytest.raises(ValueError):
-        Note("A4", "B", "", 4, 440.0, a4_frequency)
+        Note("A4", "B", "", 4, Frequency(440.0), A4_FREQUENCY)
     with pytest.raises(ValueError):
-        Note("A4", "A", "#", 4, 440.0, a4_frequency)
+        Note("A4", "A", "#", 4, Frequency(440.0), A4_FREQUENCY)
     with pytest.raises(ValueError):
-        Note("A4", "A", "", 5, 440.0, a4_frequency)
+        Note("A4", "A", "", 5, Frequency(440.0), A4_FREQUENCY)
     with pytest.raises(ValueError):
-        Note("A4", "A", "", 4, 430.0, a4_frequency)
+        Note("A4", "A", "", 4, Frequency(430.0), A4_FREQUENCY)
     with pytest.raises(ValueError):
-        Note("A4", "A", "", 4, 440.0, 2 * a4_frequency)
+        Note("A4", "A", "", 4, Frequency(440.0), A4_FREQUENCY * 2)
 
 
 def test_note_str_repr():
-    a4_frequency = 440.0
-    note = Note.from_name("A4", a4_frequency)
+    note = Note.from_name("A4", A4_FREQUENCY)
     assert str(note) == "A4"
     assert "A4: 440.0 Hz" in repr(note)
 
 
-@pytest.mark.parametrize("a4_frequency", [10, 100, 440])
+@pytest.mark.parametrize("a4_frequency", [Frequency(10), Frequency(100), Frequency(440)])
 def test_note_from_name(a4_frequency):
     note = Note.from_name("A4", a4_frequency)
     assert note.name == "A4"
@@ -212,10 +212,9 @@ def test_note_from_name(a4_frequency):
 
 
 def test_note_eq():
-    a4_frequency = 440.0
-    note1 = Note("A4", "A", "", 4, 440.0, a4_frequency)
-    note2 = Note.from_name("A4", a4_frequency)
-    note3 = Note("B4", "B", "", 4, 493.8833012561241, a4_frequency)
+    note1 = Note("A4", "A", "", 4, A4_FREQUENCY, A4_FREQUENCY)
+    note2 = Note.from_name("A4", A4_FREQUENCY)
+    note3 = Note("B4", "B", "", 4, Frequency(493.8833012561241), A4_FREQUENCY)
     assert note1 == note2
     assert note1 != note3
     assert note1 == "A4"
@@ -225,8 +224,7 @@ def test_note_eq():
 
 
 def test_note_eq_unsupported():
-    a4_frequency = 440.0
-    note = Note("A4", "A", "", 4, 440.0, a4_frequency)
+    note = Note("A4", "A", "", 4, A4_FREQUENCY, A4_FREQUENCY)
     with pytest.raises(NotImplementedError):
         # pylint: disable=pointless-statement
         # pylint: disable=use-implicit-booleaness-not-comparison

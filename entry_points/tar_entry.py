@@ -4,6 +4,7 @@ import os
 import sys
 from typing import Sequence
 
+from core.frequency import Frequency
 from drawing.tar_drawing import annotate_tar_image
 from instruments.tar_instrument import generate_tar_string
 
@@ -62,7 +63,9 @@ def _parse_arguments(argv: Sequence[str]):
 def main(argv: Sequence[str]):
     # pylint: disable=missing-function-docstring
     args = _parse_arguments(argv)
-    string_notes = generate_tar_string(args.fret_count, args.string_number, args.a4_frequency)
+    string_notes = generate_tar_string(
+        args.fret_count, args.string_number, Frequency(args.a4_frequency)
+    )
     if args.print_out:
         for fret_number, note in string_notes.items():
             print(f"{fret_number}\t{note}")
