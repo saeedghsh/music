@@ -1,5 +1,6 @@
 # Playground for fiddle with musical notes
 
+[![GPLv3 License](https://img.shields.io/badge/license-GPLv3-blue.svg)](https://github.com/saeedghsh/musical_notes/blob/master/LICENSE)  
 [![black](https://github.com/saeedghsh/musical_notes/actions/workflows/formatting.yml/badge.svg?branch=master)](https://github.com/saeedghsh/musical_notes/actions/workflows/formatting.yml)
 [![pylint](https://github.com/saeedghsh/musical_notes/actions/workflows/pylint.yml/badge.svg?branch=master)](https://github.com/saeedghsh/musical_notes/actions/workflows/pylint.yml)
 [![pytest](https://github.com/saeedghsh/musical_notes/actions/workflows/pytest.yml/badge.svg?branch=master)](https://github.com/saeedghsh/musical_notes/actions/workflows/pytest.yml)
@@ -159,4 +160,4 @@ Copyright (C) Saeed Gholami Shahbandi
 ```
  
 NOTE: Portions of this code/project were developed with the assistance of ChatGPT, a product of OpenAI.  
-Distributed with a GNU GENERAL PUBLIC LICENSE; see [LICENSE](https://github.com/saeedghsh/3D_models/blob/master/LICENSE).
+Distributed with a GNU GENERAL PUBLIC LICENSE; see [LICENSE](https://github.com/saeedghsh/musical_notes/blob/master/LICENSE).
