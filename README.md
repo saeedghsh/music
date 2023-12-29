@@ -16,7 +16,6 @@ Iranian music, and consequently the Setar, has [quarter tones](https://en.wikipe
 Therefor a hash-like table listing all notes available for conventional western musical instruments with [semitone](https://en.wikipedia.org/wiki/Semitone) granularity was not enough.
 I started a python script to calculate the note frequencies for that purpose, ... and kinda got carried away... hence this repo.
 
-
 ## Example
 Entry point examples:
 ```bash
@@ -74,8 +73,6 @@ $ python3 -m entry_points.tar_entry --fret-count 27 --string-number 1 -s -f <pat
     <img src="https://github.com/saeedghsh/musical_notes/blob/master/images/tar_small_1290x362_string1_annotated.png" height="500">
 </p>
 
-
-
 ## Tests, coverage, linter, formatter, static type check
 ```bash
 $ black . --check
@@ -99,7 +96,6 @@ $ pytest --cov=. # $ pytest --cov=. --cov-report html; firefox htmlcov/index.htm
 * [ ] fix all TODOs in the code. `pylint` is currently suppress so not to flag them, remove suppressions.
 * [ ] right now we only annotate tar in drawing, should we draw something wo/ existing photos?
 * [ ] `drawing` module is not actually tested and only covered through entry point unit tests. Add unittest for that.
-
 
 ### Documentations
 * [ ] add Setar Photo.
