@@ -82,6 +82,7 @@ $ mypy . --explicit-package-bases
 # TODO
 
 ### Improve/Refactoring
+* [ ] remove `A4_FREQUENCY` from all low-level functions
 * [ ] make use of `Note` class everywhere; `FrequencyCOmputer`, `instruments.py`, `drawing.py`
 * [ ] use `Note.__str__` where-ever note is printed, and make sure it is printer properly
 * [ ] make note name validation a process separate from `decompose_note_name`
