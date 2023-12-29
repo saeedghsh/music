@@ -4,6 +4,7 @@ import os
 import sys
 from typing import Sequence
 
+from core.frequency import Frequency
 from drawing.piano_drawing import draw_piano
 from instruments.piano_instrument import generate_piano_keys
 
@@ -40,7 +41,7 @@ def _parse_arguments(argv: Sequence[str]):
 def main(argv: Sequence[str]):
     # pylint: disable=missing-function-docstring
     args = _parse_arguments(argv)
-    piano_keys = generate_piano_keys(args.octave_range, args.a4_frequency)
+    piano_keys = generate_piano_keys(args.octave_range, Frequency(args.a4_frequency))
     draw_piano(piano_keys, args.visualize, args.save_to_file, args.file_path)
     return os.EX_OK
 

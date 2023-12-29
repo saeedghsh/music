@@ -88,7 +88,7 @@ def _key_color(note: Note) -> str:
 
 
 def _key_label(note: Note) -> str:
-    return f"{note.name} - {note.frequency:.2f} Hz"
+    return f"{note.name} - {note.frequency.value:.2f} Hz"
 
 
 def draw_piano(keys: Dict[str, Note], show: bool, save: bool, file_path: Optional[str]):

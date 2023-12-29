@@ -2,8 +2,9 @@
 import re
 from dataclasses import dataclass
 from enum import Enum
-from math import isclose
 from typing import Any, Callable, Dict, Tuple
+
+from core.frequency import Frequency
 
 STANDARD_NOTES_QUARTERTONE = [
     "C",
@@ -211,14 +212,16 @@ def _standardize_note(letter: str, accidental: str, octave: int) -> Tuple[str, s
     return letter, accidental, octave
 
 
-def _compute_frequency(letter: str, accidental: str, octave: int, a4_frequency: float) -> float:
+def _compute_frequency(
+    letter: str, accidental: str, octave: int, a4_frequency: Frequency
+) -> Frequency:
     """Calculate the frequency of a note."""
     # pylint: disable=invalid-name
     letter, accidental, octave = _standardize_note(letter, accidental, octave)
     note_index = STANDARD_NOTES_QUARTERTONE.index(f"{letter}{accidental}")
     A_index = STANDARD_NOTES_QUARTERTONE.index("A")
     quartertone_steps_from_A4 = note_index - A_index + (octave - 4) * 24
-    return a4_frequency * (2 ** (quartertone_steps_from_A4 / 24))
+    return Frequency(a4_frequency.value * (2 ** (quartertone_steps_from_A4 / 24)))
 
 
 @dataclass
@@ -232,8 +235,8 @@ class Note:
     letter: str
     accidental: str
     octave: int
-    frequency: float
-    a4_frequency: float
+    frequency: Frequency
+    a4_frequency: Frequency
 
     def __str__(self) -> str:
         return self.name
@@ -252,11 +255,11 @@ class Note:
             )
         if octave != self.octave:
             raise ValueError(f"Octave does not match the name: {octave} vs {self.octave}")
-        if not isclose(frequency, self.frequency):
+        if frequency != self.frequency:
             raise ValueError(f"Frequency does not match the name: {frequency} vs {self.frequency}")
 
     @staticmethod
-    def from_name(name: str, a4_frequency: float) -> "Note":
+    def from_name(name: str, a4_frequency: Frequency) -> "Note":
         """Create and return an object of type Note from the given name"""
         letter, accidental, octave = _decompose_note_name(name)
         frequency = _compute_frequency(letter, accidental, octave, a4_frequency)
@@ -289,8 +292,8 @@ class Note:
         )
         return self_standardize_note_name == other_standardize_note_name
 
-    def _eq_to_frequency(self, other_frequency: float) -> bool:
-        return isclose(self.frequency, other_frequency)
+    def _eq_to_frequency(self, other_frequency: Frequency) -> bool:
+        return self.frequency == other_frequency
 
     def _eq_to_note(self, other: "Note") -> bool:
         return self._eq_to_name(other.name) and self._eq_to_frequency(other.frequency)
@@ -313,5 +316,5 @@ def transposition_by_an_octave(note: Note) -> Note:
     """Transposes a note to an octave higher"""
     octave = note.octave + 1
     name = f"{note.letter}{note.accidental}{octave}"
-    frequency = note.frequency * MusicalInterval.OCTAVE.value
+    frequency = Frequency(note.frequency.value * MusicalInterval.OCTAVE.value)
     return Note(name, note.letter, note.accidental, octave, frequency, note.a4_frequency)

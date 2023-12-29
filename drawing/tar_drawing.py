@@ -66,7 +66,7 @@ def _draw_fret(image: np.ndarray, pt1: Tuple[int, int], pt2: Tuple[int, int]):
 
 def _fret_label(string_notes: Dict[int, Note], fret_number: int) -> str:
     note = string_notes[fret_number]
-    return f"{note.name}: {note.frequency:.2f} Hz"
+    return f"{note.name}: {note.frequency.value:.2f} Hz"
 
 
 def _print_fret_label(image: np.ndarray, label: str, position: Tuple[int, int]):
