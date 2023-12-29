@@ -109,10 +109,10 @@ $ pytest --cov=. # $ pytest --cov=. --cov-report html; firefox htmlcov/index.htm
     11:4, 12:[3,4], 13:4, 14:3, 15:4, 16:3, 17:3, 18:4, 19:?, 20:[3,4],
     21:4, 22:4, 23:3, 24:3, 25:4, 26:3, 27:4, 28:?,
   }
-  ```
+```
 
 ### Future Work
-* [ ] `generate_tar_notes` only supports the tuning of `C4-C4-G3-G3-C4-C3`. generalize the tuning.
+* [ ] `tar_string` only supports the tuning of `C4-C4-G3-G3-C4-C3`. generalize the tuning.
 * [ ] add common tuning for different keys ("Dastgah"): Wikipedia has a list (Double check)
 * [ ] Add keys, scales and chords?
 * [ ] Add Qt gui?

@@ -2,58 +2,31 @@
 # pylint: disable=missing-function-docstring
 import pytest
 
-from core.notation import (
-    compute_frequency,
-    decompose_note_name,
-    transposition_by_an_octave,
-)
-from instruments.tar_instrument import generate_tar_notes, print_string_notes
-
-
-def test_print_string_notes(mocker):
-    a4_frequency = 440
-    mocked_print = mocker.patch("builtins.print")
-    string_notes = {
-        0: "E4",
-        1: "F4",
-    }
-    expected_calls = [
-        (0, "E4", compute_frequency(*decompose_note_name("E4"), a4_frequency)),
-        (1, "F4", compute_frequency(*decompose_note_name("F4"), a4_frequency)),
-    ]
-    print_string_notes(string_notes, a4_frequency)
-    assert mocked_print.call_count == len(expected_calls)
-    for call, (fret_number, note_name, frequency) in zip(
-        mocked_print.call_args_list, expected_calls
-    ):
-        args, _ = call
-        expected_string = f"{fret_number}\t{note_name}:\t{frequency} Hz"
-        assert (
-            args[0] == expected_string
-        ), f"Expected print: '{expected_string}', but got: '{args[0]}'"
+from core.notation import transposition_by_an_octave
+from instruments.tar_instrument import tar_string
 
 
 @pytest.mark.parametrize("fret_count", [25, 27, 28])
-def test_generate_tar_notes_valid_fret_counts(fret_count):
-    result = generate_tar_notes(fret_count=fret_count, string_number=1)
+def test_tar_string_valid_fret_counts(fret_count):
+    result = tar_string(fret_count=fret_count, string_number=1, a4_frequency=440)
     assert isinstance(result, dict)
 
 
 @pytest.mark.parametrize("fret_count", [24, 26, 29])
-def test_generate_tar_notes_invalid_fret_counts(fret_count):
+def test_tar_string_invalid_fret_counts(fret_count):
     with pytest.raises(ValueError):
-        generate_tar_notes(fret_count=fret_count, string_number=1)
+        tar_string(fret_count=fret_count, string_number=1, a4_frequency=440)
 
 
 @pytest.mark.parametrize("string_number", [0, 7])
-def test_generate_tar_notes_invalid_string_numbers(string_number):
+def test_tar_string_invalid_string_numbers(string_number):
     with pytest.raises(ValueError):
-        generate_tar_notes(fret_count=27, string_number=string_number)
+        tar_string(fret_count=27, string_number=string_number, a4_frequency=440)
 
 
-def test_generate_tar_notes_sixth_string_transposition():
-    base_notes = generate_tar_notes(fret_count=27, string_number=1)
-    transposed_notes = generate_tar_notes(fret_count=27, string_number=6)
+def test_tar_string_sixth_string_transposition():
+    base_notes = tar_string(fret_count=27, string_number=1, a4_frequency=440)
+    transposed_notes = tar_string(fret_count=27, string_number=6, a4_frequency=440)
 
     for fret, note in base_notes.items():
         expected_transposed_note = transposition_by_an_octave(note)

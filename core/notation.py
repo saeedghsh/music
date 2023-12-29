@@ -149,13 +149,6 @@ def decompose_note_name(name: str) -> Tuple[str, str, int]:
     return letter, accidental, octave
 
 
-def transposition_by_an_octave(note_name: str) -> str:
-    """Transposes a note to an octave higher"""
-    letter, accidental, octave = decompose_note_name(note_name)
-    new_octave = octave + 1
-    return f"{letter}{accidental}{new_octave}"
-
-
 def standard_notes_quartertone() -> List[str]:
     """Return an ordered list of 24 notes in an Octave, equally separated by quartertone
 
@@ -315,3 +308,11 @@ class Note:
         if other_type not in type_dispatch:
             raise NotImplementedError(f"Type {other_type} is not supported for comparison")
         return type_dispatch[other_type](other)
+
+
+def transposition_by_an_octave(note: Note) -> Note:
+    """Transposes a note to an octave higher"""
+    octave = note.octave + 1
+    name = f"{note.letter}{note.accidental}{octave}"
+    frequency = note.frequency * MusicalInterval.OCTAVE.value
+    return Note(name, note.letter, note.accidental, octave, frequency)

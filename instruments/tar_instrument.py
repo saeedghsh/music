@@ -1,99 +1,94 @@
 """Representation of the Tar"""
-from typing import Dict
+from typing import Dict, Sequence
 
-from core.notation import (
-    compute_frequency,
-    decompose_note_name,
-    transposition_by_an_octave,
-)
+from core.notation import Note, transposition_by_an_octave
 
 
-def generate_tar_notes(fret_count: int = 27, string_number: int = 1) -> Dict[int, str]:
-    """Tar and Setar"""
+def _fret_numbers(fret_count: int) -> Sequence[int]:
     if fret_count not in [25, 27, 28]:
         raise ValueError(f"Valid values for fret count are [25, 27, 28], provided: {fret_count}")
-    if string_number not in [1, 2, 3, 4, 5, 6]:
-        raise ValueError(
-            f"Valid values for string number are [1, ..., 6], provided: {string_number}"
-        )
-    string_1_28_fret = {
-        0: "C4",
-        1: "C#4",
-        2: "Dk4",
-        3: "D4",
-        4: "Eb4",
-        5: "Ek4",
-        6: "E4",
-        7: "F4",
-        8: "Fs4",
-        9: "F#4",
-        10: "Gk4",
-        11: "G4",
-        12: "Ab4",
-        13: "Ak4",
-        14: "A4",
-        15: "Bb4",
-        16: "Bk4",
-        17: "B4",
-        18: "C5",
-        19: "C#5",
-        20: "Dk5",
-        21: "D5",
-        22: "Eb5",
-        23: "Ek5",
-        24: "E5",
-        25: "F5",
-        26: "F#5",
-        27: "G5",
-        28: "G#5",
-    }
-    string_3_28_fret = {
-        0: "G3",
-        1: "G#3",
-        2: "Ak3",
-        3: "A3",
-        4: "Bb3",
-        5: "Bk3",
-        6: "B3",
-        7: "C4",
-        8: "Cs4",
-        9: "C#4",
-        10: "Dk4",
-        11: "D4",
-        12: "Eb4",
-        13: "Ek4",
-        14: "E4",
-        15: "F4",
-        16: "Fs4",
-        17: "F#4",
-        18: "G4",
-        19: "G#4",
-        20: "Ak4",
-        21: "A4",
-        22: "Bb4",
-        23: "Bk4",
-        24: "B4",
-        25: "C5",
-        26: "C#5",
-        27: "D5",
-        28: "D#5",
-    }
     if fret_count == 25:
         fret_numbers = [n for n in range(0, 28) if n not in [8, 19]]
     if fret_count == 27:
         fret_numbers = list(range(0, 28))
     if fret_count == 28:
         fret_numbers = list(range(0, 29))
+    return fret_numbers
 
+
+def _tar_strings(fret_count: int, a4_frequency: float) -> Dict[int, Dict[int, Note]]:
+    string_1_28_fret = {
+        0: Note.from_name("C4", a4_frequency),
+        1: Note.from_name("C#4", a4_frequency),
+        2: Note.from_name("Dk4", a4_frequency),
+        3: Note.from_name("D4", a4_frequency),
+        4: Note.from_name("Eb4", a4_frequency),
+        5: Note.from_name("Ek4", a4_frequency),
+        6: Note.from_name("E4", a4_frequency),
+        7: Note.from_name("F4", a4_frequency),
+        8: Note.from_name("Fs4", a4_frequency),
+        9: Note.from_name("F#4", a4_frequency),
+        10: Note.from_name("Gk4", a4_frequency),
+        11: Note.from_name("G4", a4_frequency),
+        12: Note.from_name("Ab4", a4_frequency),
+        13: Note.from_name("Ak4", a4_frequency),
+        14: Note.from_name("A4", a4_frequency),
+        15: Note.from_name("Bb4", a4_frequency),
+        16: Note.from_name("Bk4", a4_frequency),
+        17: Note.from_name("B4", a4_frequency),
+        18: Note.from_name("C5", a4_frequency),
+        19: Note.from_name("C#5", a4_frequency),
+        20: Note.from_name("Dk5", a4_frequency),
+        21: Note.from_name("D5", a4_frequency),
+        22: Note.from_name("Eb5", a4_frequency),
+        23: Note.from_name("Ek5", a4_frequency),
+        24: Note.from_name("E5", a4_frequency),
+        25: Note.from_name("F5", a4_frequency),
+        26: Note.from_name("F#5", a4_frequency),
+        27: Note.from_name("G5", a4_frequency),
+        28: Note.from_name("G#5", a4_frequency),
+    }
+    string_3_28_fret = {
+        0: Note.from_name("G3", a4_frequency),
+        1: Note.from_name("G#3", a4_frequency),
+        2: Note.from_name("Ak3", a4_frequency),
+        3: Note.from_name("A3", a4_frequency),
+        4: Note.from_name("Bb3", a4_frequency),
+        5: Note.from_name("Bk3", a4_frequency),
+        6: Note.from_name("B3", a4_frequency),
+        7: Note.from_name("C4", a4_frequency),
+        8: Note.from_name("Cs4", a4_frequency),
+        9: Note.from_name("C#4", a4_frequency),
+        10: Note.from_name("Dk4", a4_frequency),
+        11: Note.from_name("D4", a4_frequency),
+        12: Note.from_name("Eb4", a4_frequency),
+        13: Note.from_name("Ek4", a4_frequency),
+        14: Note.from_name("E4", a4_frequency),
+        15: Note.from_name("F4", a4_frequency),
+        16: Note.from_name("Fs4", a4_frequency),
+        17: Note.from_name("F#4", a4_frequency),
+        18: Note.from_name("G4", a4_frequency),
+        19: Note.from_name("G#4", a4_frequency),
+        20: Note.from_name("Ak4", a4_frequency),
+        21: Note.from_name("A4", a4_frequency),
+        22: Note.from_name("Bb4", a4_frequency),
+        23: Note.from_name("Bk4", a4_frequency),
+        24: Note.from_name("B4", a4_frequency),
+        25: Note.from_name("C5", a4_frequency),
+        26: Note.from_name("C#5", a4_frequency),
+        27: Note.from_name("D5", a4_frequency),
+        28: Note.from_name("D#5", a4_frequency),
+    }
+    fret_numbers = _fret_numbers(fret_count)
     strings = {}
     strings[1] = {
-        fret_number: fret_note
-        for fret_number, fret_note in string_1_28_fret.items()
+        fret_number: note
+        for fret_number, note in string_1_28_fret.items()
         if fret_number in fret_numbers
     }
     strings[3] = {
-        fret_number: fret_note
-        for fret_number, fret_note in string_3_28_fret.items()
+        fret_number: note
+        for fret_number, note in string_3_28_fret.items()
         if fret_number in fret_numbers
     }
     strings[2] = strings[1]
@@ -102,12 +97,14 @@ def generate_tar_notes(fret_count: int = 27, string_number: int = 1) -> Dict[int
     strings[6] = {
         fret_number: transposition_by_an_octave(note) for fret_number, note in strings[1].items()
     }
+    return strings
+
+
+def tar_string(fret_count: int, string_number: int, a4_frequency: float) -> Dict[int, Note]:
+    """Tar and Setar"""
+    if string_number not in [1, 2, 3, 4, 5, 6]:
+        raise ValueError(
+            f"Valid values for string number are [1, ..., 6], provided: {string_number}"
+        )
+    strings = _tar_strings(fret_count, a4_frequency)
     return strings[string_number]
-
-
-def print_string_notes(string_notes: dict, a4_frequency: float):
-    """Print out note names and frequencies of the string"""
-    for fret_number, note_name in string_notes.items():
-        letter, accidental, octave = decompose_note_name(note_name)
-        frequency = compute_frequency(letter, accidental, octave, a4_frequency)
-        print(f"{fret_number}\t{note_name}:\t{frequency} Hz")

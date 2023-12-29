@@ -132,26 +132,19 @@ def test_decompose_note_name_invalid(name):
         decompose_note_name(name)
 
 
+@pytest.mark.parametrize("a4_frequency", [100, 250, 440])
 @pytest.mark.parametrize(
-    "note_name, expected", [("A4", "A5"), ("G#3", "G#4"), ("Fs2", "Fs3"), ("Dk-1", "Dk0")]
+    "actual_note_name, expected_note_name",
+    [("A4", "A5"), ("G#3", "G#4"), ("Fs2", "Fs3"), ("Dk-1", "Dk0")],
 )
-def test_transposition_by_an_octave(note_name, expected):
+def test_transposition_by_an_octave(
+    actual_note_name: str, expected_note_name: str, a4_frequency: float
+):
+    actual_note = Note.from_name(actual_note_name, a4_frequency)
+    expected_note = Note.from_name(expected_note_name, a4_frequency)
     assert (
-        transposition_by_an_octave(note_name) == expected
-    ), f"Incorrect transposition for {note_name}"
-
-
-@pytest.mark.parametrize(
-    "note_name",
-    [
-        "G#10",  # Octave out of range after transposition
-        "H2",  # Invalid letter
-        "Csharp4",  # Incorrect accidental format
-    ],
-)
-def test_transposition_by_an_octave_invalid(note_name):
-    with pytest.raises(ValueError):
-        transposition_by_an_octave(note_name)
+        transposition_by_an_octave(actual_note) == expected_note
+    ), f"Incorrect transposition for {actual_note}"
 
 
 def test_standard_notes_quartertone():
