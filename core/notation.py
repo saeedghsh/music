@@ -227,11 +227,15 @@ def _compute_frequency(letter: str, accidental: str, octave: int, a4_frequency: 
 class Note:
     """A representation of musical note with helper functions"""
 
+    # pylint: disable=fixme
+    # TODO: Except a4_frequency, all others could be optional at creation (use builder pattern?)
+
     name: str
     letter: str
     accidental: str
     octave: int
     frequency: float
+    a4_frequency: float
 
     def __str__(self) -> str:
         return self.name
@@ -241,16 +245,24 @@ class Note:
 
     def __post_init__(self):
         letter, accidental, octave = _decompose_note_name(self.name)
-        assert letter == self.letter
-        assert accidental == self.accidental
-        assert octave == self.octave
+        frequency = _compute_frequency(letter, accidental, octave, self.a4_frequency)
+        if letter != self.letter:
+            raise ValueError(f"Letter does not match the name: {letter} vs {self.name}")
+        if accidental != self.accidental:
+            raise ValueError(
+                f"Accidental does not match the name: {accidental} vs {self.accidental}"
+            )
+        if octave != self.octave:
+            raise ValueError(f"Octave does not match the name: {octave} vs {self.octave}")
+        if not isclose(frequency, self.frequency):
+            raise ValueError(f"Frequency does not match the name: {frequency} vs {self.frequency}")
 
     @staticmethod
     def from_name(name: str, a4_frequency: float) -> "Note":
         """Create and return an object of type Note from the given name"""
         letter, accidental, octave = _decompose_note_name(name)
         frequency = _compute_frequency(letter, accidental, octave, a4_frequency)
-        return Note(name, letter, accidental, octave, frequency)
+        return Note(name, letter, accidental, octave, frequency, a4_frequency)
 
     def _eq_to_name(self, other_name: str) -> bool:
         (
@@ -286,6 +298,8 @@ class Note:
         return self._eq_to_name(other.name) and self._eq_to_frequency(other.frequency)
 
     def __eq__(self, other: Any) -> bool:
+        # pylint: disable=fixme
+        # TODO: should we consider a4_frequency when comparing based on note and name?
         type_dispatch: Dict[type, Callable] = {
             str: self._eq_to_name,
             float: self._eq_to_frequency,
@@ -302,4 +316,4 @@ def transposition_by_an_octave(note: Note) -> Note:
     octave = note.octave + 1
     name = f"{note.letter}{note.accidental}{octave}"
     frequency = note.frequency * MusicalInterval.OCTAVE.value
-    return Note(name, note.letter, note.accidental, octave, frequency)
+    return Note(name, note.letter, note.accidental, octave, frequency, note.a4_frequency)

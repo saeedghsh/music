@@ -174,7 +174,8 @@ def test_standardize_note_invalid(letter, accidental, octave):
 
 
 def test_note_creation():
-    note = Note("A4", "A", "", 4, 440.0)
+    a4_frequency = 440.0
+    note = Note("A4", "A", "", 4, 440.0, a4_frequency)
     assert note.name == "A4"
     assert note.letter == "A"
     assert note.accidental == ""
@@ -182,8 +183,23 @@ def test_note_creation():
     assert isclose(note.frequency, 440.0)
 
 
+def test_note_creation_fail():
+    a4_frequency = 440
+    with pytest.raises(ValueError):
+        Note("A4", "B", "", 4, 440.0, a4_frequency)
+    with pytest.raises(ValueError):
+        Note("A4", "A", "#", 4, 440.0, a4_frequency)
+    with pytest.raises(ValueError):
+        Note("A4", "A", "", 5, 440.0, a4_frequency)
+    with pytest.raises(ValueError):
+        Note("A4", "A", "", 4, 430.0, a4_frequency)
+    with pytest.raises(ValueError):
+        Note("A4", "A", "", 4, 440.0, 2 * a4_frequency)
+
+
 def test_note_str_repr():
-    note = Note("A4", "A", "", 4, 440.0)
+    a4_frequency = 440.0
+    note = Note.from_name("A4", a4_frequency)
     assert str(note) == "A4"
     assert "A4: 440.0 Hz" in repr(note)
 
@@ -196,9 +212,10 @@ def test_note_from_name(a4_frequency):
 
 
 def test_note_eq():
-    note1 = Note("A4", "A", "", 4, 440.0)
-    note2 = Note.from_name("A4", 440.0)
-    note3 = Note("B4", "B", "", 4, 493.88)
+    a4_frequency = 440.0
+    note1 = Note("A4", "A", "", 4, 440.0, a4_frequency)
+    note2 = Note.from_name("A4", a4_frequency)
+    note3 = Note("B4", "B", "", 4, 493.8833012561241, a4_frequency)
     assert note1 == note2
     assert note1 != note3
     assert note1 == "A4"
@@ -208,7 +225,8 @@ def test_note_eq():
 
 
 def test_note_eq_unsupported():
-    note = Note("A4", "A", "", 4, 440.0)
+    a4_frequency = 440.0
+    note = Note("A4", "A", "", 4, 440.0, a4_frequency)
     with pytest.raises(NotImplementedError):
         # pylint: disable=pointless-statement
         # pylint: disable=use-implicit-booleaness-not-comparison
