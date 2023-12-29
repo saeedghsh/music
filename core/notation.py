@@ -257,7 +257,7 @@ class Note:
         return self.name
 
     def __repr__(self) -> str:
-        return f"Note {self.name} - {self.frequency} Hz"
+        return f"{self.name}: {self.frequency} Hz"
 
     def __post_init__(self):
         letter, accidental, octave = decompose_note_name(self.name)

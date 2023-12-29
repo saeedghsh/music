@@ -242,7 +242,7 @@ def test_note_creation():
 def test_note_str_repr():
     note = Note("A4", "A", "", 4, 440.0)
     assert str(note) == "A4"
-    assert "Note A4 - 440.0 Hz" in repr(note)
+    assert "A4: 440.0 Hz" in repr(note)
 
 
 @pytest.mark.parametrize("a4_frequency", [10, 100, 440])

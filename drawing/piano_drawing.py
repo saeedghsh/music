@@ -1,10 +1,12 @@
 """Piano drawing utils"""
 # pylint: disable=no-member
 from functools import partial
-from typing import Optional, Tuple
+from typing import Dict, Optional, Tuple
 
 import cv2
 import numpy as np
+
+from core.notation import Note
 
 _WHITE_KEY_HEIGHT = 300
 _WHITE_KEY_WIDTH = int(0.1 * _WHITE_KEY_HEIGHT)
@@ -74,41 +76,39 @@ def _key_white(image: np.ndarray, x: int, label: str):
 
 
 def _image_size(keys: dict) -> Tuple[int, int]:
-    num_black_keys = len([_ for _, accidental, _ in keys if accidental == "#"])
+    num_black_keys = len([1 for note in keys.values() if note.accidental == "#"])
     num_white_keys = len(keys) - num_black_keys
     piano_width = num_white_keys * _WHITE_KEY_WIDTH
     piano_height = _WHITE_KEY_HEIGHT
     return piano_width, piano_height
 
 
-def _key_color(key: Tuple[str, str, int]) -> str:
-    _, accidental, _ = key
-    return "black" if accidental == "#" else "white"
+def _key_color(note: Note) -> str:
+    return "black" if note.accidental == "#" else "white"
 
 
-def _key_label(key: Tuple[str, str, int], freq) -> str:
-    note, accidental, octave = key
-    return f"{note}{accidental}{octave}: {freq:.2f} Hz"
+def _key_label(note: Note) -> str:
+    return f"{note.name} - {note.frequency:.2f} Hz"
 
 
-def draw_piano(keys: dict, show: bool, save: bool, file_path: Optional[str]):
+def draw_piano(keys: Dict[str, Note], show: bool, save: bool, file_path: Optional[str]):
     """Create an image to draw the piano"""
 
     width, height = _image_size(keys)
     piano = np.ones((height, width, 3), dtype=np.uint8) * np.uint8(255)
 
     x = 0
-    for key, freq in keys.items():
-        if _key_color(key) == "white":
-            _key_white(piano, x, _key_label(key, freq))
+    for note in keys.values():
+        if _key_color(note) == "white":
+            _key_white(piano, x, _key_label(note))
             x += _WHITE_KEY_WIDTH
 
     # Have to draw all blacks after whites,
     # otherwise drawing a white after black will upset the black
     x = 0
-    for key, freq in keys.items():
-        if _key_color(key) == "black":
-            _key_black(piano, x - _BLACK_KEY_WIDTH // 2, _key_label(key, freq))
+    for note in keys.values():
+        if _key_color(note) == "black":
+            _key_black(piano, x - _BLACK_KEY_WIDTH // 2, _key_label(note))
         else:
             x += _WHITE_KEY_WIDTH
 

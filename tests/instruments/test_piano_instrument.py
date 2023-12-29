@@ -17,18 +17,19 @@ from instruments.piano_instrument import generate_piano_keys
 def test_generate_piano_keys(octave_range, expected_keys_count, a4_frequency):
     keys = generate_piano_keys(octave_range, a4_frequency)
     assert len(keys) > 0, "No keys generated"
-    for key, freq in keys.items():
-        assert len(key) == 3
-        note, accidental, octave = key
+    for _, note in keys.items():
+        assert note.letter in ["C", "D", "E", "F", "G", "A", "B"], f"Invalid note {note.letter}"
+        if note.letter in ["E", "B"]:
+            assert (
+                note.accidental != "#"
+            ), f"Invalid accidental {note.accidental} for note {note.letter}"
 
-        assert note in ["C", "D", "E", "F", "G", "A", "B"], f"Invalid note {note}"
-        if note in ["E", "B"]:
-            assert accidental != "#", f"Invalid accidental {accidental} for note {note}"
-
-        expected_frequency = compute_frequency(note, accidental, octave, a4_frequency)
+        expected_frequency = compute_frequency(
+            note.letter, note.accidental, note.octave, a4_frequency
+        )
         assert (
-            freq == expected_frequency
-        ), f"Incorrect frequency for {key}: {freq} vs {expected_frequency}"
+            note.frequency == expected_frequency
+        ), f"Incorrect frequency for {note.name}: {note.frequency} vs {expected_frequency}"
     assert len(keys) == expected_keys_count, f"Expected {expected_keys_count} keys, got {len(keys)}"
 
 

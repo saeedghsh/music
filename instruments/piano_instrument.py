@@ -1,10 +1,10 @@
 """Representation of the Piano"""
-from typing import Tuple
+from typing import Dict, Tuple
 
-from core.notation import compute_frequency
+from core.notation import Note
 
 
-def generate_piano_keys(octave_range: Tuple[int, int], a4_frequency: float) -> dict:
+def generate_piano_keys(octave_range: Tuple[int, int], a4_frequency: float) -> Dict[str, Note]:
     """Generate all notes for piano keys in give octave ranges
 
     NOTE: start of octave_range is inclusive and end of it is exclusive
@@ -15,10 +15,10 @@ def generate_piano_keys(octave_range: Tuple[int, int], a4_frequency: float) -> d
         raise ValueError("Upper range must be greater than lower range")
     keys = {}
     for octave in range(*octave_range):
-        for note in ["C", "D", "E", "F", "G", "A", "B"]:
+        for letter in ["C", "D", "E", "F", "G", "A", "B"]:
             for accidental in ["", "#"]:
-                if f"{note}{accidental}" in ["E#", "B#"]:
+                if f"{letter}{accidental}" in ["E#", "B#"]:
                     continue
-                key = (note, accidental, octave)
-                keys[key] = compute_frequency(*key, a4_frequency)
+                name = f"{letter}{accidental}{octave}"
+                keys[name] = Note.from_name(name, a4_frequency)
     return keys
