@@ -49,6 +49,13 @@ def _parse_arguments(argv: Sequence[str]):
         required=False,
         help="for saving",
     )
+    parser.add_argument(
+        "-a4",
+        "--a4-frequency",
+        type=float,
+        default=440,
+        help="Frequency for the reference note A4",
+    )
     return parser.parse_args(argv)
 
 
@@ -57,9 +64,11 @@ def main(argv: Sequence[str]):
     args = _parse_arguments(argv)
     string_notes = generate_tar_notes(args.fret_count, args.string_number)
     if args.print_out:
-        print_string_notes(string_notes)
+        print_string_notes(string_notes, args.a4_frequency)
     if args.visualize or args.save_to_file:
-        annotate_tar_image(string_notes, args.visualize, args.save_to_file, args.file_path)
+        annotate_tar_image(
+            string_notes, args.visualize, args.save_to_file, args.file_path, args.a4_frequency
+        )
     return os.EX_OK
 
 

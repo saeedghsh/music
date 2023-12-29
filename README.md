@@ -71,18 +71,17 @@ $ python3 -m entry_points.tar_entry --fret-count 27 --string-number 1 -s -f <pat
 
 Tests, coverage, linter, formatter, static type check:
 ```bash
-$ pytest
-$ pylint $(git ls-files '*.py')
-$ pytest --cov=. # $ pytest --cov=. --cov-report html; firefox htmlcov/index.html
 $ black . --check
 $ isort . --check-only
 $ mypy . --explicit-package-bases
+$ pylint $(git ls-files '*.py')
+$ pytest
+$ pytest --cov=. # $ pytest --cov=. --cov-report html; firefox htmlcov/index.html
 ```
 
 # TODO
 
 ### Improve/Refactoring
-* [ ] remove `A4_FREQUENCY` from all low-level functions
 * [ ] make use of `Note` class everywhere; `FrequencyCOmputer`, `instruments.py`, `drawing.py`
 * [ ] use `Note.__str__` where-ever note is printed, and make sure it is printer properly
 * [ ] make note name validation a process separate from `decompose_note_name`
@@ -121,6 +120,7 @@ $ mypy . --explicit-package-bases
 * [ ] add audio and make it interactive?
 
 ### Done
+* [x] remove `A4_FREQUENCY` from all low-level functions
 * [x] add test: complete coverage
 * [x] CI: static type checker
 * [x] CI: formatter + "import sort"

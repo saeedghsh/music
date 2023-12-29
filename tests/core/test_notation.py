@@ -245,15 +245,16 @@ def test_note_str_repr():
     assert "Note A4 - 440.0 Hz" in repr(note)
 
 
-def test_note_from_name():
-    note = Note.from_name("A4")
+@pytest.mark.parametrize("a4_frequency", [10, 100, 440])
+def test_note_from_name(a4_frequency):
+    note = Note.from_name("A4", a4_frequency)
     assert note.name == "A4"
-    assert note.frequency == 440.0
+    assert note.frequency == a4_frequency
 
 
 def test_note_eq():
     note1 = Note("A4", "A", "", 4, 440.0)
-    note2 = Note.from_name("A4")
+    note2 = Note.from_name("A4", 440.0)
     note3 = Note("B4", "B", "", 4, 493.88)
     assert note1 == note2
     assert note1 != note3

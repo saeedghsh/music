@@ -232,9 +232,7 @@ def standardize_note(letter: str, accidental: str, octave: int) -> Tuple[str, st
     return letter, accidental, octave
 
 
-def compute_frequency(
-    letter: str, accidental: str, octave: int, a4_frequency: float = A4_FREQUENCY
-) -> float:
+def compute_frequency(letter: str, accidental: str, octave: int, a4_frequency: float) -> float:
     """Calculate the frequency of a note."""
     # pylint: disable=invalid-name
     letter, accidental, octave = standardize_note(letter, accidental, octave)
@@ -268,7 +266,7 @@ class Note:
         assert octave == self.octave
 
     @staticmethod
-    def from_name(name: str, a4_frequency: float = A4_FREQUENCY) -> "Note":
+    def from_name(name: str, a4_frequency: float) -> "Note":
         """Create and return an object of type Note from the given name"""
         letter, accidental, octave = decompose_note_name(name)
         frequency = compute_frequency(letter, accidental, octave, a4_frequency)

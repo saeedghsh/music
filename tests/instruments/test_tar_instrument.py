@@ -11,16 +11,17 @@ from instruments.tar_instrument import generate_tar_notes, print_string_notes
 
 
 def test_print_string_notes(mocker):
+    a4_frequency = 440
     mocked_print = mocker.patch("builtins.print")
     string_notes = {
         0: "E4",
         1: "F4",
     }
     expected_calls = [
-        (0, "E4", compute_frequency(*decompose_note_name("E4"))),
-        (1, "F4", compute_frequency(*decompose_note_name("F4"))),
+        (0, "E4", compute_frequency(*decompose_note_name("E4"), a4_frequency)),
+        (1, "F4", compute_frequency(*decompose_note_name("F4"), a4_frequency)),
     ]
-    print_string_notes(string_notes)
+    print_string_notes(string_notes, a4_frequency)
     assert mocked_print.call_count == len(expected_calls)
     for call, (fret_number, note_name, frequency) in zip(
         mocked_print.call_args_list, expected_calls

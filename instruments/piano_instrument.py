@@ -4,7 +4,7 @@ from typing import Tuple
 from core.notation import compute_frequency
 
 
-def generate_piano_keys(octave_range: Tuple[int, int] = (0, 8)) -> dict:
+def generate_piano_keys(octave_range: Tuple[int, int], a4_frequency: float) -> dict:
     """Generate all notes for piano keys in give octave ranges
 
     NOTE: start of octave_range is inclusive and end of it is exclusive
@@ -20,5 +20,5 @@ def generate_piano_keys(octave_range: Tuple[int, int] = (0, 8)) -> dict:
                 if f"{note}{accidental}" in ["E#", "B#"]:
                     continue
                 key = (note, accidental, octave)
-                keys[key] = compute_frequency(*key)
+                keys[key] = compute_frequency(*key, a4_frequency)
     return keys

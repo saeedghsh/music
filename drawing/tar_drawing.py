@@ -64,10 +64,10 @@ def _draw_fret(image: np.ndarray, pt1: Tuple[int, int], pt2: Tuple[int, int]):
     cv2.line(image, pt1, pt2, _FRET_LINE_COLOR, _FRET_LINE_THICKNESS)
 
 
-def _fret_label(string_notes: Dict[int, str], fret_number: int) -> str:
+def _fret_label(string_notes: Dict[int, str], fret_number: int, a4_frequency: float) -> str:
     note = string_notes[fret_number]
     letter, accidental, octave = decompose_note_name(note)
-    frequency = compute_frequency(letter, accidental, octave)
+    frequency = compute_frequency(letter, accidental, octave, a4_frequency)
     return f"{note}: {frequency:.2f} Hz"
 
 
@@ -84,7 +84,11 @@ def _print_fret_label(image: np.ndarray, label: str, position: Tuple[int, int]):
 
 
 def annotate_tar_image(
-    string_notes: Dict[int, str], show: bool, save: bool, file_path: Optional[str]
+    string_notes: Dict[int, str],
+    show: bool,
+    save: bool,
+    file_path: Optional[str],
+    a4_frequency: float,
 ):
     """Annotate a tar image, show and/or save per argument setting"""
     if len(string_notes) != 28:
@@ -98,7 +102,9 @@ def annotate_tar_image(
     fret_positions_row = INSTRUMENTS["tar"]["small_image"]["fret_position_row_27_fret"]
     for fret_number, row in fret_positions_row.items():
         _draw_fret(tar_img, (col_min, row), (col_max, row))
-        _print_fret_label(tar_img, _fret_label(string_notes, fret_number), (col_max + 20, row))
+        _print_fret_label(
+            tar_img, _fret_label(string_notes, fret_number, a4_frequency), (col_max + 20, row)
+        )
 
     if save:
         if file_path is None:

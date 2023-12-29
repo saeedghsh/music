@@ -19,13 +19,28 @@ def _parse_arguments(argv: Sequence[str]):
         required=False,
         help="for saving",
     )
+    parser.add_argument(
+        "-o",
+        "--octave-range",
+        nargs="+",
+        type=int,
+        default=[0, 8],
+        help="Octave range",
+    )
+    parser.add_argument(
+        "-a4",
+        "--a4-frequency",
+        type=float,
+        default=440,
+        help="Frequency for the reference note A4",
+    )
     return parser.parse_args(argv)
 
 
 def main(argv: Sequence[str]):
     # pylint: disable=missing-function-docstring
     args = _parse_arguments(argv)
-    piano_keys = generate_piano_keys()
+    piano_keys = generate_piano_keys(args.octave_range, args.a4_frequency)
     draw_piano(piano_keys, args.visualize, args.save_to_file, args.file_path)
     return os.EX_OK
 
