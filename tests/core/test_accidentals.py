@@ -3,11 +3,8 @@
 import pytest
 
 from core.accidentals import Accidental, AccidentalNote, AccidentalSymbol
-from core.frequency import Frequency
 from core.intervals import MusicalInterval
 from core.symbols import Symbol
-
-A4_FREQUENCY = Frequency(440)
 
 
 def test_accidental_creation():
