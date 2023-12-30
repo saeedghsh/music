@@ -72,19 +72,22 @@ def _decompose_name(name: str) -> Tuple[str, str, int]:
     # pylint: disable=fixme
     # TODO: B#9 is technically out of range, but this function does not notice it!
 
+    def _pop_first(lst: list) -> str:
+        return lst.pop(0) if len(lst) > 0 else ""
+
     octave = _trailing_number(name)
     OctaveRegister.validate(octave)
 
-    octave_char_length = len(str(octave))
-    if len(name[:-octave_char_length]) == 1:
-        letter, accidental = name[0].upper(), ""
-    elif len(name[:-octave_char_length]) == 2:
-        letter, accidental = name[0].upper(), name[1].lower()
-    else:
-        raise ValueError(f"name cannot be more that 2 characters (excluding octave) - note:{name}")
+    name_wo_octave = list(name[: -len(str(octave))])
 
+    letter = _pop_first(name_wo_octave)
     _validate_letter(letter)
+
+    accidental = _pop_first(name_wo_octave)
     AccidentalNote.validate(accidental)
+
+    if len(name_wo_octave) != 0:
+        raise ValueError(f"name (wo octave) cannot be more that 2 char: {name_wo_octave}")
 
     return letter, accidental, octave
 
