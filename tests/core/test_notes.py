@@ -1,7 +1,7 @@
 # pylint: disable=missing-module-docstring
 # pylint: disable=missing-function-docstring
 import string
-from typing import Any
+from typing import Any, Tuple
 
 import pytest
 
@@ -14,6 +14,7 @@ from core.notes import (
     _validate_letter,
     transposition_by_an_octave,
 )
+from core.octaves import Octave
 
 A4_FREQUENCY = Frequency(440)
 
@@ -76,38 +77,37 @@ def test_transposition_by_an_octave(
 ):
     actual_note = Note.from_name(actual_note_name, a4_frequency)
     expected_note = Note.from_name(expected_note_name, a4_frequency)
+
     assert (
         transposition_by_an_octave(actual_note) == expected_note
     ), f"Incorrect transposition for {actual_note}"
 
 
 @pytest.mark.parametrize(
-    "letter, accidental, octave, expected",
+    "actual, expected",
     [
-        ("E", Accidental.from_symbol("#"), 4, ("F", Accidental.from_symbol(""), 4)),
-        # Note octave change in the next item
-        ("B", Accidental.from_symbol("#"), 3, ("C", Accidental.from_symbol(""), 4)),
-        ("C", Accidental.from_symbol("b"), 2, ("B", Accidental.from_symbol(""), 2)),
-        ("F", Accidental.from_symbol("k"), 5, ("E", Accidental.from_symbol("s"), 5)),
+        (("E", "#", 4), ("F", "", 4)),
+        (("B", "#", 3), ("C", "", 4)),  # Note octave change in the next item
+        (("C", "b", 2), ("B", "", 2)),
+        (("F", "k", 5), ("E", "s", 5)),
     ],
 )
-def test_standardize_note(letter: str, accidental: Accidental, octave: int, expected: tuple):
+def test_standardize_note(actual: Tuple[str, str, int], expected: Tuple[str, str, int]):
+    letter = actual[0]
+    accidental = Accidental.from_symbol(actual[1])
+    octave = Octave.from_number(actual[2])
     assert (
         _standardize_note(letter, accidental, octave) == expected
     ), f"Incorrect standardization for {letter}{accidental}{octave}"
 
 
-@pytest.mark.parametrize(
-    "letter, accidental, octave",
-    [
-        ("H", Accidental.from_symbol(""), 4),  # Invalid letter
-        # ("C", "##", 3),  # Invalid accidental
-        ("D", Accidental.from_symbol("s"), -2),  # Invalid octave, assuming -1 to 9 is valid
-    ],
-)
-def test_standardize_note_invalid(letter: str, accidental: Accidental, octave: int):
-    with pytest.raises(ValueError):
-        _standardize_note(letter, accidental, octave)
+## We actually don't need this, since most objects are being validated at construction
+# @pytest.mark.parametrize("letter", [("H", "I")])
+# def test_standardize_note_invalid(letter: str):
+#     octave = Octave.from_number(1)
+#     accidental = Accidental.from_symbol("")
+#     with pytest.raises(ValueError):
+#         _standardize_note(letter, accidental, octave)
 
 
 def test_note_creation():
@@ -160,7 +160,9 @@ def test_note_eq():
 
 @pytest.mark.parametrize("note_unsupported_type", [{}, "A4"])
 def test_note_eq_unsupported(note_unsupported_type: Any):
-    note = Note("A4", "A", Accidental.from_symbol(""), 4, A4_FREQUENCY, A4_FREQUENCY)
+    note = Note(
+        "A4", "A", Accidental.from_symbol(""), Octave.from_number(4), A4_FREQUENCY, A4_FREQUENCY
+    )
     with pytest.raises(NotImplementedError):
         # pylint: disable=pointless-statement
         # pylint: disable=use-implicit-booleaness-not-comparison

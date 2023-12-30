@@ -6,7 +6,7 @@ from typing import Any, Callable, Dict, Tuple, Union
 from core.accidentals import Accidental, AccidentalNote
 from core.frequency import Frequency
 from core.intervals import MusicalInterval
-from core.octaves import OctaveRegister
+from core.octaves import Octave
 
 STANDARD_NOTES_QUARTERTONE = [
     "C",
@@ -64,7 +64,7 @@ def _validate_letter(letter: str):
         raise ValueError(f"Invalid note letter: {letter}")
 
 
-def _decompose_name(name: str) -> Tuple[str, Accidental, int]:
+def _decompose_name(name: str) -> Tuple[str, Accidental, Octave]:
     """Return (letter, accidental, octave) from the name
 
     It validates the name correctness.
@@ -75,11 +75,9 @@ def _decompose_name(name: str) -> Tuple[str, Accidental, int]:
     def _pop_first(lst: list) -> str:
         return lst.pop(0) if len(lst) > 0 else ""
 
-    octave = _trailing_number(name)
-    OctaveRegister.validate(octave)
+    octave = Octave.from_number(_trailing_number(name))
 
     name_wo_octave = list(name[: -len(str(octave))])
-
     letter = _pop_first(name_wo_octave)
     _validate_letter(letter)
 
@@ -93,8 +91,8 @@ def _decompose_name(name: str) -> Tuple[str, Accidental, int]:
 
 
 def _standardize_note(
-    letter: str, accidental: Accidental, octave: int
-) -> Tuple[str, Accidental, int]:
+    letter: str, accidental: Accidental, octave: Octave
+) -> Tuple[str, Accidental, Octave]:
     """Return a standard note, given any input note
 
     Makes sure that the note belong set of "standard notes"
@@ -114,14 +112,14 @@ def _standardize_note(
 
 
 def _compute_frequency(
-    letter: str, accidental: Accidental, octave: int, a4_frequency: Frequency
+    letter: str, accidental: Accidental, octave: Octave, a4_frequency: Frequency
 ) -> Frequency:
     """Calculate the frequency of a note."""
     # pylint: disable=invalid-name
     letter, accidental, octave = _standardize_note(letter, accidental, octave)
     note_index = STANDARD_NOTES_QUARTERTONE.index(f"{letter}{accidental}")
     A_index = STANDARD_NOTES_QUARTERTONE.index("A")
-    quartertone_steps_from_A4 = note_index - A_index + (octave - 4) * 24
+    quartertone_steps_from_A4 = note_index - A_index + (octave.number - 4) * 24
     return Frequency(a4_frequency.value * (2 ** (quartertone_steps_from_A4 / 24)))
 
 
@@ -135,7 +133,7 @@ class Note:
     name: str
     letter: str
     accidental: Accidental
-    octave: int
+    octave: Octave
     frequency: Frequency
     a4_frequency: Frequency
 
@@ -187,8 +185,8 @@ class Note:
 
 def transposition_by_an_octave(note: Note) -> Note:
     """Transposes a note to an octave higher"""
-    octave = note.octave + 1
-    name = f"{note.letter}{note.accidental}{octave}"
+    new_octave = note.octave + 1
+    name = f"{note.letter}{note.accidental}{new_octave}"
     _ = _decompose_name(name)  # Validate name correctness
     frequency = Frequency(note.frequency.value * MusicalInterval.OCTAVE.value)
-    return Note(name, note.letter, note.accidental, octave, frequency, note.a4_frequency)
+    return Note(name, note.letter, note.accidental, new_octave, frequency, note.a4_frequency)
