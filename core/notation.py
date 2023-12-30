@@ -5,6 +5,7 @@ from enum import Enum
 from typing import Any, Callable, Dict, Tuple
 
 from core.frequency import Frequency
+from core.symbols import Symbol
 
 STANDARD_NOTES_QUARTERTONE = [
     "C",
@@ -41,14 +42,6 @@ class MusicalInterval(Enum):
     TONE = 2 ** (1 / 6)  # 8 ** (1/24)
     SEMITONE = 2 ** (1 / 12)  # 4 ** (1/24)
     QUARTERTONE = 2 ** (1 / 24)  # 2 ** (1/24)
-
-
-@dataclass
-class Symbol:
-    """A representation for the symbols of the Accidentals"""
-
-    simplified: str
-    unicode: str
 
 
 @dataclass
