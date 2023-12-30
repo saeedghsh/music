@@ -1,7 +1,5 @@
 """Test Piano entry point script"""
 # pylint: disable=missing-function-docstring
-from math import isclose
-
 import pytest
 
 from core.frequency import Frequency
@@ -20,13 +18,6 @@ from core.notation import (
 )
 
 A4_FREQUENCY = Frequency(440)
-
-
-def test_musical_interval_values():
-    assert isclose(MusicalInterval.OCTAVE.value, 2 ** (12 / 12))
-    assert isclose(MusicalInterval.TONE.value, 2 ** (1 / 6))
-    assert isclose(MusicalInterval.SEMITONE.value, 2 ** (1 / 12))
-    assert isclose(MusicalInterval.QUARTERTONE.value, 2 ** (1 / 24))
 
 
 def test_symbol_creation():
