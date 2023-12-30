@@ -15,15 +15,16 @@ def generate_piano_keys(octave_range: Tuple[int, int], a4_frequency: Frequency) 
     # TODO: this implementation does not generate any standard piano (i.e. 88-97-108 keys)
     if octave_range[0] >= octave_range[1]:
         raise ValueError("Upper range must be greater than lower range")
+
     OctaveRegister.validate(octave_range[0])
     OctaveRegister.validate(octave_range[1])
 
     keys = {}
     for octave in range(*octave_range):
         for letter in ["C", "D", "E", "F", "G", "A", "B"]:
-            for accidental in ["", "#"]:
-                if f"{letter}{accidental}" in ["E#", "B#"]:
+            for accidental_symbol in ["", "#"]:
+                if f"{letter}{accidental_symbol}" in ["E#", "B#"]:
                     continue
-                name = f"{letter}{accidental}{octave}"
+                name = f"{letter}{accidental_symbol}{octave}"
                 keys[name] = Note.from_name(name, a4_frequency)
     return keys

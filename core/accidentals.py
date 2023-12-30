@@ -1,10 +1,12 @@
 """Musical Accidentals"""
 from dataclasses import dataclass
 from enum import Enum
-from typing import Union
+from typing import Any, Union
 
 from core.intervals import MusicalInterval
 from core.symbols import Symbol
+
+SYMBOL_TO_NAME_MAP = {"#": "sharp", "s": "sori", "": "natural", "k": "koron", "b": "flat"}
 
 
 @dataclass
@@ -26,6 +28,37 @@ class Accidental:
     def __str__(self) -> str:
         return self.symbol.simplified
 
+    def _eq_to_name(self, other_name: str) -> bool:
+        return self.name == other_name
+
+    def _eq_to_symbol(self, other_symbol: str) -> bool:
+        return self.symbol == other_symbol
+
+    def _eq_to_accidental(self, other: "Accidental") -> bool:
+        return self.name == other.name
+
+    def __eq__(self, other: Any) -> bool:
+        if isinstance(other, str):
+            return any([self._eq_to_name(other), self._eq_to_symbol(other)])
+        if isinstance(other, Accidental):
+            return self._eq_to_accidental(other)
+        raise NotImplementedError(f"Type {type(other)} is not supported for comparison")
+
+    @staticmethod
+    def from_name(name: str) -> "Accidental":
+        """Create and return an Accidental from the name"""
+        if name not in SYMBOL_TO_NAME_MAP.values():
+            raise ValueError(f"Cannot construct an Accidental by the name: {name}")
+        accidental = getattr(AccidentalNote, name.upper())
+        return accidental.value
+
+    @staticmethod
+    def from_symbol(symbol: str) -> "Accidental":
+        """Create and return an Accidental from the symbol (single character)"""
+        if symbol not in SYMBOL_TO_NAME_MAP:
+            raise ValueError(f"Cannot construct an Accidental by the symbol: {symbol}")
+        return Accidental.from_name(SYMBOL_TO_NAME_MAP[symbol])
+
 
 class AccidentalNote(Enum):
     """An enum of common accidental"""
@@ -38,11 +71,11 @@ class AccidentalNote(Enum):
 
     @staticmethod
     def _validate_by_symbol(symbol: str) -> bool:
-        return symbol in [accidental.value.symbol.simplified for accidental in AccidentalNote]
+        return symbol in SYMBOL_TO_NAME_MAP
 
     @staticmethod
     def _validate_by_name(name: str) -> bool:
-        return name in [accidental.value.name for accidental in AccidentalNote]
+        return name in SYMBOL_TO_NAME_MAP.values()
 
     @staticmethod
     def _validate_by_accidental(accidental: Accidental) -> bool:

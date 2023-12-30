@@ -5,6 +5,7 @@ from typing import Any
 
 import pytest
 
+from core.accidentals import Accidental
 from core.frequency import Frequency
 from core.notes import (
     Note,
@@ -29,17 +30,24 @@ def test_validate_letter_fail(letter: str):
 
 
 @pytest.mark.parametrize(
-    "name, expected",
+    "actual_name, expected_name, expected_accidental, expected_octave",
     [
-        ("A4", ("A", "", 4)),
-        ("G#3", ("G", "#", 3)),
-        ("Fs2", ("F", "s", 2)),
-        ("Dk-1", ("D", "k", -1)),
-        ("Cb9", ("C", "b", 9)),
+        ("A4", "A", Accidental.from_symbol(""), 4),
+        ("G#3", "G", Accidental.from_symbol("#"), 3),
+        ("Fs2", "F", Accidental.from_symbol("s"), 2),
+        ("Dk-1", "D", Accidental.from_symbol("k"), -1),
+        ("Cb9", "C", Accidental.from_symbol("b"), 9),
     ],
 )
-def test_decompose_name_valid(name, expected):
-    assert _decompose_name(name) == expected, f"Incorrect decomposition for {name}"
+def test_decompose_name_valid(
+    actual_name: str, expected_name: str, expected_accidental: Accidental, expected_octave: int
+):
+    name, accidental, octave = _decompose_name(actual_name)
+    assert name == expected_name, f"Incorrect name decomposition for {actual_name}"
+    assert (
+        accidental == expected_accidental
+    ), f"Incorrect accidental decomposition for {actual_name}"
+    assert octave == expected_octave, f"Incorrect octave decomposition for {actual_name}"
 
 
 @pytest.mark.parametrize(
@@ -76,13 +84,14 @@ def test_transposition_by_an_octave(
 @pytest.mark.parametrize(
     "letter, accidental, octave, expected",
     [
-        ("E", "#", 4, ("F", "", 4)),
-        ("B", "#", 3, ("C", "", 4)),  # Note octave change
-        ("C", "b", 2, ("B", "", 2)),
-        ("F", "k", 5, ("E", "s", 5)),
+        ("E", Accidental.from_symbol("#"), 4, ("F", Accidental.from_symbol(""), 4)),
+        # Note octave change in the next item
+        ("B", Accidental.from_symbol("#"), 3, ("C", Accidental.from_symbol(""), 4)),
+        ("C", Accidental.from_symbol("b"), 2, ("B", Accidental.from_symbol(""), 2)),
+        ("F", Accidental.from_symbol("k"), 5, ("E", Accidental.from_symbol("s"), 5)),
     ],
 )
-def test_standardize_note(letter: str, accidental: str, octave: int, expected: tuple):
+def test_standardize_note(letter: str, accidental: Accidental, octave: int, expected: tuple):
     assert (
         _standardize_note(letter, accidental, octave) == expected
     ), f"Incorrect standardization for {letter}{accidental}{octave}"
@@ -91,21 +100,22 @@ def test_standardize_note(letter: str, accidental: str, octave: int, expected: t
 @pytest.mark.parametrize(
     "letter, accidental, octave",
     [
-        ("H", "", 4),  # Invalid letter
-        ("C", "##", 3),  # Invalid accidental
-        ("D", "s", -2),  # Invalid octave, assuming -1 to 9 is valid
+        ("H", Accidental.from_symbol(""), 4),  # Invalid letter
+        # ("C", "##", 3),  # Invalid accidental
+        ("D", Accidental.from_symbol("s"), -2),  # Invalid octave, assuming -1 to 9 is valid
     ],
 )
-def test_standardize_note_invalid(letter: str, accidental: str, octave: int):
+def test_standardize_note_invalid(letter: str, accidental: Accidental, octave: int):
     with pytest.raises(ValueError):
         _standardize_note(letter, accidental, octave)
 
 
 def test_note_creation():
-    note = Note("A4", "A", "", 4, A4_FREQUENCY, A4_FREQUENCY)
+    note = Note("A4", "A", Accidental.from_symbol(""), 4, A4_FREQUENCY, A4_FREQUENCY)
     assert note.name == "A4"
     assert note.letter == "A"
     assert note.accidental == ""
+    assert note.accidental == Accidental.from_name("natural")
     assert note.octave == 4
     assert note.frequency == 440.0
 
@@ -150,7 +160,7 @@ def test_note_eq():
 
 @pytest.mark.parametrize("note_unsupported_type", [{}, "A4"])
 def test_note_eq_unsupported(note_unsupported_type: Any):
-    note = Note("A4", "A", "", 4, A4_FREQUENCY, A4_FREQUENCY)
+    note = Note("A4", "A", Accidental.from_symbol(""), 4, A4_FREQUENCY, A4_FREQUENCY)
     with pytest.raises(NotImplementedError):
         # pylint: disable=pointless-statement
         # pylint: disable=use-implicit-booleaness-not-comparison

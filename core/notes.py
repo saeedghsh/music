@@ -3,7 +3,7 @@ import re
 from dataclasses import dataclass
 from typing import Any, Callable, Dict, Tuple, Union
 
-from core.accidentals import AccidentalNote
+from core.accidentals import Accidental, AccidentalNote
 from core.frequency import Frequency
 from core.intervals import MusicalInterval
 from core.octaves import OctaveRegister
@@ -64,7 +64,7 @@ def _validate_letter(letter: str):
         raise ValueError(f"Invalid note letter: {letter}")
 
 
-def _decompose_name(name: str) -> Tuple[str, str, int]:
+def _decompose_name(name: str) -> Tuple[str, Accidental, int]:
     """Return (letter, accidental, octave) from the name
 
     It validates the name correctness.
@@ -83,7 +83,7 @@ def _decompose_name(name: str) -> Tuple[str, str, int]:
     letter = _pop_first(name_wo_octave)
     _validate_letter(letter)
 
-    accidental = _pop_first(name_wo_octave)
+    accidental = Accidental.from_symbol(_pop_first(name_wo_octave))
     AccidentalNote.validate(accidental)
 
     if len(name_wo_octave) != 0:
@@ -92,7 +92,9 @@ def _decompose_name(name: str) -> Tuple[str, str, int]:
     return letter, accidental, octave
 
 
-def _standardize_note(letter: str, accidental: str, octave: int) -> Tuple[str, str, int]:
+def _standardize_note(
+    letter: str, accidental: Accidental, octave: int
+) -> Tuple[str, Accidental, int]:
     """Return a standard note, given any input note
 
     Makes sure that the note belong set of "standard notes"
@@ -100,18 +102,19 @@ def _standardize_note(letter: str, accidental: str, octave: int) -> Tuple[str, s
     _ = _decompose_name(f"{letter}{accidental}{octave}")  # Validate name correctness
 
     name_wo_octave = f"{letter}{accidental}"
-    octave = octave + 1 if name_wo_octave == "B#" else octave
-    name_wo_octave = CONVERSION_TO_STANDARD_NOTE.get(name_wo_octave, name_wo_octave)
+    new_octave = octave + 1 if name_wo_octave == "B#" else octave
+    name_wo_octave_standard = CONVERSION_TO_STANDARD_NOTE.get(name_wo_octave, name_wo_octave)
 
-    if len(name_wo_octave) == 1:
-        letter, accidental = name_wo_octave, ""
-    if len(name_wo_octave) == 2:
-        letter, accidental = name_wo_octave[0], name_wo_octave[1]
-    return letter, accidental, octave
+    if len(name_wo_octave_standard) == 1:
+        new_letter, new_accidental = name_wo_octave_standard, ""
+    if len(name_wo_octave_standard) == 2:
+        new_letter, new_accidental = name_wo_octave_standard[0], name_wo_octave_standard[1]
+
+    return new_letter, Accidental.from_symbol(new_accidental), new_octave
 
 
 def _compute_frequency(
-    letter: str, accidental: str, octave: int, a4_frequency: Frequency
+    letter: str, accidental: Accidental, octave: int, a4_frequency: Frequency
 ) -> Frequency:
     """Calculate the frequency of a note."""
     # pylint: disable=invalid-name
@@ -131,7 +134,7 @@ class Note:
 
     name: str
     letter: str
-    accidental: str
+    accidental: Accidental
     octave: int
     frequency: Frequency
     a4_frequency: Frequency
