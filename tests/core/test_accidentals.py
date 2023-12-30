@@ -1,5 +1,7 @@
 # pylint: disable=missing-module-docstring
 # pylint: disable=missing-function-docstring
+from typing import Any, Union
+
 import pytest
 
 from core.accidentals import Accidental, AccidentalNote
@@ -21,6 +23,44 @@ def test_accidental_note_enum():
     assert sharp.name == "sharp"
     assert sharp.symbol == Symbol("#", "\u266F")
     assert sharp.frequency_ratio == MusicalInterval.SEMITONE.value
+
+
+@pytest.mark.parametrize(
+    "accidental",
+    [
+        Accidental("sharp", Symbol("#", "\u266F"), MusicalInterval.SEMITONE.value),
+        "#",
+        "sharp",
+        "s",
+        "sori",
+        "",
+        "natural",
+        "k",
+        "koron",
+        "b",
+        "flat",
+    ],
+)
+def test_accidental_note_enum_validate_pass(accidental: Union[str, Accidental]):
+    AccidentalNote.validate(accidental)
+
+
+@pytest.mark.parametrize(
+    "accidental",
+    [
+        "*",
+        "sharp__",
+        Accidental("un", Symbol("%", "xyz"), MusicalInterval.SEMITONE.value),
+    ],
+)
+def test_accidental_note_enum_validate_fail(accidental: Any):
+    with pytest.raises(ValueError):
+        AccidentalNote.validate(accidental)
+
+
+def test_accidental_note_enum_validate_note_implemented():
+    with pytest.raises(NotImplementedError):
+        AccidentalNote.validate(1)
 
 
 if __name__ == "__main__":
