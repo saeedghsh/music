@@ -58,6 +58,12 @@ def _trailing_number(s: str) -> int:
     raise ValueError(f"No integer found at the end of '{s}'")
 
 
+def _validate_letter(letter: str):
+    """validates that the note letter is valid"""
+    if letter not in ["A", "B", "C", "D", "E", "F", "G"]:
+        raise ValueError(f"Invalid note letter: {letter}")
+
+
 def _decompose_name(name: str) -> Tuple[str, str, int]:
     """Return (letter, accidental, octave) from the name
 
@@ -68,8 +74,8 @@ def _decompose_name(name: str) -> Tuple[str, str, int]:
 
     octave = _trailing_number(name)
     OctaveRegister.validate(octave)
-    octave_char_length = len(str(octave))
 
+    octave_char_length = len(str(octave))
     if len(name[:-octave_char_length]) == 1:
         letter, accidental = name[0].upper(), ""
     elif len(name[:-octave_char_length]) == 2:
@@ -77,8 +83,7 @@ def _decompose_name(name: str) -> Tuple[str, str, int]:
     else:
         raise ValueError(f"name cannot be more that 2 characters (excluding octave) - note:{name}")
 
-    if letter not in ["A", "B", "C", "D", "E", "F", "G"]:
-        raise ValueError(f"invalid letter - note:{name}, letter:{letter}")
+    _validate_letter(letter)
     AccidentalNote.validate(accidental)
 
     return letter, accidental, octave

@@ -1,13 +1,31 @@
 # pylint: disable=missing-module-docstring
 # pylint: disable=missing-function-docstring
+import string
 from typing import Any
 
 import pytest
 
 from core.frequency import Frequency
-from core.notes import Note, _decompose_name, _standardize_note, transposition_by_an_octave
+from core.notes import (
+    Note,
+    _decompose_name,
+    _standardize_note,
+    _validate_letter,
+    transposition_by_an_octave,
+)
 
 A4_FREQUENCY = Frequency(440)
+
+
+@pytest.mark.parametrize("letter", ["A", "B", "C", "D", "E", "F", "G"])
+def test_validate_letter(letter: str):
+    _validate_letter(letter)
+
+
+@pytest.mark.parametrize("letter", list(string.ascii_letters.replace("ABCDEFG", "")))
+def test_validate_letter_fail(letter: str):
+    with pytest.raises(ValueError):
+        _validate_letter(letter)
 
 
 @pytest.mark.parametrize(
