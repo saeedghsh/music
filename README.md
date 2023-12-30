@@ -1,11 +1,11 @@
 # Playground for fiddling with musical notes
 
-[![GPLv3 License](https://img.shields.io/badge/license-GPLv3-blue.svg)](https://github.com/saeedghsh/musical_notes/blob/master/LICENSE)  
-[![black](https://github.com/saeedghsh/musical_notes/actions/workflows/formatting.yml/badge.svg?branch=master)](https://github.com/saeedghsh/musical_notes/actions/workflows/formatting.yml)
-[![pylint](https://github.com/saeedghsh/musical_notes/actions/workflows/pylint.yml/badge.svg?branch=master)](https://github.com/saeedghsh/musical_notes/actions/workflows/pylint.yml)
-[![pytest](https://github.com/saeedghsh/musical_notes/actions/workflows/pytest.yml/badge.svg?branch=master)](https://github.com/saeedghsh/musical_notes/actions/workflows/pytest.yml)
-[![pytest-cov](https://github.com/saeedghsh/musical_notes/actions/workflows/pytest-cov.yml/badge.svg?branch=master)](https://github.com/saeedghsh/musical_notes/actions/workflows/pytest-cov.yml)
-[![mypy](https://github.com/saeedghsh/musical_notes/actions/workflows/type-check.yml/badge.svg?branch=master)](https://github.com/saeedghsh/musical_notes/actions/workflows/type-check.yml)
+[![GPLv3 License](https://img.shields.io/badge/license-GPLv3-blue.svg)](https://github.com/saeedghsh/music/blob/master/LICENSE)  
+[![black](https://github.com/saeedghsh/music/actions/workflows/formatting.yml/badge.svg?branch=master)](https://github.com/saeedghsh/music/actions/workflows/formatting.yml)
+[![pylint](https://github.com/saeedghsh/music/actions/workflows/pylint.yml/badge.svg?branch=master)](https://github.com/saeedghsh/music/actions/workflows/pylint.yml)
+[![pytest](https://github.com/saeedghsh/music/actions/workflows/pytest.yml/badge.svg?branch=master)](https://github.com/saeedghsh/music/actions/workflows/pytest.yml)
+[![pytest-cov](https://github.com/saeedghsh/music/actions/workflows/pytest-cov.yml/badge.svg?branch=master)](https://github.com/saeedghsh/music/actions/workflows/pytest-cov.yml)
+[![mypy](https://github.com/saeedghsh/music/actions/workflows/type-check.yml/badge.svg?branch=master)](https://github.com/saeedghsh/music/actions/workflows/type-check.yml)
 
 I wanted to redo the [frets](https://en.wikipedia.org/wiki/Fret) of my [Setar](https://en.wikipedia.org/wiki/Setar).
 Common instructions are based on length of the [strings](https://en.wikipedia.org/wiki/String_(music)) and the distance of each fret from the [nut](https://en.wikipedia.org/wiki/Nut_(string_instrument)).
@@ -29,7 +29,7 @@ $ python3 -m entry_points.tar_entry --fret-count 27 --string-number 1 -s -f <pat
 
 * Piano entry point output:
 <p align="center">
-    <img src="https://github.com/saeedghsh/musical_notes/blob/master/images/pinao_keys_frequencies.png">
+    <img src="https://github.com/saeedghsh/music/blob/master/images/pinao_keys_frequencies.png">
 </p>
 
 * Tar entry point output:
@@ -70,7 +70,7 @@ $ python3 -m entry_points.tar_entry --fret-count 27 --string-number 1 -s -f <pat
     </details>
 
 <p align="center">
-    <img src="https://github.com/saeedghsh/musical_notes/blob/master/images/tar_small_1290x362_string1_annotated.png" height="500">
+    <img src="https://github.com/saeedghsh/music/blob/master/images/tar_small_1290x362_string1_annotated.png" height="500">
 </p>
 
 ## Tests, coverage, linter, formatter, static type check
@@ -129,4 +129,4 @@ Copyright (C) Saeed Gholami Shahbandi
 ```
  
 NOTE: Portions of this code/project were developed with the assistance of ChatGPT, a product of OpenAI.  
-Distributed with a GNU GENERAL PUBLIC LICENSE; see [LICENSE](https://github.com/saeedghsh/musical_notes/blob/master/LICENSE).
+Distributed with a GNU GENERAL PUBLIC LICENSE; see [LICENSE](https://github.com/saeedghsh/music/blob/master/LICENSE).
