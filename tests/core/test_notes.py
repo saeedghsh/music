@@ -35,7 +35,7 @@ def test_decompose_name_valid(name, expected):
         "Csharp4",  # Incorrect accidental format
     ],
 )
-def test_decompose_name_invalid(name):
+def test_decompose_name_invalid(name: str):
     with pytest.raises(ValueError):
         _decompose_name(name)
 
@@ -64,7 +64,7 @@ def test_transposition_by_an_octave(
         ("F", "k", 5, ("E", "s", 5)),
     ],
 )
-def test_standardize_note(letter, accidental, octave, expected):
+def test_standardize_note(letter: str, accidental: str, octave: int, expected: tuple):
     assert (
         _standardize_note(letter, accidental, octave) == expected
     ), f"Incorrect standardization for {letter}{accidental}{octave}"
@@ -78,7 +78,7 @@ def test_standardize_note(letter, accidental, octave, expected):
         ("D", "s", -2),  # Invalid octave, assuming -1 to 9 is valid
     ],
 )
-def test_standardize_note_invalid(letter, accidental, octave):
+def test_standardize_note_invalid(letter: str, accidental: str, octave: int):
     with pytest.raises(ValueError):
         _standardize_note(letter, accidental, octave)
 
@@ -112,7 +112,7 @@ def test_note_str_repr():
 
 
 @pytest.mark.parametrize("a4_frequency", [Frequency(10), Frequency(100), Frequency(440)])
-def test_note_from_name(a4_frequency):
+def test_note_from_name(a4_frequency: Frequency):
     note = Note.from_name("A4", a4_frequency)
     assert note.name == "A4"
     assert note.frequency == a4_frequency
