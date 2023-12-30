@@ -1,7 +1,7 @@
 """Musical note and utils"""
 import re
 from dataclasses import dataclass
-from typing import Any, Callable, Dict, Tuple
+from typing import Any, Callable, Dict, Tuple, Union
 
 from core.frequency import Frequency
 from core.intervals import MusicalInterval
@@ -155,45 +155,17 @@ class Note:
         frequency = _compute_frequency(letter, accidental, octave, a4_frequency)
         return Note(name, letter, accidental, octave, frequency, a4_frequency)
 
-    def _eq_to_name(self, other_name: str) -> bool:
-        (
-            self_standardize_letter,
-            self_standardize_accidental,
-            self_standardize_octave,
-        ) = _standardize_note(self.letter, self.accidental, self.octave)
-        self_standardize_note_name = "".join(
-            [
-                self_standardize_letter,
-                self_standardize_accidental,
-                str(self_standardize_octave),
-            ]
-        )
-        (
-            other_standardize_letter,
-            other_standardize_accidental,
-            other_standardize_octave,
-        ) = _standardize_note(*_decompose_name(other_name))
-        other_standardize_note_name = "".join(
-            [
-                other_standardize_letter,
-                other_standardize_accidental,
-                str(other_standardize_octave),
-            ]
-        )
-        return self_standardize_note_name == other_standardize_note_name
-
-    def _eq_to_frequency(self, other_frequency: Frequency) -> bool:
+    def _eq_to_frequency(self, other_frequency: Union[Frequency, int, float]) -> bool:
         return self.frequency == other_frequency
 
     def _eq_to_note(self, other: "Note") -> bool:
-        return self._eq_to_name(other.name) and self._eq_to_frequency(other.frequency)
+        return self._eq_to_frequency(other.frequency)
 
     def __eq__(self, other: Any) -> bool:
-        # pylint: disable=fixme
-        # TODO: should we consider a4_frequency when comparing based on note and name?
         type_dispatch: Dict[type, Callable] = {
-            str: self._eq_to_name,
+            Frequency: self._eq_to_frequency,
             float: self._eq_to_frequency,
+            int: self._eq_to_frequency,
             Note: self._eq_to_note,
         }
         other_type = type(other)

@@ -1,5 +1,7 @@
 # pylint: disable=missing-module-docstring
 # pylint: disable=missing-function-docstring
+from typing import Any
+
 import pytest
 
 from core.frequency import Frequency
@@ -122,18 +124,19 @@ def test_note_eq():
     note3 = Note("B4", "B", "", 4, Frequency(493.8833012561241), A4_FREQUENCY)
     assert note1 == note2
     assert note1 != note3
-    assert note1 == "A4"
-    assert note1 != "B4"
     assert note1 == 440.0
+    assert note1 == Frequency(440.0)
     assert note1 != 493.88
+    assert note1 != Frequency(493.88)
 
 
-def test_note_eq_unsupported():
+@pytest.mark.parametrize("note_unsupported_type", [{}, "A4"])
+def test_note_eq_unsupported(note_unsupported_type: Any):
     note = Note("A4", "A", "", 4, A4_FREQUENCY, A4_FREQUENCY)
     with pytest.raises(NotImplementedError):
         # pylint: disable=pointless-statement
         # pylint: disable=use-implicit-booleaness-not-comparison
-        note == {}
+        note == note_unsupported_type
 
 
 if __name__ == "__main__":
