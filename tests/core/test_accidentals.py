@@ -1,7 +1,5 @@
 # pylint: disable=missing-module-docstring
 # pylint: disable=missing-function-docstring
-from typing import Any, Union
-
 import pytest
 
 from core.accidentals import Accidental, AccidentalNote
@@ -10,18 +8,46 @@ from core.symbols import Symbol
 
 
 def test_accidental_creation():
-    accidental = Accidental("test", Symbol("x", "\u0041"), 1.5)
-    assert accidental.name == "test"
-    assert accidental.symbol.simplified == "x"
-    assert accidental.frequency_ratio == 1.5
-    assert str(accidental) == "x"
+    sharp_symbol = Symbol("#", "\u266F")
+    accidental = Accidental("sharp", sharp_symbol, 1.0)
+    assert accidental.name == "sharp"
+    assert accidental.symbol.simplified == "#"
+    assert accidental.frequency_ratio == 1.0
+
+    assert str(accidental) == "#"
 
 
 def test_accidental_creation_fail():
+    sharp_symbol = Symbol("#", "\u266F")
+    bad_symbol = Symbol("%", "xyz")
     with pytest.raises(ValueError):
-        Accidental.from_name("wrong_name")
+        Accidental("wrong_name", sharp_symbol, 1.0)
     with pytest.raises(ValueError):
-        Accidental.from_symbol("%")
+        Accidental("sharp", bad_symbol, 1.0)
+    with pytest.raises(ValueError):
+        Accidental("flat", sharp_symbol, 1.0)  # name-symbol mismatch
+
+
+@pytest.mark.parametrize("name", ["sharp", "sori", "natural", "koron", "flat"])
+def test_accidental_from_name(name: str):
+    Accidental.from_name(name)
+
+
+@pytest.mark.parametrize("name", ["sharp_", "sori_", "natural_", "koron_", "flat_"])
+def test_accidental_from_name_invalid(name: str):
+    with pytest.raises(ValueError):
+        Accidental.from_name(name)
+
+
+@pytest.mark.parametrize("symbol", ["#", "s", "", "k", "b"])
+def test_accidental_from_symbol(symbol: str):
+    Accidental.from_symbol(symbol)
+
+
+@pytest.mark.parametrize("symbol", ["%", "*", "-", "@", "!"])
+def test_accidental_from_symbol_invalid(symbol: str):
+    with pytest.raises(ValueError):
+        Accidental.from_symbol(symbol)
 
 
 def test_accidental_comparison():
@@ -49,44 +75,6 @@ def test_accidental_note_enum():
     assert sharp.name == "sharp"
     assert sharp.symbol == Symbol("#", "\u266F")
     assert sharp.frequency_ratio == MusicalInterval.SEMITONE.value
-
-
-@pytest.mark.parametrize(
-    "accidental",
-    [
-        Accidental("sharp", Symbol("#", "\u266F"), MusicalInterval.SEMITONE.value),
-        "#",
-        "sharp",
-        "s",
-        "sori",
-        "",
-        "natural",
-        "k",
-        "koron",
-        "b",
-        "flat",
-    ],
-)
-def test_accidental_note_enum_validate_pass(accidental: Union[str, Accidental]):
-    AccidentalNote.validate(accidental)
-
-
-@pytest.mark.parametrize(
-    "accidental",
-    [
-        "*",
-        "sharp__",
-        Accidental("un", Symbol("%", "xyz"), MusicalInterval.SEMITONE.value),
-    ],
-)
-def test_accidental_note_enum_validate_fail(accidental: Any):
-    with pytest.raises(ValueError):
-        AccidentalNote.validate(accidental)
-
-
-def test_accidental_note_enum_validate_note_implemented():
-    with pytest.raises(NotImplementedError):
-        AccidentalNote.validate(1)
 
 
 if __name__ == "__main__":

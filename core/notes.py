@@ -3,7 +3,7 @@ import re
 from dataclasses import dataclass
 from typing import Any, Callable, Dict, Tuple, Union
 
-from core.accidentals import Accidental, AccidentalNote
+from core.accidentals import Accidental
 from core.frequency import Frequency
 from core.intervals import MusicalInterval
 from core.octaves import Octave
@@ -78,11 +78,12 @@ def _decompose_name(name: str) -> Tuple[str, Accidental, Octave]:
     octave = Octave.from_number(_trailing_number(name))
 
     name_wo_octave = list(name[: -len(str(octave))])
+
     letter = _pop_first(name_wo_octave)
     _validate_letter(letter)
 
-    accidental = Accidental.from_symbol(_pop_first(name_wo_octave))
-    AccidentalNote.validate(accidental)
+    accidental_symbol = _pop_first(name_wo_octave)
+    accidental = Accidental.from_symbol(accidental_symbol)
 
     if len(name_wo_octave) != 0:
         raise ValueError(f"name (wo octave) cannot be more that 2 char: {name_wo_octave}")

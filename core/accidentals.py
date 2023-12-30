@@ -1,12 +1,19 @@
 """Musical Accidentals"""
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any, Union
+from typing import Any
 
 from core.intervals import MusicalInterval
 from core.symbols import Symbol
 
 SYMBOL_TO_NAME_MAP = {"#": "sharp", "s": "sori", "": "natural", "k": "koron", "b": "flat"}
+SYMBOL_TO_INTERVAL_MAP = {
+    "#": MusicalInterval.SEMITONE.value,
+    "s": MusicalInterval.QUARTERTONE.value,
+    "": 1,
+    "k": 1 / MusicalInterval.QUARTERTONE.value,
+    "b": 1 / MusicalInterval.SEMITONE.value,
+}
 
 
 @dataclass
@@ -24,6 +31,14 @@ class Accidental:
     name: str
     symbol: Symbol
     frequency_ratio: float
+
+    def __post_init__(self):
+        if self.name not in SYMBOL_TO_NAME_MAP.values():
+            raise ValueError(f"Invalid name {self.name}")
+        if self.symbol.simplified not in SYMBOL_TO_NAME_MAP:
+            raise ValueError(f"Invalid symbol {self.symbol}")
+        if self.name != SYMBOL_TO_NAME_MAP[self.symbol.simplified]:
+            raise ValueError(f"Symbol {self.symbol} and name {self.name} do not match")
 
     def __str__(self) -> str:
         return self.symbol.simplified
@@ -68,32 +83,3 @@ class AccidentalNote(Enum):
     NATURAL = Accidental("natural", Symbol("", ""), 1)
     KORON = Accidental("koron", Symbol("k", "\U0001D1EA"), 1 / MusicalInterval.QUARTERTONE.value)
     FLAT = Accidental("flat", Symbol("b", "\u266F"), 1 / MusicalInterval.SEMITONE.value)
-
-    @staticmethod
-    def _validate_by_symbol(symbol: str) -> bool:
-        return symbol in SYMBOL_TO_NAME_MAP
-
-    @staticmethod
-    def _validate_by_name(name: str) -> bool:
-        return name in SYMBOL_TO_NAME_MAP.values()
-
-    @staticmethod
-    def _validate_by_accidental(accidental: Accidental) -> bool:
-        return AccidentalNote._validate_by_name(accidental.name)
-
-    @staticmethod
-    def validate(accidental: Union[Accidental, str]):
-        """Check if accidental is valid"""
-        if isinstance(accidental, Accidental):
-            valid = AccidentalNote._validate_by_accidental(accidental)
-        elif isinstance(accidental, str):
-            valid = any(
-                [
-                    AccidentalNote._validate_by_name(accidental),
-                    AccidentalNote._validate_by_symbol(accidental),
-                ]
-            )
-        else:
-            raise NotImplementedError(f"Type {type(accidental)} is not supported for validation")
-        if not valid:
-            raise ValueError(f"Accidental {accidental} is un-identifiable")

@@ -32,7 +32,7 @@ class Octave:
         if self.number not in NUMBER_TO_NAME_MAP:
             raise ValueError(f"Invalid number {self.number}")
         if self.name != NUMBER_TO_NAME_MAP[self.number]:
-            raise ValueError(f"Number {self.number} and name {self.name} for not match")
+            raise ValueError(f"Number {self.number} and name {self.name} do not match")
 
     def __str__(self) -> str:
         return str(self.number)
