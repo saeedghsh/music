@@ -3,12 +3,7 @@
 import pytest
 
 from core.frequency import Frequency
-from core.notes import (
-    Note,
-    _decompose_note_name,
-    _standardize_note,
-    transposition_by_an_octave,
-)
+from core.notes import Note, _decompose_name, _standardize_note, transposition_by_an_octave
 
 A4_FREQUENCY = Frequency(440)
 
@@ -23,8 +18,8 @@ A4_FREQUENCY = Frequency(440)
         ("Cb9", ("C", "b", 9)),
     ],
 )
-def test_decompose_note_name_valid(name, expected):
-    assert _decompose_note_name(name) == expected, f"Incorrect decomposition for {name}"
+def test_decompose_name_valid(name, expected):
+    assert _decompose_name(name) == expected, f"Incorrect decomposition for {name}"
 
 
 @pytest.mark.parametrize(
@@ -38,9 +33,9 @@ def test_decompose_note_name_valid(name, expected):
         "Csharp4",  # Incorrect accidental format
     ],
 )
-def test_decompose_note_name_invalid(name):
+def test_decompose_name_invalid(name):
     with pytest.raises(ValueError):
-        _decompose_note_name(name)
+        _decompose_name(name)
 
 
 @pytest.mark.parametrize("a4_frequency", [Frequency(100), Frequency(250), Frequency(440)])

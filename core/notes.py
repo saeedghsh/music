@@ -33,6 +33,20 @@ STANDARD_NOTES_QUARTERTONE = [
     "Bs",
 ]
 
+CONVERSION_TO_STANDARD_NOTE = {
+    "E#": "F",
+    "B#": "C",
+    "Cb": "B",
+    "Fb": "E",
+    "Db": "C#",
+    "Eb": "D#",
+    "Gb": "F#",
+    "Ab": "G#",
+    "Bb": "A#",
+    "Ck": "Bs",
+    "Fk": "Es",
+}
+
 
 def _trailing_number(s: str) -> int:
     """Return an integer from the end of a string."""
@@ -42,7 +56,7 @@ def _trailing_number(s: str) -> int:
     raise ValueError(f"No integer found at the end of '{s}'")
 
 
-def _decompose_note_name(name: str) -> Tuple[str, str, int]:
+def _decompose_name(name: str) -> Tuple[str, str, int]:
     """Return letter, accidental and octave from the name
 
     It also validates the name correctness thoroughly.
@@ -67,35 +81,18 @@ def _decompose_note_name(name: str) -> Tuple[str, str, int]:
     return letter, accidental, octave
 
 
-def _conversion_to_standard_note() -> Dict[str, str]:
-    """Return a dict for converting identical notes."""
-    return {
-        "E#": "F",
-        "B#": "C",
-        "Cb": "B",
-        "Fb": "E",
-        "Db": "C#",
-        "Eb": "D#",
-        "Gb": "F#",
-        "Ab": "G#",
-        "Bb": "A#",
-        "Ck": "Bs",
-        "Fk": "Es",
-    }
-
-
 def _standardize_note(letter: str, accidental: str, octave: int) -> Tuple[str, str, int]:
     """Return a standard note, given any input note
 
     Makes sure that the note belong set of "standard notes"
     """
-    # Using decompose_note_name to assure name is valid
-    _ = _decompose_note_name(f"{letter}{accidental}{octave}")
+    # Using _decompose_name to assure name is valid
+    _ = _decompose_name(f"{letter}{accidental}{octave}")
 
     note = f"{letter}{accidental}"
     if note == "B#":
         octave += 1
-    note = _conversion_to_standard_note().get(note, note)
+    note = CONVERSION_TO_STANDARD_NOTE.get(note, note)
 
     if len(note) == 1:
         letter, accidental = note, ""
@@ -137,7 +134,7 @@ class Note:
         return f"{self.name}: {self.frequency} Hz"
 
     def __post_init__(self):
-        letter, accidental, octave = _decompose_note_name(self.name)
+        letter, accidental, octave = _decompose_name(self.name)
         frequency = _compute_frequency(letter, accidental, octave, self.a4_frequency)
         if letter != self.letter:
             raise ValueError(f"Letter does not match the name: {letter} vs {self.name}")
@@ -153,7 +150,7 @@ class Note:
     @staticmethod
     def from_name(name: str, a4_frequency: Frequency) -> "Note":
         """Create and return an object of type Note from the given name"""
-        letter, accidental, octave = _decompose_note_name(name)
+        letter, accidental, octave = _decompose_name(name)
         frequency = _compute_frequency(letter, accidental, octave, a4_frequency)
         return Note(name, letter, accidental, octave, frequency, a4_frequency)
 
@@ -174,7 +171,7 @@ class Note:
             other_standardize_letter,
             other_standardize_accidental,
             other_standardize_octave,
-        ) = _standardize_note(*_decompose_note_name(other_name))
+        ) = _standardize_note(*_decompose_name(other_name))
         other_standardize_note_name = "".join(
             [
                 other_standardize_letter,
