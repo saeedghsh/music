@@ -1,4 +1,4 @@
-"""The basic musical notations and notions"""
+"""Musical note and utils"""
 import re
 from dataclasses import dataclass
 from typing import Any, Callable, Dict, Tuple

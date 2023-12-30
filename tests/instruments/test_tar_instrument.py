@@ -1,4 +1,4 @@
-"""Test Tar entry point script"""
+# pylint: disable=missing-module-docstring
 # pylint: disable=missing-function-docstring
 import pytest
 

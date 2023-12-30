@@ -1,5 +1,6 @@
-"""Test Piano entry point script"""
+# pylint: disable=missing-module-docstring
 # pylint: disable=missing-function-docstring
+# pylint: disable=unnecessary-dunder-call
 import pytest
 
 from core.frequency import Frequency
@@ -27,7 +28,7 @@ def test_frequency_equality():
     assert freq1 != freq3
     assert freq1 == 50.0
     assert freq1 != 50.1
-    assert freq1.__eq__("50") is NotImplemented  # pylint: disable=unnecessary-dunder-call
+    assert freq1.__eq__("50") is NotImplemented
 
 
 def test_frequency_less_than():
@@ -35,7 +36,7 @@ def test_frequency_less_than():
     freq2 = Frequency(50.1)
     assert freq1 < freq2
     assert freq1 < 50.1
-    assert freq1.__lt__("50") is NotImplemented  # pylint: disable=unnecessary-dunder-call
+    assert freq1.__lt__("50") is NotImplemented
 
 
 def test_frequency_add():
@@ -43,15 +44,15 @@ def test_frequency_add():
     freq2 = Frequency(20.0)
     assert freq1 + freq2 == 70
     assert freq1 + 20.0 == 70
-    assert freq1.__add__("50") is NotImplemented  # pylint: disable=unnecessary-dunder-call
+    assert freq1.__add__("50") is NotImplemented
 
 
 def test_frequency_mul():
     freq1 = Frequency(50.0)
     freq2 = Frequency(20.0)
     assert freq1 * 2 == 100
-    assert freq1.__mul__("2") is NotImplemented  # pylint: disable=unnecessary-dunder-call
-    assert freq1.__mul__(freq2) is NotImplemented  # pylint: disable=unnecessary-dunder-call
+    assert freq1.__mul__("2") is NotImplemented
+    assert freq1.__mul__(freq2) is NotImplemented
 
 
 if __name__ == "__main__":

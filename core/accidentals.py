@@ -1,4 +1,4 @@
-"""The basic musical notations and notions"""
+"""Musical Accidentals"""
 from dataclasses import dataclass
 from enum import Enum
 

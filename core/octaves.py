@@ -1,4 +1,4 @@
-"""The basic musical notations and notions"""
+"""Octaves"""
 from dataclasses import dataclass
 from enum import Enum
 from typing import Any, Callable, Dict, Sequence

@@ -1,4 +1,4 @@
-"""Visualize a Piano"""
+"""Entry point for Piano"""
 import argparse
 import os
 import sys
