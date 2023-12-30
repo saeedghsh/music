@@ -2,7 +2,7 @@
 # pylint: disable=missing-function-docstring
 import pytest
 
-from core.accidentals import Accidental, AccidentalNote, AccidentalSymbol
+from core.accidentals import Accidental, AccidentalNote
 from core.intervals import MusicalInterval
 from core.symbols import Symbol
 
@@ -15,16 +15,11 @@ def test_accidental_creation():
     assert str(accidental) == "x"
 
 
-def test_accidental_symbol_enum():
-    assert AccidentalSymbol.SHARP.value.simplified == "#"
-    assert AccidentalSymbol.FLAT.value.simplified == "b"
-
-
 def test_accidental_note_enum():
     sharp = AccidentalNote.SHARP.value
     assert isinstance(sharp, Accidental)
     assert sharp.name == "sharp"
-    assert sharp.symbol == AccidentalSymbol.SHARP.value
+    assert sharp.symbol == Symbol("#", "\u266F")
     assert sharp.frequency_ratio == MusicalInterval.SEMITONE.value
 
 
