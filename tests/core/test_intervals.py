@@ -4,7 +4,7 @@ from math import isclose
 
 import pytest
 
-from core.notation import MusicalInterval
+from core.notes import MusicalInterval
 
 
 def test_musical_interval_values():

@@ -3,7 +3,7 @@
 import pytest
 
 from core.frequency import Frequency
-from core.notation import transposition_by_an_octave
+from core.notes import transposition_by_an_octave
 from instruments.tar_instrument import generate_tar_string
 
 A4_FREQUENCY = Frequency(440)

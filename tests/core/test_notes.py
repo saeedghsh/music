@@ -3,7 +3,7 @@
 import pytest
 
 from core.frequency import Frequency
-from core.notation import (
+from core.notes import (
     Note,
     _decompose_note_name,
     _standardize_note,

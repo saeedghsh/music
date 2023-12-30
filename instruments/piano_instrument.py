@@ -2,7 +2,7 @@
 from typing import Dict, Tuple
 
 from core.frequency import Frequency
-from core.notation import Note
+from core.notes import Note
 
 
 def generate_piano_keys(octave_range: Tuple[int, int], a4_frequency: Frequency) -> Dict[str, Note]:

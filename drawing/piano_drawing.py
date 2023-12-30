@@ -6,7 +6,7 @@ from typing import Dict, Optional, Tuple
 import cv2
 import numpy as np
 
-from core.notation import Note
+from core.notes import Note
 
 _WHITE_KEY_HEIGHT = 300
 _WHITE_KEY_WIDTH = int(0.1 * _WHITE_KEY_HEIGHT)

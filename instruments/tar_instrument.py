@@ -2,7 +2,7 @@
 from typing import Dict, Sequence
 
 from core.frequency import Frequency
-from core.notation import Note, transposition_by_an_octave
+from core.notes import Note, transposition_by_an_octave
 
 
 def _fret_numbers(fret_count: int) -> Sequence[int]:

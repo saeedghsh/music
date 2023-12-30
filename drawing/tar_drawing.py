@@ -5,7 +5,7 @@ from typing import Dict, Optional, Tuple
 import cv2
 import numpy as np
 
-from core.notation import Note
+from core.notes import Note
 
 INSTRUMENTS: Dict[str, dict] = {
     "tar": {
