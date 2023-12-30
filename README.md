@@ -73,7 +73,7 @@ $ python3 -m entry_points.tar_entry --fret-count 27 --string-number 1 -s -f <pat
     <img src="https://github.com/saeedghsh/music/blob/master/images/tar_small_1290x362_string1_annotated.png" height="500">
 </p>
 
-## Tests, coverage, linter, formatter, static type check
+## Tests, coverage, linter, formatter, static type check, ...
 ```bash
 $ black . --check
 $ isort . --check-only
@@ -81,6 +81,7 @@ $ mypy . --explicit-package-bases
 $ pylint $(git ls-files '*.py')
 $ pytest
 $ pytest --cov=. # $ pytest --cov=. --cov-report html; firefox htmlcov/index.html
+$ pyreverse -o png -p music_uml **/*.py
 ```
 
 # TODO
