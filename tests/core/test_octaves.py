@@ -46,5 +46,16 @@ def test_octave_register():
     assert OctaveRegister.SMALL.value.number == 3
 
 
+def test_octave_register_validate():
+    for octave in range(-1, 10):
+        OctaveRegister.validate(octave)
+    for octave in range(10, 20):
+        with pytest.raises(ValueError):
+            OctaveRegister.validate(octave)
+    for octave in range(-10, -2):
+        with pytest.raises(ValueError):
+            OctaveRegister.validate(octave)
+
+
 if __name__ == "__main__":
     raise SystemExit(pytest.main([__file__]))

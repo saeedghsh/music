@@ -3,6 +3,7 @@ from typing import Dict, Tuple
 
 from core.frequency import Frequency
 from core.notes import Note
+from core.octaves import OctaveRegister
 
 
 def generate_piano_keys(octave_range: Tuple[int, int], a4_frequency: Frequency) -> Dict[str, Note]:
@@ -14,6 +15,9 @@ def generate_piano_keys(octave_range: Tuple[int, int], a4_frequency: Frequency) 
     # TODO: this implementation does not generate any standard piano (i.e. 88-97-108 keys)
     if octave_range[0] >= octave_range[1]:
         raise ValueError("Upper range must be greater than lower range")
+    OctaveRegister.validate(octave_range[0])
+    OctaveRegister.validate(octave_range[1])
+
     keys = {}
     for octave in range(*octave_range):
         for letter in ["C", "D", "E", "F", "G", "A", "B"]:

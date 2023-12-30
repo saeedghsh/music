@@ -1,7 +1,7 @@
 """The basic musical notations and notions"""
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any, Callable, Dict
+from typing import Any, Callable, Dict, Sequence
 
 
 @dataclass
@@ -53,3 +53,15 @@ class OctaveRegister(Enum):
     FOURLINED = Octave("four-lined", 7)
     FIVELINED = Octave("five-lined", 8)
     SIXLINED = Octave("six-lined", 9)
+
+    @staticmethod
+    def _octave_range() -> Sequence[int]:
+        """Return a list of octave range as integer values"""
+        return [octave.value.number for octave in OctaveRegister]
+
+    @staticmethod
+    def validate(octave: int):
+        """Check if input octave is in range"""
+        octave_range = OctaveRegister._octave_range()
+        if not octave_range[0] <= octave <= octave_range[-1]:
+            raise ValueError(f"value {octave} is out of bound: {octave_range}")

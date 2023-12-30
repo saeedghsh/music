@@ -5,6 +5,7 @@ from typing import Any, Callable, Dict, Tuple
 
 from core.frequency import Frequency
 from core.intervals import MusicalInterval
+from core.octaves import OctaveRegister
 
 STANDARD_NOTES_QUARTERTONE = [
     "C",
@@ -57,13 +58,15 @@ def _trailing_number(s: str) -> int:
 
 
 def _decompose_name(name: str) -> Tuple[str, str, int]:
-    """Return letter, accidental and octave from the name
+    """Return (letter, accidental, octave) from the name
 
-    It also validates the name correctness thoroughly.
+    It validates the name correctness.
     """
+    # pylint: disable=fixme
+    # TODO: B#9 is technically out of range, but this function does not notice it!
+
     octave = _trailing_number(name)
-    if not -1 <= octave <= 9:
-        raise ValueError(f"octave is out of range - note:{name}, octave:{octave}")
+    OctaveRegister.validate(octave)
     octave_char_length = len(str(octave))
 
     if len(name[:-octave_char_length]) == 1:
@@ -86,18 +89,16 @@ def _standardize_note(letter: str, accidental: str, octave: int) -> Tuple[str, s
 
     Makes sure that the note belong set of "standard notes"
     """
-    # Using _decompose_name to assure name is valid
-    _ = _decompose_name(f"{letter}{accidental}{octave}")
+    _ = _decompose_name(f"{letter}{accidental}{octave}")  # Validate name correctness
 
-    note = f"{letter}{accidental}"
-    if note == "B#":
-        octave += 1
-    note = CONVERSION_TO_STANDARD_NOTE.get(note, note)
+    name_wo_octave = f"{letter}{accidental}"
+    octave = octave + 1 if name_wo_octave == "B#" else octave
+    name_wo_octave = CONVERSION_TO_STANDARD_NOTE.get(name_wo_octave, name_wo_octave)
 
-    if len(note) == 1:
-        letter, accidental = note, ""
-    if len(note) == 2:
-        letter, accidental = note[0], note[1]
+    if len(name_wo_octave) == 1:
+        letter, accidental = name_wo_octave, ""
+    if len(name_wo_octave) == 2:
+        letter, accidental = name_wo_octave[0], name_wo_octave[1]
     return letter, accidental, octave
 
 
@@ -205,5 +206,6 @@ def transposition_by_an_octave(note: Note) -> Note:
     """Transposes a note to an octave higher"""
     octave = note.octave + 1
     name = f"{note.letter}{note.accidental}{octave}"
+    _ = _decompose_name(name)  # Validate name correctness
     frequency = Frequency(note.frequency.value * MusicalInterval.OCTAVE.value)
     return Note(name, note.letter, note.accidental, octave, frequency, note.a4_frequency)
