@@ -3,6 +3,7 @@ import re
 from dataclasses import dataclass
 from typing import Any, Callable, Dict, Tuple, Union
 
+from core.accidentals import AccidentalNote
 from core.frequency import Frequency
 from core.intervals import MusicalInterval
 from core.octaves import OctaveRegister
@@ -78,8 +79,7 @@ def _decompose_name(name: str) -> Tuple[str, str, int]:
 
     if letter not in ["A", "B", "C", "D", "E", "F", "G"]:
         raise ValueError(f"invalid letter - note:{name}, letter:{letter}")
-    if accidental not in ["#", "s", "", "k", "b"]:
-        raise ValueError(f"invalid accidental - note:{name}, accidental:{accidental}")
+    AccidentalNote.validate(accidental)
 
     return letter, accidental, octave
 
