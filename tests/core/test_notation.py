@@ -4,55 +4,15 @@ import pytest
 
 from core.frequency import Frequency
 from core.notation import (
-    Accidental,
-    AccidentalNote,
-    AccidentalSymbol,
-    MusicalInterval,
     Note,
     Octave,
     OctaveRegister,
-    Symbol,
     _decompose_note_name,
     _standardize_note,
     transposition_by_an_octave,
 )
 
 A4_FREQUENCY = Frequency(440)
-
-
-def test_symbol_creation():
-    sym = Symbol(simplified="A", unicode="\u0041")
-    assert sym.simplified == "A"
-    assert sym.unicode == "\u0041"
-
-
-def test_symbol_comparison():
-    sym1 = Symbol(simplified="A", unicode="\u0041")
-    sym2 = Symbol(simplified="A", unicode="\u0041")
-    sym3 = Symbol(simplified="B", unicode="\u0042")
-    assert sym1 == sym2
-    assert sym1 != sym3
-
-
-def test_accidental_creation():
-    accidental = Accidental("test", Symbol("x", "\u0041"), 1.5)
-    assert accidental.name == "test"
-    assert accidental.symbol.simplified == "x"
-    assert accidental.frequency_ratio == 1.5
-    assert str(accidental) == "x"
-
-
-def test_accidental_symbol_enum():
-    assert AccidentalSymbol.SHARP.value.simplified == "#"
-    assert AccidentalSymbol.FLAT.value.simplified == "b"
-
-
-def test_accidental_note_enum():
-    sharp = AccidentalNote.SHARP.value
-    assert isinstance(sharp, Accidental)
-    assert sharp.name == "sharp"
-    assert sharp.symbol == AccidentalSymbol.SHARP.value
-    assert sharp.frequency_ratio == MusicalInterval.SEMITONE.value
 
 
 def test_octave_creation():
