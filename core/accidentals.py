@@ -51,10 +51,9 @@ class AccidentalNote(Enum):
     @staticmethod
     def validate(accidental: Union[Accidental, str]):
         """Check if accidental is valid"""
-        accidental_type = type(accidental)
-        if accidental_type is Accidental:
+        if isinstance(accidental, Accidental):
             valid = AccidentalNote._validate_by_accidental(accidental)
-        elif accidental_type is str:
+        elif isinstance(accidental, str):
             valid = any(
                 [
                     AccidentalNote._validate_by_name(accidental),
@@ -62,6 +61,6 @@ class AccidentalNote(Enum):
                 ]
             )
         else:
-            raise NotImplementedError(f"Type {accidental_type} is not supported for validation")
+            raise NotImplementedError(f"Type {type(accidental)} is not supported for validation")
         if not valid:
             raise ValueError(f"Accidental {accidental} is un-identifiable")
