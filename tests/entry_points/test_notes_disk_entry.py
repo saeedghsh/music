@@ -5,11 +5,11 @@ import subprocess
 
 import pytest
 
-from entry_points.note_circle_entry import main
+from entry_points.notes_disk_entry import main
 
 
 def test_entry_point_script_smoke_test():
-    cmd = ["python3", "-m", "entry_points.note_circle_entry"]
+    cmd = ["python3", "-m", "entry_points.notes_disk_entry"]
     result = subprocess.run(cmd, capture_output=True, check=False)
     assert result.returncode == 0
 

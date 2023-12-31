@@ -7,8 +7,8 @@ from typing import Sequence
 from core.frequency import Frequency
 from core.notes import STANDARD_NOTES, standard_notes
 from core.octaves import Octave
-from drawing.circle_of_notes_drawing import draw_circle
 from drawing.common import save_image, show_image
+from drawing.notes_disk_drawing import draw_circle
 
 
 def _parse_arguments(argv: Sequence[str]):
