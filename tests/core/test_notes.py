@@ -8,10 +8,12 @@ import pytest
 from core.accidentals import Accidental
 from core.frequency import Frequency
 from core.notes import (
+    STANDARD_NOTES,
     Note,
     _decompose_name,
     _standardize_note,
     _validate_letter,
+    standard_notes,
     transposition_by_an_octave,
 )
 from core.octaves import Octave
@@ -101,15 +103,6 @@ def test_standardize_note(actual: Tuple[str, str, int], expected: Tuple[str, str
     ), f"Incorrect standardization for {letter}{accidental}{octave}"
 
 
-## We actually don't need this, since most objects are being validated at construction
-# @pytest.mark.parametrize("letter", [("H", "I")])
-# def test_standardize_note_invalid(letter: str):
-#     octave = Octave.from_number(1)
-#     accidental = Accidental.from_symbol("")
-#     with pytest.raises(ValueError):
-#         _standardize_note(letter, accidental, octave)
-
-
 def test_note_creation():
     note = Note("A4", "A", Accidental.from_symbol(""), 4, A4_FREQUENCY, A4_FREQUENCY)
     assert note.name == "A4"
@@ -167,6 +160,22 @@ def test_note_eq_unsupported(note_unsupported_type: Any):
         # pylint: disable=pointless-statement
         # pylint: disable=use-implicit-booleaness-not-comparison
         note == note_unsupported_type
+
+
+@pytest.mark.parametrize("mode", ["natural", "semitone", "quartertone"])
+@pytest.mark.parametrize("octave", [Octave.from_number(0), Octave.from_number(8)])
+def test_standard_notes(mode: str, octave: Octave):
+    names = STANDARD_NOTES[mode]
+    notes = standard_notes(mode, octave, A4_FREQUENCY)
+    assert len(names) == len(notes)
+    for note in notes:
+        assert note.octave == octave
+        assert f"{note.letter}{note.accidental.symbol.simplified}" in names
+
+
+def test_standard_notes_invalid_mode():
+    with pytest.raises(ValueError):
+        standard_notes("wrong_mode", Octave.from_number(0), A4_FREQUENCY)
 
 
 if __name__ == "__main__":

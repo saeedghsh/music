@@ -5,7 +5,8 @@ import sys
 from typing import Sequence
 
 from core.frequency import Frequency
-from core.notes import STANDARD_NOTES_QUARTERTONE, Note
+from core.notes import STANDARD_NOTES, standard_notes
+from core.octaves import Octave
 from drawing.circle_of_notes_drawing import draw_circle
 from drawing.common import save_image, show_image
 
@@ -43,16 +44,23 @@ def _parse_arguments(argv: Sequence[str]):
         default=440,
         help="Frequency for the reference note A4",
     )
+    parser.add_argument(
+        "-m",
+        "--note-mode",
+        type=str,
+        default="semitone",
+        choices=list(STANDARD_NOTES.keys()),
+        help="Notes all natural, with semitone distances or quartertone distances",
+    )
     return parser.parse_args(argv)
 
 
 def main(argv: Sequence[str]):
     # pylint: disable=missing-function-docstring
     args = _parse_arguments(argv)
-    notes = [
-        Note.from_name(f"{name}{args.octave}", Frequency(args.a4_frequency))
-        for name in STANDARD_NOTES_QUARTERTONE
-    ]
+    notes = standard_notes(
+        args.note_mode, Octave.from_number(args.octave), Frequency(args.a4_frequency)
+    )
     image = draw_circle(notes)
     if args.save_to_file:
         save_image(image, args.file_path)

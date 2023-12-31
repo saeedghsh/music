@@ -6,6 +6,7 @@ from typing import List
 import cv2
 import numpy as np
 
+from core.frequency import Frequency
 from core.notes import Note
 from drawing.common import pad_to_square, rotate_image
 
@@ -16,7 +17,7 @@ RADIUS = int(0.48 * HEIGHT)
 FONT_SCALE = HEIGHT / 1500
 FONT_THICKNESS = 1
 FONT_FACE = cv2.FONT_HERSHEY_SIMPLEX
-TEXT_RADIUS = 0.4 * HEIGHT
+TEXT_RADIUS = 0.32 * HEIGHT
 
 
 _get_text_size = partial(
@@ -49,14 +50,22 @@ def _draw_radius(image: np.ndarray, angle: float):
     cv2.line(image, CENTER, (end_x, end_y), COLOR, 1)
 
 
+def _print_a4_frequency(image: np.ndarray, frequency: Frequency):
+    label = f"A4: {frequency.value} Hz"
+    x_pos = WIDTH // 100
+    y_pos = HEIGHT // 50
+    _put_text(image, label, (x_pos, y_pos))
+
+
 def draw_circle(notes: List[Note]) -> np.ndarray:
     """Create an image and draw notes on a circle"""
     image = np.ones((HEIGHT, WIDTH, 3), dtype=np.uint8) * np.uint8(255)
     angle_steps = 2 * np.pi / len(notes)
     cv2.circle(image, CENTER, RADIUS, COLOR, 1)
+    _print_a4_frequency(image, notes[0].a4_frequency)
     for i, note in enumerate(notes):
         angle = (i + 0.5) * angle_steps
-        label = f"{i}: {note.name}"
+        label = f"{i}: {note.name} - {note.frequency.value:.2f} Hz"
         _text_on_wedge(image, angle, label)
     for i in range(len(notes)):
         angle = i * angle_steps

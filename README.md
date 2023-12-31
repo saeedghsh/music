@@ -32,7 +32,7 @@ $ python3 -m entry_points.tar_entry --fret-count 27 --string-number 1 -s -f <pat
 
 * Circle of notes entry point output:
 <p align="center">
-    <img src="https://github.com/saeedghsh/music/blob/master/images/circle_of_notes.png" width="300">
+    <img src="https://github.com/saeedghsh/music/blob/master/images/circle_of_notes_semitone.png" width="500">
 </p>
 
 * Piano entry point output:
@@ -93,6 +93,9 @@ $ pyreverse -o png -p music_uml **/*.py
 ```
 
 # TODO
+
+### Bug
+* [ ] Adding frequency value to printed notes on the circle have cause issue with `mode="quartertone"` see [here](https://github.com/saeedghsh/music/blob/master/images/circle_of_notes_quartertone.png).
 
 ### Improve/Refactoring
 * [ ] split `core/notation`, maybe into `notation`, `frequency`, etc. ...
