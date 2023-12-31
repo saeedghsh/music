@@ -29,9 +29,10 @@ $ python3 -m entry_points.tar_entry --fret-count 27 --string-number 1 -p
 $ python3 -m entry_points.tar_entry --fret-count 27 --string-number 1 -v
 $ python3 -m entry_points.tar_entry --fret-count 27 --string-number 1 -s -f <path-to-save-file>
 ```
+
 * Circle of notes entry point output:
 <p align="center">
-    <img src="https://github.com/saeedghsh/music/blob/master/images/circle_of_notes.png">
+    <img src="https://github.com/saeedghsh/music/blob/master/images/circle_of_notes.png" width="300">
 </p>
 
 * Piano entry point output:
