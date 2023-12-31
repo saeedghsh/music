@@ -1,19 +1,27 @@
-"""Entry point for Piano"""
+"""Entry point for circle of notes"""
 import argparse
 import os
 import sys
 from typing import Sequence
 
 from core.frequency import Frequency
+from core.notes import STANDARD_NOTES_QUARTERTONE, Note
+from drawing.circle_of_notes_drawing import draw_circle
 from drawing.common import save_image, show_image
-from drawing.piano_drawing import draw_piano
-from instruments.piano_instrument import generate_piano_keys
 
 
 def _parse_arguments(argv: Sequence[str]):
-    parser = argparse.ArgumentParser(description="Piano entry point")
-    parser.add_argument("-v", "--visualize", action="store_true")
-    parser.add_argument("-s", "--save-to-file", action="store_true")
+    parser = argparse.ArgumentParser(description="Circle of notes entry point")
+    parser.add_argument(
+        "-v",
+        "--visualize",
+        action="store_true",
+    )
+    parser.add_argument(
+        "-s",
+        "--save-to-file",
+        action="store_true",
+    )
     parser.add_argument(
         "-f",
         "--file-path",
@@ -23,11 +31,10 @@ def _parse_arguments(argv: Sequence[str]):
     )
     parser.add_argument(
         "-o",
-        "--octave-range",
-        nargs="+",
+        "--octave",
         type=int,
-        default=[0, 8],
-        help="Octave range",
+        default=0,
+        help="Octave",
     )
     parser.add_argument(
         "-a4",
@@ -42,12 +49,15 @@ def _parse_arguments(argv: Sequence[str]):
 def main(argv: Sequence[str]):
     # pylint: disable=missing-function-docstring
     args = _parse_arguments(argv)
-    piano_keys = generate_piano_keys(args.octave_range, Frequency(args.a4_frequency))
-    image = draw_piano(piano_keys)
+    notes = [
+        Note.from_name(f"{name}{args.octave}", Frequency(args.a4_frequency))
+        for name in STANDARD_NOTES_QUARTERTONE
+    ]
+    image = draw_circle(notes)
     if args.save_to_file:
         save_image(image, args.file_path)
     if args.visualize:
-        show_image(image, "Piano")
+        show_image(image, "Circle of Notes")
     return os.EX_OK
 
 

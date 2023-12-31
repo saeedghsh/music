@@ -5,6 +5,7 @@ import sys
 from typing import Sequence
 
 from core.frequency import Frequency
+from drawing.common import save_image, show_image
 from drawing.tar_drawing import annotate_tar_image
 from instruments.tar_instrument import generate_tar_string
 
@@ -69,8 +70,17 @@ def main(argv: Sequence[str]):
     if args.print_out:
         for fret_number, note in string_notes.items():
             print(f"{fret_number}\t{note}")
-    if args.visualize or args.save_to_file:
-        annotate_tar_image(string_notes, args.visualize, args.save_to_file, args.file_path)
+
+    if args.save_to_file or args.visualize:
+        # pylint: disable=fixme
+        # TODO: This if is just for the sake of the smoke tests
+        #       This function only supports 27 fret example as of now
+        #       I should not be called except if being tested for save/show
+        image = annotate_tar_image(string_notes)
+    if args.save_to_file:
+        save_image(image, args.file_path)
+    if args.visualize:
+        show_image(image, "Tar")
     return os.EX_OK
 
 

@@ -19,6 +19,9 @@ I started a python script to calculate the note frequencies for that purpose, ..
 ## Example
 Entry point examples:
 ```bash
+$ python3 -m entry_points.note_circle_entry -v
+$ python3 -m entry_points.note_circle_entry -s -f <path-to-save-file>
+
 $ python3 -m entry_points.piano_entry -v
 $ python3 -m entry_points.piano_entry -s -f <path-to-save-file>
 
@@ -26,6 +29,10 @@ $ python3 -m entry_points.tar_entry --fret-count 27 --string-number 1 -p
 $ python3 -m entry_points.tar_entry --fret-count 27 --string-number 1 -v
 $ python3 -m entry_points.tar_entry --fret-count 27 --string-number 1 -s -f <path-to-save-file>
 ```
+* Circle of notes entry point output:
+<p align="center">
+    <img src="https://github.com/saeedghsh/music/blob/master/images/circle_of_notes.png">
+</p>
 
 * Piano entry point output:
 <p align="center">

@@ -1,7 +1,7 @@
 """Piano drawing utils"""
 # pylint: disable=no-member
 from functools import partial
-from typing import Dict, Optional, Tuple
+from typing import Dict, Tuple
 
 import cv2
 import numpy as np
@@ -91,33 +91,20 @@ def _key_label(note: Note) -> str:
     return f"{note.name} - {note.frequency.value:.2f} Hz"
 
 
-def draw_piano(keys: Dict[str, Note], show: bool, save: bool, file_path: Optional[str]):
-    """Create an image to draw the piano"""
-
+def draw_piano(keys: Dict[str, Note]) -> np.ndarray:
+    """Create and return an image to draw the piano"""
     width, height = _image_size(keys)
     piano = np.ones((height, width, 3), dtype=np.uint8) * np.uint8(255)
-
     x = 0
     for note in keys.values():
         if _key_color(note) == "white":
             _key_white(piano, x, _key_label(note))
             x += _WHITE_KEY_WIDTH
-
-    # Have to draw all blacks after whites,
-    # otherwise drawing a white after black will upset the black
+    # draw black keys after whites, otherwise white keys will overwrite black
     x = 0
     for note in keys.values():
         if _key_color(note) == "black":
             _key_black(piano, x - _BLACK_KEY_WIDTH // 2, _key_label(note))
         else:
             x += _WHITE_KEY_WIDTH
-
-    if save:
-        if file_path is None:
-            raise ValueError("Is save is True, file_path cannot be None")
-        cv2.imwrite(file_path, piano)
-
-    if show:
-        cv2.imshow(f"{len(keys)} keys Piano", piano)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+    return piano

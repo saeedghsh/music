@@ -1,6 +1,6 @@
 """Tar drawing utils"""
 # pylint: disable=no-member
-from typing import Dict, Optional, Tuple
+from typing import Dict, Tuple
 
 import cv2
 import numpy as np
@@ -81,32 +81,18 @@ def _print_fret_label(image: np.ndarray, label: str, position: Tuple[int, int]):
     )
 
 
-def annotate_tar_image(
-    string_notes: Dict[int, Note],
-    show: bool,
-    save: bool,
-    file_path: Optional[str],
-):
+def annotate_tar_image(string_notes: Dict[int, Note]) -> np.ndarray:
     """Annotate a tar image, show and/or save per argument setting"""
     if len(string_notes) != 28:
         raise NotImplementedError(
             "Currently only 27-fret count (28 including open-hand) is supported."
         )
-
-    tar_img = cv2.imread(INSTRUMENTS["tar"]["small_image"]["path"])
+    image = cv2.imread(INSTRUMENTS["tar"]["small_image"]["path"])
     col_min = INSTRUMENTS["tar"]["small_image"]["fret_position_col"]["min"]
     col_max = INSTRUMENTS["tar"]["small_image"]["fret_position_col"]["max"]
     fret_positions_row = INSTRUMENTS["tar"]["small_image"]["fret_position_row_27_fret"]
     for fret_number, row in fret_positions_row.items():
-        _draw_fret(tar_img, (col_min, row), (col_max, row))
-        _print_fret_label(tar_img, _fret_label(string_notes, fret_number), (col_max + 20, row))
+        _draw_fret(image, (col_min, row), (col_max, row))
+        _print_fret_label(image, _fret_label(string_notes, fret_number), (col_max + 20, row))
 
-    if save:
-        if file_path is None:
-            raise ValueError("Is save is True, file_path cannot be None")
-        cv2.imwrite(file_path, tar_img)
-
-    if show:
-        cv2.imshow("Annotated Tar", tar_img)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+    return image
