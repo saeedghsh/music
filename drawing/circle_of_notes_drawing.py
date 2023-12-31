@@ -28,20 +28,27 @@ _put_text = partial(
 )
 
 
-def _text_on_wedge(image: np.ndarray, angle: float, label: str):
+def _write_on_wedge(image: np.ndarray, angle: float, label: str):
     (text_width, text_height) = _get_text_size(label)[0]
     text_img = np.zeros((text_height + 1, text_width + 1, 3), dtype=np.uint8)
     text_img.fill(255)
     _put_text(text_img, label, (0, text_height))
     text_img = pad_to_square(text_img, np.uint8(255))
     # if inwards writing is desired angle=(np.pi - angle)
-    rotated_img = rotate_image(image=text_img, angle=-angle, bg_color=255)
-    x_pos = int(CENTER[0] + TEXT_RADIUS * np.cos(angle)) - rotated_img.shape[0] // 2
-    y_pos = int(CENTER[1] + TEXT_RADIUS * np.sin(angle)) - rotated_img.shape[1] // 2
-    image[
-        y_pos : y_pos + rotated_img.shape[0],
-        x_pos : x_pos + rotated_img.shape[1],
-    ] = rotated_img
+    rotated_image = rotate_image(image=text_img, angle=-angle, bg_color=255)
+    x_pos = int(CENTER[0] + TEXT_RADIUS * np.cos(angle)) - rotated_image.shape[0] // 2
+    y_pos = int(CENTER[1] + TEXT_RADIUS * np.sin(angle)) - rotated_image.shape[1] // 2
+    row1, row2 = y_pos, y_pos + rotated_image.shape[0]
+    col1, col2 = x_pos, x_pos + rotated_image.shape[1]
+    # The use of mask performs a selective copy of the rotated_image to image to avoid the white
+    # surrounding of each rotated_image overwrite the previous one. This implementation is very
+    # simplistic and only works if color is black. The check is to safeguard for change of COLOR.
+    # But since not really covered by tests, hence the "no cover" directive.
+    if COLOR != (0, 0, 0):  # pragma: no cover
+        image[row1:row2, col1:col2] = rotated_image
+    else:
+        mask = rotated_image < 200
+        image[row1:row2, col1:col2][mask] = 0
 
 
 def _draw_radius(image: np.ndarray, angle: float):
@@ -66,7 +73,8 @@ def draw_circle(notes: List[Note]) -> np.ndarray:
     for i, note in enumerate(notes):
         angle = (i + 0.5) * angle_steps
         label = f"{i}: {note.name} - {note.frequency.value:.2f} Hz"
-        _text_on_wedge(image, angle, label)
+        # label = f"{i}: {note.name}"
+        _write_on_wedge(image, angle, label)
     for i in range(len(notes)):
         angle = i * angle_steps
         _draw_radius(image, angle)

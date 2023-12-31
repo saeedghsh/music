@@ -94,8 +94,6 @@ $ pyreverse -o png -p music_uml **/*.py
 
 # TODO
 
-### Bug
-* [ ] Adding frequency value to printed notes on the circle have cause issue with `mode="quartertone"` see [here](https://github.com/saeedghsh/music/blob/master/images/circle_of_notes_quartertone.png).
 
 ### Improve/Refactoring
 * [ ] split `core/notation`, maybe into `notation`, `frequency`, etc. ...
