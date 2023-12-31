@@ -12,8 +12,16 @@ from instruments.piano_instrument import generate_piano_keys
 
 def _parse_arguments(argv: Sequence[str]):
     parser = argparse.ArgumentParser(description="Piano entry point")
-    parser.add_argument("-v", "--visualize", action="store_true")
-    parser.add_argument("-s", "--save-to-file", action="store_true")
+    parser.add_argument(
+        "-v",
+        "--visualize",
+        action="store_true",
+    )
+    parser.add_argument(
+        "-s",
+        "--save-to-file",
+        action="store_true",
+    )
     parser.add_argument(
         "-f",
         "--file-path",
