@@ -8,19 +8,19 @@ import pytest
 from entry_points.piano_entry import main
 
 
-def test_entry_point_script_smoke_test():
+def test_piano_entry_point_script_smoke_test():
     cmd = ["python3", "-m", "entry_points.piano_entry"]
     result = subprocess.run(cmd, capture_output=True, check=False)
     assert result.returncode == 0
 
 
-def test_main_smoke_test():
+def test_piano_entry_main_smoke_test():
     args = []
     result = main(args)
     assert result == os.EX_OK
 
 
-def test_main_file_show(mocker):
+def test_piano_entry_main_show(mocker):
     mocker.patch("cv2.imshow")
     mocker.patch("cv2.waitKey", return_value=ord("q"))
     mocker.patch("cv2.destroyAllWindows")
@@ -29,7 +29,7 @@ def test_main_file_show(mocker):
     assert result == os.EX_OK
 
 
-def test_main_file_save(tmp_path: str):
+def test_piano_entry_main_file_save(tmp_path: str):
     output_file = os.path.join(tmp_path, "piano.png")
     args = [
         "-s",

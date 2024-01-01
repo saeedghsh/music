@@ -8,7 +8,7 @@ import pytest
 from entry_points.tar_entry import main
 
 
-def test_entry_point_script_smoke_test():
+def test_tar_entry_point_script_smoke_test():
     cmd = ["python3", "-m", "entry_points.tar_entry"]
     result = subprocess.run(cmd, capture_output=True, check=False)
     assert result.returncode == 0
@@ -16,7 +16,7 @@ def test_entry_point_script_smoke_test():
 
 @pytest.mark.parametrize("string_number", [1, 2, 3, 4, 5, 6])
 @pytest.mark.parametrize("fret_count", [25, 27, 28])
-def test_main_smoke_test_base_and_print_out(fret_count: int, string_number: int):
+def test_tar_entry_main_smoke_test(fret_count: int, string_number: int):
     args_base = [
         "--fret-count",
         str(fret_count),
@@ -26,13 +26,23 @@ def test_main_smoke_test_base_and_print_out(fret_count: int, string_number: int)
     result = main(args_base)
     assert result == os.EX_OK
 
-    args_print_out = args_base + ["-p"]
-    result = main(args_print_out)
+
+@pytest.mark.parametrize("string_number", [1, 2, 3, 4, 5, 6])
+@pytest.mark.parametrize("fret_count", [25, 27, 28])
+def test_tar_entry_main_smoke_test_print_out(fret_count: int, string_number: int):
+    args_base = [
+        "--fret-count",
+        str(fret_count),
+        "--string-number",
+        str(string_number),
+        "-p",
+    ]
+    result = main(args_base)
     assert result == os.EX_OK
 
 
 @pytest.mark.parametrize("string_number", [1, 2, 3, 4, 5, 6])
-def test_main_file_show(mocker, string_number: int):
+def test_tar_entry_main_show(mocker, string_number: int):
     mocker.patch("cv2.imshow")
     mocker.patch("cv2.waitKey", return_value=ord("q"))
     mocker.patch("cv2.destroyAllWindows")
@@ -49,7 +59,7 @@ def test_main_file_show(mocker, string_number: int):
 
 @pytest.mark.parametrize("string_number", [1, 2, 3, 4, 5, 6])
 @pytest.mark.parametrize("fret_count", [25, 28])
-def test_main_file_show_not_implemented(mocker, fret_count: int, string_number: int):
+def test_tar_entry_main_show_not_implemented(mocker, fret_count: int, string_number: int):
     mocker.patch("cv2.imshow")
     mocker.patch("cv2.waitKey", return_value=ord("q"))
     mocker.patch("cv2.destroyAllWindows")
@@ -65,7 +75,7 @@ def test_main_file_show_not_implemented(mocker, fret_count: int, string_number: 
 
 
 @pytest.mark.parametrize("string_number", [1, 2, 3, 4, 5, 6])
-def test_main_file_save(tmp_path: str, string_number: int):
+def test_tar_entry_main_file_save(tmp_path: str, string_number: int):
     output_file = os.path.join(tmp_path, "annotated_tar.png")
     args = [
         "--fret-count",
