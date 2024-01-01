@@ -103,16 +103,16 @@ def _decompose_name(name: str) -> Tuple[str, Accidental, Octave]:
 
     octave = Octave.from_number(_trailing_number(name))
 
-    name_wo_octave = list(name[: -len(str(octave))])
+    letter_accidental = list(name[: -len(str(octave))])
 
-    letter = _pop_first(name_wo_octave)
+    letter = _pop_first(letter_accidental)
     _validate_letter(letter)
 
-    accidental_symbol = _pop_first(name_wo_octave)
+    accidental_symbol = _pop_first(letter_accidental)
     accidental = Accidental.from_symbol(accidental_symbol)
 
-    if len(name_wo_octave) != 0:
-        raise ValueError(f"name (wo octave) cannot be more that 2 char: {name_wo_octave}")
+    if len(letter_accidental) != 0:
+        raise ValueError(f"name (wo octave) cannot be more that 2 char: {letter_accidental}")
 
     return letter, accidental, octave
 
@@ -126,14 +126,16 @@ def _standardize_note(
     """
     _ = _decompose_name(f"{letter}{accidental}{octave}")  # Validate name correctness
 
-    name_wo_octave = f"{letter}{accidental}"
-    new_octave = octave + 1 if name_wo_octave == "B#" else octave
-    name_wo_octave_standard = CONVERSION_TO_STANDARD_NOTE.get(name_wo_octave, name_wo_octave)
+    letter_accidental = f"{letter}{accidental}"
+    new_octave = octave + 1 if letter_accidental == "B#" else octave
+    letter_accidental_standard = CONVERSION_TO_STANDARD_NOTE.get(
+        letter_accidental, letter_accidental
+    )
 
-    if len(name_wo_octave_standard) == 1:
-        new_letter, new_accidental = name_wo_octave_standard, ""
-    if len(name_wo_octave_standard) == 2:
-        new_letter, new_accidental = name_wo_octave_standard[0], name_wo_octave_standard[1]
+    if len(letter_accidental_standard) == 1:
+        new_letter, new_accidental = letter_accidental_standard, ""
+    if len(letter_accidental_standard) == 2:
+        new_letter, new_accidental = letter_accidental_standard[0], letter_accidental_standard[1]
 
     return new_letter, Accidental.from_symbol(new_accidental), new_octave
 
