@@ -3,7 +3,7 @@
 import pytest
 
 from core.frequency import Frequency
-from core.notes import transposition_by_an_octave
+from core.intervals import MusicalInterval
 from instruments.tar_instrument import generate_tar_string
 
 A4_FREQUENCY = Frequency(440)
@@ -34,7 +34,7 @@ def test_generate_tar_string_sixth_string_transposition():
     )
 
     for fret, note in base_notes.items():
-        expected_transposed_note = transposition_by_an_octave(note)
+        expected_transposed_note = note + MusicalInterval.OCTAVE
         assert (
             transposed_notes[fret] == expected_transposed_note
         ), f"Incorrect transposition for fret {fret}"

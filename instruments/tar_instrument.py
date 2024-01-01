@@ -2,7 +2,8 @@
 from typing import Dict, Sequence
 
 from core.frequency import Frequency
-from core.notes import Note, transposition_by_an_octave
+from core.intervals import MusicalInterval
+from core.notes import Note
 
 
 def _fret_numbers(fret_count: int) -> Sequence[int]:
@@ -96,7 +97,7 @@ def _generate_tar_strings(fret_count: int, a4_frequency: Frequency) -> Dict[int,
     strings[4] = strings[3]
     strings[5] = strings[1]
     strings[6] = {
-        fret_number: transposition_by_an_octave(note) for fret_number, note in strings[1].items()
+        fret_number: note + MusicalInterval.OCTAVE for fret_number, note in strings[1].items()
     }
     return strings
 
