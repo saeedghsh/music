@@ -101,8 +101,11 @@ $ pyreverse -o png -p music_uml **/*.py
 * [ ] fix all TODOs in the code. `pylint` is currently suppress so not to flag them, remove suppressions.
 * [ ] right now we only annotate tar in drawing, should we draw something wo/ existing photos?
 * [ ] `drawing` module is not actually tested and only covered through entry point unit tests. Add unittest for that.
+* [ ] `Octave.__add__` supports `int` which is not proper, it should support `MusicalInterval` types.
+      One (or the only?) use case of it is in `_compute_frequency`, make sure that one is properly done.
 
 ### Documentations
+* [ ] move Tar entry point output (notes and image) to documentation
 * [ ] add Setar Photo.
 * [ ] add Fret tying schema/drawing
 * [ ] add "fret string thickness" for Tar and Setar
