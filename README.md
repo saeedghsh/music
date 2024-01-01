@@ -94,10 +94,10 @@ $ pyreverse -o png -p music_uml **/*.py
 
 # TODO
 
-
 ### Improve/Refactoring
 * [ ] a mapping function between note and frequency, given the base note frequency.
-* [ ] a mapping function between ratio of string length to ratio of resulting frequencies (are they the same?)
+* [ ] a mapping function between ratio of string length to ratio of resulting frequencies
+      -> it's inverse actually, half the string length and the frequency doubles.
 * [ ] fix all TODOs in the code. `pylint` is currently suppress so not to flag them, remove suppressions.
 * [ ] right now we only annotate tar in drawing, should we draw something wo/ existing photos?
 * [ ] `drawing` module is not actually tested and only covered through entry point unit tests. Add unittest for that.
