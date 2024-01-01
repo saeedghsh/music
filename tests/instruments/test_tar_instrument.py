@@ -8,7 +8,7 @@ import pytest
 
 from core.frequency import Frequency
 from core.notes import Note
-from instruments.tar_instrument import generate_tar_strings
+from instruments.tar_instrument import tar_string
 
 A4_FREQUENCY = Frequency(440)
 
@@ -31,28 +31,38 @@ def _load_notes_from_csv(filename: str) -> Tuple[dict, dict]:
     return notes, frequencies
 
 
+@pytest.mark.parametrize("base", ["A3", "A#2", "Bk5", "Gs1"])
 @pytest.mark.parametrize("fret_count", [25, 27, 28])
-def test_generate_tar_strings_valid_fret_counts(fret_count: int):
-    result = generate_tar_strings(fret_count=fret_count, a4_frequency=A4_FREQUENCY)
+@pytest.mark.parametrize("a4_frequency", [2, 270, 440])
+def test_tar_strings(fret_count: int, base: str, a4_frequency: float):
+    base_note = Note.from_name(base, Frequency(a4_frequency))
+    result = tar_string(base_note, fret_count)
     assert isinstance(result, dict)
+    assert len(result) == fret_count + 1
+    assert result[0] == base_note
 
 
 @pytest.mark.parametrize("fret_count", [24, 26, 29])
-def test_generate_tar_strings_invalid_fret_counts(fret_count: int):
+def test_tar_string_invalid_fret_counts(fret_count: int):
+    base_note = Note.from_name("C4", A4_FREQUENCY)
     with pytest.raises(ValueError):
-        generate_tar_strings(fret_count=fret_count, a4_frequency=A4_FREQUENCY)
+        tar_string(base_note, fret_count)
 
 
-def test_generate_tar_strings_against_test_data_file():
+def test_tar_string_against_test_data_file():
     file_name = "test_data_tar_notes_C4-C4-G3-G3-C4-C3_A4_at_440.csv"
     dirpath = "tests/instruments"
     test_data_file_path = os.path.join(dirpath, file_name)
+    string_to_base_map = {1: "C4", 2: "C4", 3: "G3", 4: "G3", 5: "C4", 6: "C3"}
     expected_notes, expected_frequencies = _load_notes_from_csv(test_data_file_path)
-    actual_notes = generate_tar_strings(28, A4_FREQUENCY)
-    for string_number, notes in actual_notes.items():
-        for fret_number, actual_note in notes.items():
-            assert actual_note == expected_notes[string_number][fret_number]
-            assert actual_note.frequency == expected_frequencies[string_number][fret_number]
+    for string_number, notes in expected_notes.items():
+        actual_base_note = Note.from_name(string_to_base_map[string_number], A4_FREQUENCY)
+        actual_notes = tar_string(actual_base_note, fret_count=28)
+        for fret_number, expected_note in notes.items():
+            expected_frequency = expected_frequencies[string_number][fret_number]
+            actual_note = actual_notes[fret_number]
+            assert actual_note == expected_note
+            assert actual_note.frequency == expected_frequency
 
 
 if __name__ == "__main__":

@@ -14,80 +14,88 @@ def test_tar_entry_point_script_smoke_test():
     assert result.returncode == 0
 
 
-@pytest.mark.parametrize("string_number", [1, 2, 3, 4, 5, 6])
+@pytest.mark.parametrize("base_note", ["A3", "A#2", "Bk5", "Gs1"])
 @pytest.mark.parametrize("fret_count", [25, 27, 28])
-def test_tar_entry_main_smoke_test(fret_count: int, string_number: int):
-    args_base = [
-        "--fret-count",
-        str(fret_count),
-        "--string-number",
-        str(string_number),
-    ]
-    result = main(args_base)
-    assert result == os.EX_OK
-
-
-@pytest.mark.parametrize("string_number", [1, 2, 3, 4, 5, 6])
-@pytest.mark.parametrize("fret_count", [25, 27, 28])
-def test_tar_entry_main_smoke_test_print_out(fret_count: int, string_number: int):
-    args_base = [
-        "--fret-count",
-        str(fret_count),
-        "--string-number",
-        str(string_number),
-        "-p",
-    ]
-    result = main(args_base)
-    assert result == os.EX_OK
-
-
-@pytest.mark.parametrize("string_number", [1, 2, 3, 4, 5, 6])
-def test_tar_entry_main_show(mocker, string_number: int):
-    mocker.patch("cv2.imshow")
-    mocker.patch("cv2.waitKey", return_value=ord("q"))
-    mocker.patch("cv2.destroyAllWindows")
+@pytest.mark.parametrize("a4_frequency", [2, 270, 440])
+def test_tar_entry_main_smoke_test(fret_count: int, base_note: str, a4_frequency: float):
     args = [
         "--fret-count",
-        str(27),
-        "--string-number",
-        str(string_number),
-        "-v",
+        str(fret_count),
+        "--base-note",
+        str(base_note),
+        "--a4-frequency",
+        str(a4_frequency),
     ]
     result = main(args)
     assert result == os.EX_OK
 
 
-@pytest.mark.parametrize("string_number", [1, 2, 3, 4, 5, 6])
+@pytest.mark.parametrize("base_note", ["A3", "A#2", "Bk5", "Gs1"])
+@pytest.mark.parametrize("fret_count", [25, 27, 28])
+@pytest.mark.parametrize("a4_frequency", [2, 270, 440])
+def test_tar_entry_main_smoke_test_print_out(fret_count: int, base_note: str, a4_frequency: float):
+    args = [
+        "--fret-count",
+        str(fret_count),
+        "--base-note",
+        str(base_note),
+        "--a4-frequency",
+        str(a4_frequency),
+        "--print-out",
+    ]
+    result = main(args)
+    assert result == os.EX_OK
+
+
+@pytest.mark.parametrize("base_note", ["A3", "A#2", "Bk5", "Gs1"])
+@pytest.mark.parametrize("a4_frequency", [2, 270, 440])
+def test_tar_entry_main_show(mocker, base_note: str, a4_frequency: float):
+    mocker.patch("cv2.imshow")
+    mocker.patch("cv2.waitKey", return_value=ord("q"))
+    mocker.patch("cv2.destroyAllWindows")
+    args = [
+        "--base-note",
+        str(base_note),
+        "--a4-frequency",
+        str(a4_frequency),
+        "--visualize",
+    ]
+    result = main(args)
+    assert result == os.EX_OK
+
+
 @pytest.mark.parametrize("fret_count", [25, 28])
-def test_tar_entry_main_show_not_implemented(mocker, fret_count: int, string_number: int):
+def test_tar_entry_main_show_not_implemented(mocker, fret_count: int):
     mocker.patch("cv2.imshow")
     mocker.patch("cv2.waitKey", return_value=ord("q"))
     mocker.patch("cv2.destroyAllWindows")
     args = [
         "--fret-count",
         str(fret_count),
-        "--string-number",
-        str(string_number),
-        "-v",
+        "--visualize",
     ]
     with pytest.raises(NotImplementedError):
         main(args)
 
 
-@pytest.mark.parametrize("string_number", [1, 2, 3, 4, 5, 6])
-def test_tar_entry_main_file_save(tmp_path: str, string_number: int):
+@pytest.mark.parametrize("base_note", ["A3", "A#2", "Bk5", "Gs1"])
+@pytest.mark.parametrize("a4_frequency", [2, 270, 440])
+def test_tar_entry_main_file_save(tmp_path: str, base_note: str, a4_frequency: float):
     output_file = os.path.join(tmp_path, "annotated_tar.png")
     args = [
-        "--fret-count",
-        str(27),
-        "--string-number",
-        str(string_number),
-        "-s",
+        "--base-note",
+        str(base_note),
+        "--a4-frequency",
+        str(a4_frequency),
+        "--save-to-file",
     ]
     with pytest.raises(ValueError):
         main(args)
 
-    args.extend(["-f", output_file])
+    args += [
+        "--file-path",
+        output_file,
+    ]
     result = main(args)
     assert result == os.EX_OK
     assert os.path.isfile(output_file)

@@ -5,9 +5,10 @@ import sys
 from typing import Sequence
 
 from core.frequency import Frequency
+from core.notes import Note
 from drawing.common import save_image, show_image
 from drawing.tar_drawing import annotate_tar_image
-from instruments.tar_instrument import generate_tar_strings
+from instruments.tar_instrument import tar_string
 
 
 def _parse_arguments(argv: Sequence[str]):
@@ -20,11 +21,16 @@ def _parse_arguments(argv: Sequence[str]):
         help="Number of frets on the neck",
     )
     parser.add_argument(
-        "--string-number",
-        type=int,
-        choices=[1, 2, 3, 4, 5, 6],
-        default=1,
-        help="The string number",
+        "--base-note",
+        default="C4",
+        type=str,
+        help="The string's open-hand note",
+    )
+    parser.add_argument(
+        "--a4-frequency",
+        type=float,
+        default=440,
+        help="Frequency for the reference note A4",
     )
     parser.add_argument(
         "-p",
@@ -51,21 +57,15 @@ def _parse_arguments(argv: Sequence[str]):
         required=False,
         help="for saving",
     )
-    parser.add_argument(
-        "-a4",
-        "--a4-frequency",
-        type=float,
-        default=440,
-        help="Frequency for the reference note A4",
-    )
+
     return parser.parse_args(argv)
 
 
 def main(argv: Sequence[str]):
     # pylint: disable=missing-function-docstring
     args = _parse_arguments(argv)
-    strings = generate_tar_strings(args.fret_count, Frequency(args.a4_frequency))
-    string = strings[args.string_number]
+    base_note = Note.from_name(args.base_note, Frequency(args.a4_frequency))
+    string = tar_string(base_note, args.fret_count)
 
     if args.print_out:
         for fret_number, note in string.items():
