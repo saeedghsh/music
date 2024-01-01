@@ -76,14 +76,14 @@ CONVERSION_TO_STANDARD_NOTE = {
 }
 
 
-def _letter_accidental_standard(letter_accidental: str) -> str:
+def _standardize_letter_accidental(letter_accidental: str) -> str:
     return CONVERSION_TO_STANDARD_NOTE.get(letter_accidental, letter_accidental)
 
 
 def _index_in_standard_notes_list(letter_accidental: str) -> int:
     # pylint: disable=fixme
     # TODO: currently only supports standard notes with quartertone
-    letter_accidental_standard = _letter_accidental_standard(letter_accidental)
+    letter_accidental_standard = _standardize_letter_accidental(letter_accidental)
     return STANDARD_NOTES["quartertone"].index(f"{letter_accidental_standard}")
 
 
@@ -101,6 +101,19 @@ def _validate_letter(letter: str):
         raise ValueError(f"Invalid note letter: {letter}")
 
 
+def _decompose_letter_accidental(letter_accidental: str) -> Tuple[str, Accidental]:
+    letter_accidental_standard = letter_accidental
+    if len(letter_accidental_standard) == 1:
+        letter, accidental_symbol = letter_accidental_standard, ""
+    elif len(letter_accidental_standard) == 2:
+        letter, accidental_symbol = letter_accidental_standard[0], letter_accidental_standard[1]
+    else:
+        raise ValueError(f"Letter+Accidental should be 1 or 2 char, got: {letter_accidental}")
+    accidental = Accidental.from_symbol(accidental_symbol)
+    _validate_letter(letter)
+    return letter, accidental
+
+
 def _decompose_name(name: str) -> Tuple[str, Accidental, Octave]:
     """Return (letter, accidental, octave) from the name
 
@@ -108,18 +121,9 @@ def _decompose_name(name: str) -> Tuple[str, Accidental, Octave]:
     """
     # pylint: disable=fixme
     # TODO: B#9 is technically out of range, but this function does not notice it!
-
-    def _pop_first(lst: list) -> str:
-        return lst.pop(0) if len(lst) > 0 else ""
-
     octave = Octave.from_number(_trailing_number(name))
-    letter_accidental = list(name[: -len(str(octave))])
-    letter = _pop_first(letter_accidental)
-    _validate_letter(letter)
-    accidental_symbol = _pop_first(letter_accidental)
-    accidental = Accidental.from_symbol(accidental_symbol)
-    if len(letter_accidental) != 0:
-        raise ValueError(f"name (wo octave) cannot be more that 2 char: {letter_accidental}")
+    letter_accidental = name[: -len(str(octave))]
+    letter, accidental = _decompose_letter_accidental(letter_accidental)
     return letter, accidental, octave
 
 
@@ -133,12 +137,9 @@ def _standardize_note(
     _ = _decompose_name(f"{letter}{accidental}{octave}")  # Validate name correctness
     letter_accidental = f"{letter}{accidental}"
     new_octave = octave + 1 if letter_accidental == "B#" else octave
-    letter_accidental_standard = _letter_accidental_standard(letter_accidental)
-    if len(letter_accidental_standard) == 1:
-        new_letter, new_accidental = letter_accidental_standard, ""
-    if len(letter_accidental_standard) == 2:
-        new_letter, new_accidental = letter_accidental_standard[0], letter_accidental_standard[1]
-    return new_letter, Accidental.from_symbol(new_accidental), new_octave
+    letter_accidental_standard = _standardize_letter_accidental(letter_accidental)
+    new_letter, new_accidental = _decompose_letter_accidental(letter_accidental_standard)
+    return new_letter, new_accidental, new_octave
 
 
 def _compute_frequency(
