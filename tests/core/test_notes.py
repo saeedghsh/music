@@ -7,6 +7,7 @@ import pytest
 
 from core.accidentals import Accidental
 from core.frequency import Frequency
+from core.intervals import MusicalInterval
 from core.notes import (
     STANDARD_NOTES,
     Note,
@@ -14,7 +15,6 @@ from core.notes import (
     _standardize_note,
     _validate_letter,
     standard_notes,
-    transposition_by_an_octave,
 )
 from core.octaves import Octave
 
@@ -67,22 +67,6 @@ def test_decompose_name_valid(
 def test_decompose_name_invalid(name: str):
     with pytest.raises(ValueError):
         _decompose_name(name)
-
-
-@pytest.mark.parametrize("a4_frequency", [Frequency(100), Frequency(250), Frequency(440)])
-@pytest.mark.parametrize(
-    "actual_note_name, expected_note_name",
-    [("A4", "A5"), ("G#3", "G#4"), ("Fs2", "Fs3"), ("Dk-1", "Dk0")],
-)
-def test_transposition_by_an_octave(
-    actual_note_name: str, expected_note_name: str, a4_frequency: Frequency
-):
-    actual_note = Note.from_name(actual_note_name, a4_frequency)
-    expected_note = Note.from_name(expected_note_name, a4_frequency)
-
-    assert (
-        transposition_by_an_octave(actual_note) == expected_note
-    ), f"Incorrect transposition for {actual_note}"
 
 
 @pytest.mark.parametrize(
@@ -160,6 +144,45 @@ def test_note_eq_unsupported(note_unsupported_type: Any):
         # pylint: disable=pointless-statement
         # pylint: disable=use-implicit-booleaness-not-comparison
         note == note_unsupported_type
+
+
+@pytest.mark.parametrize("a4_frequency", [Frequency(100), Frequency(250), Frequency(440)])
+@pytest.mark.parametrize(
+    "added_value, actual_note_name, expected_note_name",
+    [
+        (MusicalInterval.OCTAVE, "A4", "A5"),
+        (MusicalInterval.OCTAVE, "G#3", "G#4"),
+        (MusicalInterval.OCTAVE, "Fs2", "Fs3"),
+        (MusicalInterval.OCTAVE, "Dk-1", "Dk0"),
+        (MusicalInterval.TONE, "A4", "B4"),
+        (MusicalInterval.TONE, "B4", "C#5"),
+        (MusicalInterval.TONE, "G#3", "A#3"),
+        (MusicalInterval.TONE, "Ek2", "Fs2"),
+        (MusicalInterval.TONE, "Dk-1", "Ek-1"),
+        (MusicalInterval.SEMITONE, "A4", "A#4"),
+        (MusicalInterval.SEMITONE, "B6", "C7"),
+        (MusicalInterval.SEMITONE, "E6", "F6"),
+        (MusicalInterval.QUARTERTONE, "A4", "As4"),
+        (MusicalInterval.QUARTERTONE, "Bs6", "C7"),
+        (MusicalInterval.QUARTERTONE, "Ek6", "E6"),
+    ],
+)
+def test_note_add(
+    added_value: MusicalInterval,
+    actual_note_name: str,
+    expected_note_name: str,
+    a4_frequency: Frequency,
+):
+    actual_note = Note.from_name(actual_note_name, a4_frequency)
+    expected_note = Note.from_name(expected_note_name, a4_frequency)
+    assert actual_note + added_value == expected_note
+
+
+@pytest.mark.parametrize("value_unsupported_type", [Frequency(100), 1, 0.0])
+def test_note_add_not_implemented(value_unsupported_type: Any):
+    note = Note.from_name("A0", A4_FREQUENCY)
+    with pytest.raises(NotImplementedError):
+        note + value_unsupported_type  # pylint: disable=pointless-statement
 
 
 @pytest.mark.parametrize("mode", ["natural", "semitone", "quartertone"])

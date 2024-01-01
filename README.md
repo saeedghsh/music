@@ -96,11 +96,6 @@ $ pyreverse -o png -p music_uml **/*.py
 
 
 ### Improve/Refactoring
-* [ ] split `core/notation`, maybe into `notation`, `frequency`, etc. ...
-* [ ] make note name validation a process separate from `decompose_note_name`
-* [ ] uniform the function signatures and the way they operate for stuff under `instruments.py`
-* [ ] `transposition_by_an_octave` to `transpose_by(interval: MusicalInterval, steps: int)`.
-      This is a prerequisite for an easy implementation of the "tuning variation" on Tar/Setar.
 * [ ] a mapping function between note and frequency, given the base note frequency.
 * [ ] a mapping function between ratio of string length to ratio of resulting frequencies (are they the same?)
 * [ ] fix all TODOs in the code. `pylint` is currently suppress so not to flag them, remove suppressions.

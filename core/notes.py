@@ -76,6 +76,17 @@ CONVERSION_TO_STANDARD_NOTE = {
 }
 
 
+def _letter_accidental_standard(letter_accidental: str) -> str:
+    return CONVERSION_TO_STANDARD_NOTE.get(letter_accidental, letter_accidental)
+
+
+def _index_in_standard_notes_list(letter_accidental: str) -> int:
+    # pylint: disable=fixme
+    # TODO: currently only supports standard notes with quartertone
+    letter_accidental_standard = _letter_accidental_standard(letter_accidental)
+    return STANDARD_NOTES["quartertone"].index(f"{letter_accidental_standard}")
+
+
 def _trailing_number(s: str) -> int:
     """Return an integer from the end of a string."""
     match = re.search(r"-?\d+$", s)
@@ -102,18 +113,13 @@ def _decompose_name(name: str) -> Tuple[str, Accidental, Octave]:
         return lst.pop(0) if len(lst) > 0 else ""
 
     octave = Octave.from_number(_trailing_number(name))
-
     letter_accidental = list(name[: -len(str(octave))])
-
     letter = _pop_first(letter_accidental)
     _validate_letter(letter)
-
     accidental_symbol = _pop_first(letter_accidental)
     accidental = Accidental.from_symbol(accidental_symbol)
-
     if len(letter_accidental) != 0:
         raise ValueError(f"name (wo octave) cannot be more that 2 char: {letter_accidental}")
-
     return letter, accidental, octave
 
 
@@ -125,18 +131,13 @@ def _standardize_note(
     Makes sure that the note belong set of "standard notes"
     """
     _ = _decompose_name(f"{letter}{accidental}{octave}")  # Validate name correctness
-
     letter_accidental = f"{letter}{accidental}"
     new_octave = octave + 1 if letter_accidental == "B#" else octave
-    letter_accidental_standard = CONVERSION_TO_STANDARD_NOTE.get(
-        letter_accidental, letter_accidental
-    )
-
+    letter_accidental_standard = _letter_accidental_standard(letter_accidental)
     if len(letter_accidental_standard) == 1:
         new_letter, new_accidental = letter_accidental_standard, ""
     if len(letter_accidental_standard) == 2:
         new_letter, new_accidental = letter_accidental_standard[0], letter_accidental_standard[1]
-
     return new_letter, Accidental.from_symbol(new_accidental), new_octave
 
 
@@ -146,8 +147,8 @@ def _compute_frequency(
     """Calculate the frequency of a note."""
     # pylint: disable=invalid-name
     letter, accidental, octave = _standardize_note(letter, accidental, octave)
-    note_index = STANDARD_NOTES["quartertone"].index(f"{letter}{accidental}")
-    A_index = STANDARD_NOTES["quartertone"].index("A")
+    note_index = _index_in_standard_notes_list(f"{letter}{accidental}")
+    A_index = _index_in_standard_notes_list("A")
     quartertone_steps_from_A4 = note_index - A_index + (octave.number - 4) * 24
     return Frequency(a4_frequency.value * (2 ** (quartertone_steps_from_A4 / 24)))
 
@@ -211,14 +212,35 @@ class Note:
             raise NotImplementedError(f"Type {other_type} is not supported for comparison")
         return type_dispatch[other_type](other)
 
+    def __add__(self, other: Any) -> "Note":
+        """Return a Note that is the transposed version of self by the specified interval"""
+        if not isinstance(other, MusicalInterval):
+            raise NotImplementedError(f"Type {type(other)} is not supported")
 
-def transposition_by_an_octave(note: Note) -> Note:
-    """Transposes a note to an octave higher"""
-    new_octave = note.octave + 1
-    name = f"{note.letter}{note.accidental}{new_octave}"
-    _ = _decompose_name(name)  # Validate name correctness
-    frequency = Frequency(note.frequency.value * MusicalInterval.OCTAVE.value)
-    return Note(name, note.letter, note.accidental, new_octave, frequency, note.a4_frequency)
+        if other == MusicalInterval.OCTAVE:
+            quartertone_steps = 24
+        if other == MusicalInterval.TONE:
+            quartertone_steps = 4
+        if other == MusicalInterval.SEMITONE:
+            quartertone_steps = 2
+        if other == MusicalInterval.QUARTERTONE:
+            quartertone_steps = 1
+
+        note_index = _index_in_standard_notes_list(f"{self.letter}{self.accidental}")
+        if note_index + quartertone_steps >= len(STANDARD_NOTES["quartertone"]):
+            new_octave = self.octave + 1
+        else:
+            new_octave = self.octave
+        new_note_index = (note_index + quartertone_steps) % len(STANDARD_NOTES["quartertone"])
+        new_name = f"{STANDARD_NOTES['quartertone'][new_note_index]}{new_octave.number}"
+        new_letter, new_accidental, _ = _decompose_name(new_name)
+        # computing the frequency this way has the advantage that it will be tested against
+        # the _compute_frequency approach executed in the __post_init__
+        frequency_ratio = MusicalInterval.QUARTERTONE.value**quartertone_steps
+        new_frequency = Frequency(self.frequency.value * frequency_ratio)
+        return Note(
+            new_name, new_letter, new_accidental, new_octave, new_frequency, self.a4_frequency
+        )
 
 
 def standard_notes(mode: str, octave: Octave, a4_frequency: Frequency) -> List[Note]:
