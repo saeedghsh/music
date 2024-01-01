@@ -8,27 +8,9 @@ import pytest
 
 from core.frequency import Frequency
 from core.notes import Note
-from instruments.tar_instrument import generate_tar_string, generate_tar_strings
+from instruments.tar_instrument import generate_tar_strings
 
 A4_FREQUENCY = Frequency(440)
-
-
-@pytest.mark.parametrize("fret_count", [25, 27, 28])
-def test_generate_tar_string_valid_fret_counts(fret_count: int):
-    result = generate_tar_string(fret_count=fret_count, string_number=1, a4_frequency=A4_FREQUENCY)
-    assert isinstance(result, dict)
-
-
-@pytest.mark.parametrize("fret_count", [24, 26, 29])
-def test_generate_tar_string_invalid_fret_counts(fret_count: int):
-    with pytest.raises(ValueError):
-        generate_tar_string(fret_count=fret_count, string_number=1, a4_frequency=A4_FREQUENCY)
-
-
-@pytest.mark.parametrize("string_number", [0, 7])
-def test_generate_tar_string_invalid_string_numbers(string_number: int):
-    with pytest.raises(ValueError):
-        generate_tar_string(fret_count=27, string_number=string_number, a4_frequency=A4_FREQUENCY)
 
 
 def _load_notes_from_csv(filename: str) -> Tuple[dict, dict]:
@@ -47,6 +29,18 @@ def _load_notes_from_csv(filename: str) -> Tuple[dict, dict]:
             notes[string][fret] = note
             frequencies[string][fret] = frequency
     return notes, frequencies
+
+
+@pytest.mark.parametrize("fret_count", [25, 27, 28])
+def test_generate_tar_strings_valid_fret_counts(fret_count: int):
+    result = generate_tar_strings(fret_count=fret_count, a4_frequency=A4_FREQUENCY)
+    assert isinstance(result, dict)
+
+
+@pytest.mark.parametrize("fret_count", [24, 26, 29])
+def test_generate_tar_strings_invalid_fret_counts(fret_count: int):
+    with pytest.raises(ValueError):
+        generate_tar_strings(fret_count=fret_count, a4_frequency=A4_FREQUENCY)
 
 
 def test_generate_tar_strings_against_test_data_file():

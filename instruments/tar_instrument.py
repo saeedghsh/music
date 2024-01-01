@@ -39,7 +39,7 @@ FRET_DIFFERENTIAL_INTERVAL = {
 }
 
 
-def _fret_numbers(fret_count: int) -> Sequence[int]:
+def _fret_indices(fret_count: int) -> Sequence[int]:
     if fret_count not in [25, 27, 28]:
         raise ValueError(f"Valid values for fret count are [25, 27, 28], provided: {fret_count}")
     if fret_count == 25:
@@ -62,13 +62,15 @@ def _drop_fret(notes: Dict[int, Note], fret_count: int) -> Dict[int, Note]:
     return {
         fret_number: note
         for fret_number, note in notes.items()
-        if fret_number in _fret_numbers(fret_count)
+        if fret_number in _fret_indices(fret_count)
     }
 
 
 def generate_tar_strings(fret_count: int, a4_frequency: Frequency) -> Dict[int, Dict[int, Note]]:
-    """Return a dict of (string_number, String)
-    Where String is a dict of (frets_number, fret_note). See: generate_tar_string()."""
+    """Return a dict of (string_number, String).
+    Where String is a dict of (frets_number, fret_note).
+    NOTE: Depending on the fret_count, the fret numbers does not include the whole range.
+          See: _fret_indices()."""
     strings = {}
     strings[1] = _drop_fret(_tar_string(Note.from_name("C4", a4_frequency)), fret_count)
     strings[2] = _drop_fret(_tar_string(Note.from_name("C4", a4_frequency)), fret_count)
@@ -77,19 +79,3 @@ def generate_tar_strings(fret_count: int, a4_frequency: Frequency) -> Dict[int, 
     strings[5] = _drop_fret(_tar_string(Note.from_name("C4", a4_frequency)), fret_count)
     strings[6] = _drop_fret(_tar_string(Note.from_name("C3", a4_frequency)), fret_count)
     return strings
-
-
-def generate_tar_string(
-    fret_count: int, string_number: int, a4_frequency: Frequency
-) -> Dict[int, Note]:
-    """Return a dict of (fret_number, fret_note).
-
-    NOTE: Depending on the fret_count, the fret numbers does not include the whole range.
-          See: _fret_numbers().
-    """
-    if string_number not in [1, 2, 3, 4, 5, 6]:
-        raise ValueError(
-            f"Valid values for string number are [1, ..., 6], provided: {string_number}"
-        )
-    strings = generate_tar_strings(fret_count, a4_frequency)
-    return strings[string_number]

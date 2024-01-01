@@ -7,7 +7,7 @@ from typing import Sequence
 from core.frequency import Frequency
 from drawing.common import save_image, show_image
 from drawing.tar_drawing import annotate_tar_image
-from instruments.tar_instrument import generate_tar_string
+from instruments.tar_instrument import generate_tar_strings
 
 
 def _parse_arguments(argv: Sequence[str]):
@@ -64,11 +64,11 @@ def _parse_arguments(argv: Sequence[str]):
 def main(argv: Sequence[str]):
     # pylint: disable=missing-function-docstring
     args = _parse_arguments(argv)
-    string_notes = generate_tar_string(
-        args.fret_count, args.string_number, Frequency(args.a4_frequency)
-    )
+    strings = generate_tar_strings(args.fret_count, Frequency(args.a4_frequency))
+    string = strings[args.string_number]
+
     if args.print_out:
-        for fret_number, note in string_notes.items():
+        for fret_number, note in string.items():
             print(f"{fret_number}\t{note}")
 
     if args.save_to_file or args.visualize:
@@ -76,7 +76,7 @@ def main(argv: Sequence[str]):
         # TODO: This if is just for the sake of the smoke tests
         #       This function only supports 27 fret example as of now
         #       I should not be called except if being tested for save/show
-        image = annotate_tar_image(string_notes)
+        image = annotate_tar_image(string)
     if args.save_to_file:
         save_image(image, args.file_path)
     if args.visualize:
