@@ -18,7 +18,9 @@ def _fret_numbers(fret_count: int) -> Sequence[int]:
     return fret_numbers
 
 
-def _generate_tar_strings(fret_count: int, a4_frequency: Frequency) -> Dict[int, Dict[int, Note]]:
+def generate_tar_strings(fret_count: int, a4_frequency: Frequency) -> Dict[int, Dict[int, Note]]:
+    """Return a dict of (string_number, String)
+    Where String is a dict of (frets_number, fret_note). See: generate_tar_string()."""
     string_1_28_fret = {
         0: Note.from_name("C4", a4_frequency),
         1: Note.from_name("C#4", a4_frequency),
@@ -105,10 +107,14 @@ def _generate_tar_strings(fret_count: int, a4_frequency: Frequency) -> Dict[int,
 def generate_tar_string(
     fret_count: int, string_number: int, a4_frequency: Frequency
 ) -> Dict[int, Note]:
-    """Tar and Setar"""
+    """Return a dict of (fret_number, fret_note).
+
+    NOTE: Depending on the fret_count, the fret numbers does not include the whole range.
+          See: _fret_numbers().
+    """
     if string_number not in [1, 2, 3, 4, 5, 6]:
         raise ValueError(
             f"Valid values for string number are [1, ..., 6], provided: {string_number}"
         )
-    strings = _generate_tar_strings(fret_count, a4_frequency)
+    strings = generate_tar_strings(fret_count, a4_frequency)
     return strings[string_number]
