@@ -12,9 +12,8 @@ def test_accidental_creation():
     accidental = Accidental("sharp", sharp_symbol, 1.0)
     assert accidental.name == "sharp"
     assert accidental.symbol.simplified == "#"
-    assert accidental.frequency_ratio == 1.0
-
     assert str(accidental) == "#"
+    assert accidental.frequency_ratio == 1.0
 
 
 def test_accidental_creation_fail():

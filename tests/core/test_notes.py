@@ -170,7 +170,7 @@ def test_standard_notes(mode: str, octave: Octave):
     assert len(names) == len(notes)
     for note in notes:
         assert note.octave == octave
-        assert f"{note.letter}{note.accidental.symbol.simplified}" in names
+        assert f"{note.letter}{str(note.accidental)}" in names
 
 
 def test_standard_notes_invalid_mode():
