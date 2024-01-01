@@ -188,13 +188,6 @@ class Note:
         if frequency != self.frequency:
             raise ValueError(f"Frequency does not match the name: {frequency} vs {self.frequency}")
 
-    @staticmethod
-    def from_name(name: str, a4_frequency: Frequency) -> "Note":
-        """Create and return an object of type Note from the given name"""
-        letter, accidental, octave = _decompose_name(name)
-        frequency = _compute_frequency(letter, accidental, octave, a4_frequency)
-        return Note(name, letter, accidental, octave, frequency, a4_frequency)
-
     def _eq_to_frequency(self, other_frequency: Union[Frequency, int, float]) -> bool:
         return self.frequency == other_frequency
 
@@ -242,6 +235,13 @@ class Note:
         return Note(
             new_name, new_letter, new_accidental, new_octave, new_frequency, self.a4_frequency
         )
+
+    @staticmethod
+    def from_name(name: str, a4_frequency: Frequency) -> "Note":
+        """Create and return an object of type Note from the given name"""
+        letter, accidental, octave = _decompose_name(name)
+        frequency = _compute_frequency(letter, accidental, octave, a4_frequency)
+        return Note(name, letter, accidental, octave, frequency, a4_frequency)
 
 
 def standard_notes(mode: str, octave: Octave, a4_frequency: Frequency) -> List[Note]:

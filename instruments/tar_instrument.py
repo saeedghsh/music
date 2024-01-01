@@ -5,6 +5,39 @@ from core.frequency import Frequency
 from core.intervals import MusicalInterval
 from core.notes import Note
 
+# The music interval from each fret to previous, lower pitched, fret.
+# Fret=0 (base-note/open-hand) has no previous to have differential interval.
+FRET_DIFFERENTIAL_INTERVAL = {
+    1: MusicalInterval.SEMITONE,
+    2: MusicalInterval.QUARTERTONE,
+    3: MusicalInterval.QUARTERTONE,
+    4: MusicalInterval.SEMITONE,
+    5: MusicalInterval.QUARTERTONE,
+    6: MusicalInterval.QUARTERTONE,
+    7: MusicalInterval.SEMITONE,
+    8: MusicalInterval.QUARTERTONE,
+    9: MusicalInterval.QUARTERTONE,
+    10: MusicalInterval.QUARTERTONE,
+    11: MusicalInterval.QUARTERTONE,
+    12: MusicalInterval.SEMITONE,
+    13: MusicalInterval.QUARTERTONE,
+    14: MusicalInterval.QUARTERTONE,
+    15: MusicalInterval.SEMITONE,
+    16: MusicalInterval.QUARTERTONE,
+    17: MusicalInterval.QUARTERTONE,
+    18: MusicalInterval.SEMITONE,
+    19: MusicalInterval.SEMITONE,
+    20: MusicalInterval.QUARTERTONE,
+    21: MusicalInterval.QUARTERTONE,
+    22: MusicalInterval.SEMITONE,
+    23: MusicalInterval.QUARTERTONE,
+    24: MusicalInterval.QUARTERTONE,
+    25: MusicalInterval.SEMITONE,
+    26: MusicalInterval.SEMITONE,
+    27: MusicalInterval.SEMITONE,
+    28: MusicalInterval.SEMITONE,
+}
+
 
 def _fret_numbers(fret_count: int) -> Sequence[int]:
     if fret_count not in [25, 27, 28]:
@@ -18,89 +51,31 @@ def _fret_numbers(fret_count: int) -> Sequence[int]:
     return fret_numbers
 
 
+def _tar_string(base_note: Note) -> Dict[int, Note]:
+    notes = {0: base_note}
+    for i in range(1, 29):
+        notes[i] = notes[i - 1] + FRET_DIFFERENTIAL_INTERVAL[i]
+    return notes
+
+
+def _drop_fret(notes: Dict[int, Note], fret_count: int) -> Dict[int, Note]:
+    return {
+        fret_number: note
+        for fret_number, note in notes.items()
+        if fret_number in _fret_numbers(fret_count)
+    }
+
+
 def generate_tar_strings(fret_count: int, a4_frequency: Frequency) -> Dict[int, Dict[int, Note]]:
     """Return a dict of (string_number, String)
     Where String is a dict of (frets_number, fret_note). See: generate_tar_string()."""
-    string_1_28_fret = {
-        0: Note.from_name("C4", a4_frequency),
-        1: Note.from_name("C#4", a4_frequency),
-        2: Note.from_name("Dk4", a4_frequency),
-        3: Note.from_name("D4", a4_frequency),
-        4: Note.from_name("Eb4", a4_frequency),
-        5: Note.from_name("Ek4", a4_frequency),
-        6: Note.from_name("E4", a4_frequency),
-        7: Note.from_name("F4", a4_frequency),
-        8: Note.from_name("Fs4", a4_frequency),
-        9: Note.from_name("F#4", a4_frequency),
-        10: Note.from_name("Gk4", a4_frequency),
-        11: Note.from_name("G4", a4_frequency),
-        12: Note.from_name("Ab4", a4_frequency),
-        13: Note.from_name("Ak4", a4_frequency),
-        14: Note.from_name("A4", a4_frequency),
-        15: Note.from_name("Bb4", a4_frequency),
-        16: Note.from_name("Bk4", a4_frequency),
-        17: Note.from_name("B4", a4_frequency),
-        18: Note.from_name("C5", a4_frequency),
-        19: Note.from_name("C#5", a4_frequency),
-        20: Note.from_name("Dk5", a4_frequency),
-        21: Note.from_name("D5", a4_frequency),
-        22: Note.from_name("Eb5", a4_frequency),
-        23: Note.from_name("Ek5", a4_frequency),
-        24: Note.from_name("E5", a4_frequency),
-        25: Note.from_name("F5", a4_frequency),
-        26: Note.from_name("F#5", a4_frequency),
-        27: Note.from_name("G5", a4_frequency),
-        28: Note.from_name("G#5", a4_frequency),
-    }
-    string_3_28_fret = {
-        0: Note.from_name("G3", a4_frequency),
-        1: Note.from_name("G#3", a4_frequency),
-        2: Note.from_name("Ak3", a4_frequency),
-        3: Note.from_name("A3", a4_frequency),
-        4: Note.from_name("Bb3", a4_frequency),
-        5: Note.from_name("Bk3", a4_frequency),
-        6: Note.from_name("B3", a4_frequency),
-        7: Note.from_name("C4", a4_frequency),
-        8: Note.from_name("Cs4", a4_frequency),
-        9: Note.from_name("C#4", a4_frequency),
-        10: Note.from_name("Dk4", a4_frequency),
-        11: Note.from_name("D4", a4_frequency),
-        12: Note.from_name("Eb4", a4_frequency),
-        13: Note.from_name("Ek4", a4_frequency),
-        14: Note.from_name("E4", a4_frequency),
-        15: Note.from_name("F4", a4_frequency),
-        16: Note.from_name("Fs4", a4_frequency),
-        17: Note.from_name("F#4", a4_frequency),
-        18: Note.from_name("G4", a4_frequency),
-        19: Note.from_name("G#4", a4_frequency),
-        20: Note.from_name("Ak4", a4_frequency),
-        21: Note.from_name("A4", a4_frequency),
-        22: Note.from_name("Bb4", a4_frequency),
-        23: Note.from_name("Bk4", a4_frequency),
-        24: Note.from_name("B4", a4_frequency),
-        25: Note.from_name("C5", a4_frequency),
-        26: Note.from_name("C#5", a4_frequency),
-        27: Note.from_name("D5", a4_frequency),
-        28: Note.from_name("D#5", a4_frequency),
-    }
-    fret_numbers = _fret_numbers(fret_count)
     strings = {}
-    strings[1] = {
-        fret_number: note
-        for fret_number, note in string_1_28_fret.items()
-        if fret_number in fret_numbers
-    }
-    strings[3] = {
-        fret_number: note
-        for fret_number, note in string_3_28_fret.items()
-        if fret_number in fret_numbers
-    }
-    strings[2] = strings[1]
-    strings[4] = strings[3]
-    strings[5] = strings[1]
-    strings[6] = {
-        fret_number: note + MusicalInterval.OCTAVE for fret_number, note in strings[1].items()
-    }
+    strings[1] = _drop_fret(_tar_string(Note.from_name("C4", a4_frequency)), fret_count)
+    strings[2] = _drop_fret(_tar_string(Note.from_name("C4", a4_frequency)), fret_count)
+    strings[3] = _drop_fret(_tar_string(Note.from_name("G3", a4_frequency)), fret_count)
+    strings[4] = _drop_fret(_tar_string(Note.from_name("G3", a4_frequency)), fret_count)
+    strings[5] = _drop_fret(_tar_string(Note.from_name("C4", a4_frequency)), fret_count)
+    strings[6] = _drop_fret(_tar_string(Note.from_name("C3", a4_frequency)), fret_count)
     return strings
 
 
