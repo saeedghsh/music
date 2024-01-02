@@ -61,6 +61,8 @@ class Octave:
         return type_dispatch[other_type](other)
 
     def __add__(self, other: Any):
+        """Adding a number to an octave counts as incrementing it to higher octaves.
+        The added value does not have a direct frequency interpretation."""
         if isinstance(other, int):
             return Octave.from_number(self.number + other)
         raise NotImplementedError(f"Type {type(other)} is not supported for add")
