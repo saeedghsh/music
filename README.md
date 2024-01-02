@@ -97,10 +97,15 @@ $ pyreverse -o png -p music_uml **/*.py
 ### Improve/Refactoring
 * [ ] a mapping function between ratio of string length to ratio of resulting frequencies
       -> it's inverse actually, half the string length and the frequency doubles.
-* [ ] fix all TODOs in the code. `pylint` is currently suppress so not to flag them, remove suppressions.
 * [ ] right now we only annotate tar in drawing, should we draw something wo/ existing photos?
+* [ ] fix all TODOs in the code. `pylint` is currently suppress so not to flag them, remove suppressions.
 * [ ] `drawing` module is not actually tested and only covered through entry point unit tests. Add unittest for that.
-
+* [ ] Negative (and zero) frequency doesn't have any physical meaning in the context of music.
+      So the constructor of the `class Frequency` does not allow it.
+      Now it became problematic when we want to compute "frequency difference" between a `Note` and a `Frequency`.
+      This will be needed when trying to tune an instrument.
+      Currently `class Frequency` does not implement `__sub__` and `Note.frequency_difference` returns `float`.
+      Allow negative values in `class Frequency` and fix the above issue.
 
 ### Documentations
 * [ ] move Tar entry point output (notes and image) to documentation
