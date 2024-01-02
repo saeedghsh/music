@@ -151,7 +151,7 @@ def _compute_frequency(
     note_index = _index_in_standard_notes_list(f"{letter}{accidental}")
     A_index = _index_in_standard_notes_list("A")
     quartertone_steps_from_A4 = note_index - A_index + (octave.number - 4) * 24
-    return Frequency(a4_frequency.value * (2 ** (quartertone_steps_from_A4 / 24)))
+    return a4_frequency * 2 ** (quartertone_steps_from_A4 / 24)
 
 
 @dataclass
