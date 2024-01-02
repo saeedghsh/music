@@ -1,7 +1,10 @@
 # pylint: disable=missing-module-docstring
 # pylint: disable=missing-function-docstring
+import csv
+import os
 import string
-from typing import Any, Tuple
+from math import isclose
+from typing import Any, List, Tuple
 
 import pytest
 
@@ -14,11 +17,25 @@ from core.notes import (
     _decompose_name,
     _standardize_note,
     _validate_letter,
+    frequency_to_note,
     standard_notes,
 )
 from core.octaves import Octave
 
+IS_CLOSE_ABS_TOL = 1e-10
 A4_FREQUENCY = Frequency(440)
+
+
+def _load_notes_from_csv(filename: str) -> List[Tuple[Note, Frequency]]:
+    with open(filename, "r", encoding="utf-8") as csv_file:
+        reader = csv.reader(csv_file)
+        return [
+            (
+                Note.from_name(row[2], A4_FREQUENCY),
+                Frequency(float(row[3])),
+            )
+            for row in reader
+        ]
 
 
 @pytest.mark.parametrize("letter", ["A", "B", "C", "D", "E", "F", "G"])
@@ -53,17 +70,7 @@ def test_decompose_name_valid(
     assert octave == expected_octave, f"Incorrect octave decomposition for {actual_name}"
 
 
-@pytest.mark.parametrize(
-    "name",
-    [
-        "H2",  # Invalid letter
-        "G#10",  # Octave out of range
-        "D##4",  # Invalid accidental
-        "D^3",  # Invalid accidental
-        "8A",  # Incorrect format
-        "Csharp4",  # Incorrect accidental format
-    ],
-)
+@pytest.mark.parametrize("name", ["H2", "G#10", "D##4", "D^3", "8A", "Csharp4"])
 def test_decompose_name_invalid(name: str):
     with pytest.raises(ValueError):
         _decompose_name(name)
@@ -73,7 +80,7 @@ def test_decompose_name_invalid(name: str):
     "actual, expected",
     [
         (("E", "#", 4), ("F", "", 4)),
-        (("B", "#", 3), ("C", "", 4)),  # Note octave change in the next item
+        (("B", "#", 3), ("C", "", 4)),  # Note octave change
         (("C", "b", 2), ("B", "", 2)),
         (("F", "k", 5), ("E", "s", 5)),
     ],
@@ -116,13 +123,6 @@ def test_note_str_repr():
     assert "A4: 440.0 Hz" in repr(note)
 
 
-@pytest.mark.parametrize("a4_frequency", [Frequency(10), Frequency(100), Frequency(440)])
-def test_note_from_name(a4_frequency: Frequency):
-    note = Note.from_name("A4", a4_frequency)
-    assert note.name == "A4"
-    assert note.frequency == a4_frequency
-
-
 def test_note_eq():
     note1 = Note("A4", "A", "", 4, A4_FREQUENCY, A4_FREQUENCY)
     note2 = Note.from_name("A4", A4_FREQUENCY)
@@ -141,9 +141,7 @@ def test_note_eq_unsupported(note_unsupported_type: Any):
         "A4", "A", Accidental.from_symbol(""), Octave.from_number(4), A4_FREQUENCY, A4_FREQUENCY
     )
     with pytest.raises(NotImplementedError):
-        # pylint: disable=pointless-statement
-        # pylint: disable=use-implicit-booleaness-not-comparison
-        note == note_unsupported_type
+        _ = note == note_unsupported_type
 
 
 @pytest.mark.parametrize("a4_frequency", [Frequency(100), Frequency(250), Frequency(440)])
@@ -182,7 +180,35 @@ def test_note_add(
 def test_note_add_not_implemented(value_unsupported_type: Any):
     note = Note.from_name("A0", A4_FREQUENCY)
     with pytest.raises(NotImplementedError):
-        note + value_unsupported_type  # pylint: disable=pointless-statement
+        _ = note + value_unsupported_type
+
+
+@pytest.mark.parametrize("a4_frequency", [Frequency(10), Frequency(100), Frequency(440)])
+def test_note_from_name(a4_frequency: Frequency):
+    note = Note.from_name("A4", a4_frequency)
+    assert note.name == "A4"
+    assert note.frequency == a4_frequency
+
+
+@pytest.mark.parametrize("expected_frequency_distance", [-1.0, -0.5, 0.25, 1.0, 1.5])
+def test_note_frequency_difference(expected_frequency_distance: float):
+    file_name = "test_data_tar_notes_C4-C4-G3-G3-C4-C3_A4_at_440.csv"
+    dirpath = "tests/instruments"
+    test_data_file_path = os.path.join(dirpath, file_name)
+    for note, frequency in _load_notes_from_csv(test_data_file_path):
+        actual_frequency_distance = note.frequency_difference(
+            Frequency(frequency.value - expected_frequency_distance)
+        )
+        assert isclose(
+            actual_frequency_distance, expected_frequency_distance, abs_tol=IS_CLOSE_ABS_TOL
+        )
+
+
+@pytest.mark.parametrize("value_unsupported_type", [int(1), float(0.0)])
+def test_note_frequency_difference_not_implemented(value_unsupported_type: Any):
+    note = Note.from_name("A4", A4_FREQUENCY)
+    with pytest.raises(NotImplementedError):
+        _ = note.frequency_difference(value_unsupported_type)
 
 
 @pytest.mark.parametrize("mode", ["natural", "semitone", "quartertone"])
@@ -199,6 +225,19 @@ def test_standard_notes(mode: str, octave: Octave):
 def test_standard_notes_invalid_mode():
     with pytest.raises(ValueError):
         standard_notes("wrong_mode", Octave.from_number(0), A4_FREQUENCY)
+
+
+@pytest.mark.parametrize("frequency_error", [-1.0, -0.5, 0.25, 1.0, 1.5])
+def test_frequency_to_note_quartertone(frequency_error: float):
+    file_name = "test_data_tar_notes_C4-C4-G3-G3-C4-C3_A4_at_440.csv"
+    dirpath = "tests/instruments"
+    test_data_file_path = os.path.join(dirpath, file_name)
+    for expected_note, expected_frequency in _load_notes_from_csv(test_data_file_path):
+        actual_frequency = Frequency(expected_frequency.value + frequency_error)
+        actual_note = frequency_to_note(actual_frequency, A4_FREQUENCY)
+        assert expected_note == actual_note
+        frequency_distance = actual_note.frequency_difference(actual_frequency)
+        assert isclose(frequency_distance, -frequency_error, abs_tol=IS_CLOSE_ABS_TOL)
 
 
 if __name__ == "__main__":

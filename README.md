@@ -95,7 +95,6 @@ $ pyreverse -o png -p music_uml **/*.py
 # TODO
 
 ### Improve/Refactoring
-* [ ] a mapping function between note and frequency, given the base note frequency.
 * [ ] a mapping function between ratio of string length to ratio of resulting frequencies
       -> it's inverse actually, half the string length and the frequency doubles.
 * [ ] fix all TODOs in the code. `pylint` is currently suppress so not to flag them, remove suppressions.

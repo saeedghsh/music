@@ -3,6 +3,8 @@ import re
 from dataclasses import dataclass
 from typing import Any, Callable, Dict, List, Tuple, Union
 
+import numpy as np
+
 from core.accidentals import Accidental
 from core.frequency import Frequency
 from core.intervals import MusicalInterval
@@ -243,9 +245,33 @@ class Note:
         frequency = _compute_frequency(letter, accidental, octave, a4_frequency)
         return Note(name, letter, accidental, octave, frequency, a4_frequency)
 
+    def frequency_difference(self, other: Frequency) -> float:
+        """Return the frequency distance between self and other Note.
+
+        NOTE: negative difference means the other is higher in frequency/pitch
+        NOTE: To allow +/- return value, float type is returned instead of Frequency
+        """
+        if not isinstance(other, Frequency):
+            raise NotImplementedError(
+                f"Frequency difference is not supported against {type(other)}"
+            )
+        return self.frequency.value - other.value
+
 
 def standard_notes(mode: str, octave: Octave, a4_frequency: Frequency) -> List[Note]:
     """Return a list of standard notes"""
     if mode not in STANDARD_NOTES:
         raise ValueError(f"mode is not supported: {mode}")
     return [Note.from_name(f"{name}{octave.number}", a4_frequency) for name in STANDARD_NOTES[mode]]
+
+
+def frequency_to_note(frequency: Frequency, a4_frequency: Frequency) -> Note:
+    """Return Note from specified frequency"""
+    # pylint: disable=invalid-name
+    quartertone_steps_from_A4 = 24 * np.log2(frequency.value / a4_frequency.value)
+    A_index = _index_in_standard_notes_list("A")
+    note_index_float = A_index + quartertone_steps_from_A4
+    note_index = int(np.round(note_index_float)) % 24
+    letter_accidental = STANDARD_NOTES["quartertone"][note_index]
+    octave = int(4 + np.round(note_index_float) // 24)
+    return Note.from_name(f"{letter_accidental}{octave}", a4_frequency)
