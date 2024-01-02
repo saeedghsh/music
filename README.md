@@ -96,8 +96,9 @@ $ pyreverse -o png -p music_uml **/*.py
 
 ### Improve/Refactoring
 * [ ] a mapping function between ratio of string length to ratio of resulting frequencies
-      -> it's inverse actually, half the string length and the frequency doubles.
-* [ ] right now we only annotate tar in drawing, should we draw something wo/ existing photos?
+      -> it's inverse actually, half the string length and the frequency doubles (the inverse of `MusicIntervals`).
+    - [ ] draw Tar neck/frets wo/ annotating existing photos?
+    - [ ] A function that given the string length, will return the nut distance to each fret on the Tar/Setar neck.
 * [ ] fix all TODOs in the code. `pylint` is currently suppress so not to flag them, remove suppressions.
 * [ ] `drawing` module is not actually tested and only covered through entry point unit tests. Add unittest for that.
 * [ ] Negative (and zero) frequency doesn't have any physical meaning in the context of music.
@@ -108,27 +109,26 @@ $ pyreverse -o png -p music_uml **/*.py
       Allow negative values in `class Frequency` and fix the above issue.
 
 ### Documentations
+* [ ] List some common tuning of the Tar/Setar (e.g. `C4-C4-G3-G3-C4-C3` and more)
+* [ ] add common tuning for different keys ("Dastgah"): Wikipedia has a list (Double check)
 * [ ] move Tar entry point output (notes and image) to documentation
 * [ ] add Setar Photo.
 * [ ] add Fret tying schema/drawing
 * [ ] add "fret string thickness" for Tar and Setar
 * [ ] add "fret round" for Tar and Setar
 ```python
-  # fret round count for Setar - 25 fret - according to Wikipedia (double check)
-  {
-    1:3, 2:4, 3:4, 4:4, 5:3, 6:4, 7:4, 8:?, 9:3, 10:3,
-    11:4, 12:[3,4], 13:4, 14:3, 15:4, 16:3, 17:3, 18:4, 19:?, 20:[3,4],
-    21:4, 22:4, 23:3, 24:3, 25:4, 26:3, 27:4, 28:?,
-  }
+# fret round count for Setar - 25 fret - according to Wikipedia (double check)
+{1:3, 2:4, 3:4, 4:4, 5:3, 6:4, 7:4, 8:?, 9:3, 10:3,
+ 11:4, 12:[3,4], 13:4, 14:3, 15:4, 16:3, 17:3, 18:4, 19:?, 20:[3,4],
+ 21:4, 22:4, 23:3, 24:3, 25:4, 26:3, 27:4, 28:?}
 ```
 
 ### Future Work
-* [ ] `tar_string` only supports the tuning of `C4-C4-G3-G3-C4-C3`. generalize the tuning.
-* [ ] add common tuning for different keys ("Dastgah"): Wikipedia has a list (Double check)
+* [ ] Figure out how to print Sori/Koron
+* [ ] Add Qt gui? Or maybe a Web-Gui frame-work, whichever easier!
 * [ ] Add keys, scales and chords?
-* [ ] Add Qt gui?
+* [ ] add audio analysis?
 * [ ] extend to other instruments, start with Guitar and then Ney?
-* [ ] add audio and make it interactive?
 
 # Reference
 * Proposal to encode two accidentals for Iranian classical music: [Unicode proposal](https://www.unicode.org/L2/L2020/20159-iran-music-symbols.pdf).
