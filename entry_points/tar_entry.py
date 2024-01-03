@@ -7,7 +7,7 @@ from typing import Sequence
 from core.frequency import Frequency
 from core.notes import Note
 from drawing.common import save_image, show_image
-from drawing.tar_drawing import annotate_tar_image
+from drawing.tar_drawing import annotate_tar_image, draw_tar
 from instruments.tar_instrument import tar_string
 
 
@@ -39,6 +39,11 @@ def _parse_arguments(argv: Sequence[str]):
         help="Print out to terminal",
     )
     parser.add_argument(
+        "--annotate",
+        action="store_true",
+        help="The visualization will be only the annotated version, otherwise drawing",
+    )
+    parser.add_argument(
         "-v",
         "--visualize",
         action="store_true",
@@ -48,7 +53,7 @@ def _parse_arguments(argv: Sequence[str]):
         "-s",
         "--save-to-file",
         action="store_true",
-        help="Save the visualization to file (works only in combination with -v)",
+        help="Save the visualization to file (works only in combination with -f)",
     )
     parser.add_argument(
         "-f",
@@ -76,7 +81,11 @@ def main(argv: Sequence[str]):
         # TODO: This if is just for the sake of the smoke tests
         #       This function only supports 27 fret example as of now
         #       I should not be called except if being tested for save/show
-        image = annotate_tar_image(string)
+        if args.annotate:
+            image = annotate_tar_image(string)
+        else:
+            image = draw_tar(string)
+
     if args.save_to_file:
         save_image(image, args.file_path)
     if args.visualize:

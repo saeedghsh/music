@@ -8,9 +8,8 @@ import numpy as np
 
 from core.frequency import Frequency
 from core.notes import Note
-from drawing.common import pad_to_square, rotate_image
+from drawing.common import COLOR_BRG, pad_to_square, rotate_image
 
-COLOR = (0, 0, 0)
 HEIGHT = WIDTH = 1000
 CENTER = (HEIGHT // 2, WIDTH // 2)
 RADIUS = int(0.48 * HEIGHT)
@@ -24,7 +23,11 @@ _get_text_size = partial(
     cv2.getTextSize, fontFace=FONT_FACE, fontScale=FONT_SCALE, thickness=FONT_THICKNESS
 )
 _put_text = partial(
-    cv2.putText, fontFace=FONT_FACE, fontScale=FONT_SCALE, color=COLOR, thickness=FONT_THICKNESS
+    cv2.putText,
+    fontFace=FONT_FACE,
+    fontScale=FONT_SCALE,
+    color=COLOR_BRG["black"],
+    thickness=FONT_THICKNESS,
 )
 
 
@@ -44,7 +47,7 @@ def _write_on_wedge(image: np.ndarray, angle: float, label: str):
     # surrounding of each rotated_image overwrite the previous one. This implementation is very
     # simplistic and only works if color is black. The check is to safeguard for change of COLOR.
     # But since not really covered by tests, hence the "no cover" directive.
-    if COLOR != (0, 0, 0):  # pragma: no cover
+    if COLOR_BRG["black"] != (0, 0, 0):  # pragma: no cover
         image[row1:row2, col1:col2] = rotated_image
     else:
         mask = rotated_image < 200
@@ -54,7 +57,7 @@ def _write_on_wedge(image: np.ndarray, angle: float, label: str):
 def _draw_radius(image: np.ndarray, angle: float):
     end_x = int(CENTER[0] + RADIUS * np.cos(angle))
     end_y = int(CENTER[1] + RADIUS * np.sin(angle))
-    cv2.line(image, CENTER, (end_x, end_y), COLOR, 1)
+    cv2.line(image, CENTER, (end_x, end_y), COLOR_BRG["black"], 1)
 
 
 def _print_a4_frequency(image: np.ndarray, frequency: Frequency):
@@ -68,7 +71,7 @@ def draw_circle(notes: List[Note]) -> np.ndarray:
     """Create an image and draw notes on a circle"""
     image = np.ones((HEIGHT, WIDTH, 3), dtype=np.uint8) * np.uint8(255)
     angle_steps = 2 * np.pi / len(notes)
-    cv2.circle(image, CENTER, RADIUS, COLOR, 1)
+    cv2.circle(image, CENTER, RADIUS, COLOR_BRG["black"], 1)
     _print_a4_frequency(image, notes[0].a4_frequency)
     for i, note in enumerate(notes):
         angle = (i + 0.5) * angle_steps

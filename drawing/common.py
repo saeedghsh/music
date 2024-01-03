@@ -5,6 +5,13 @@ from typing import Optional, Union
 import cv2
 import numpy as np
 
+COLOR_BRG = {
+    "white": (255, 255, 255),
+    "black": (0, 0, 0),
+    "light_brown": (205, 222, 239),
+    "dark_brown": (33, 67, 101),
+}
+
 
 def pad_to_square(image: np.ndarray, pad_value: Union[int, np.uint8]) -> np.ndarray:
     """Return a copy of the image that is padded to be square(i.e. h=w)"""

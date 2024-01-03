@@ -28,6 +28,7 @@ $ python3 -m entry_points.piano_entry -s -f <path-to-save-file>
 $ python3 -m entry_points.tar_entry --fret-count 27 --string-number 1 -p
 $ python3 -m entry_points.tar_entry --fret-count 27 --string-number 1 -v
 $ python3 -m entry_points.tar_entry --fret-count 27 --string-number 1 -s -f <path-to-save-file>
+$ python3 -m entry_points.tar_entry --fret-count 27 --string-number 1 -v --annotate
 ```
 
 * Circle of notes entry point output:
@@ -95,10 +96,6 @@ $ pyreverse -o png -p music_uml **/*.py
 # TODO
 
 ### Improve/Refactoring
-* [ ] a mapping function between ratio of string length to ratio of resulting frequencies
-      -> it's inverse actually, half the string length and the frequency doubles (the inverse of `MusicIntervals`).
-    - [ ] draw Tar neck/frets wo/ annotating existing photos?
-    - [ ] A function that given the string length, will return the nut distance to each fret on the Tar/Setar neck.
 * [ ] fix all TODOs in the code. `pylint` is currently suppress so not to flag them, remove suppressions.
 * [ ] `drawing` module is not actually tested and only covered through entry point unit tests. Add unittest for that.
 * [ ] Negative (and zero) frequency doesn't have any physical meaning in the context of music.

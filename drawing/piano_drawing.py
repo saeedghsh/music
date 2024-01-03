@@ -7,6 +7,7 @@ import cv2
 import numpy as np
 
 from core.notes import Note
+from drawing.common import COLOR_BRG
 
 _WHITE_KEY_HEIGHT = 300
 _WHITE_KEY_WIDTH = int(0.1 * _WHITE_KEY_HEIGHT)
@@ -32,10 +33,10 @@ def _text_on_key(
     (text_width, text_height), _ = cv2.getTextSize(text, _FONT_FACE, _FONT_SCALE, 1)
     text_img = np.zeros((text_height + 1, text_width + 1, 3), dtype=np.uint8)
     if key_color == "black":
-        text_color = (255, 255, 255)
+        text_color = COLOR_BRG["white"]
         text_img.fill(0)
     if key_color == "white":
-        text_color = (0, 0, 0)
+        text_color = COLOR_BRG["black"]
         text_img.fill(255)
     cv2.putText(
         text_img,
@@ -59,7 +60,7 @@ def _key_black(image: np.ndarray, x: int, label: str):
     _black_text = partial(_text_on_key, key_color="black", key_height=_BLACK_KEY_HEIGHT)
     pt1 = (x, 0)
     pt2 = (x + _BLACK_KEY_WIDTH, _BLACK_KEY_HEIGHT)
-    cv2.rectangle(image, pt1, pt2, (0, 0, 0), -1)
+    cv2.rectangle(image, pt1, pt2, COLOR_BRG["black"], -1)
     text_x = x + _BLACK_TEXT_X_OFFSET
     text_y = _BLACK_TEXT_Y_OFFSET
     _black_text(image, label, (text_x, text_y))
@@ -69,7 +70,7 @@ def _key_white(image: np.ndarray, x: int, label: str):
     _white_text = partial(_text_on_key, key_color="white", key_height=_WHITE_KEY_HEIGHT)
     pt1 = (x, 0)
     pt2 = (x + _WHITE_KEY_WIDTH, _WHITE_KEY_HEIGHT)
-    cv2.rectangle(image, pt1, pt2, (0, 0, 0), 1)
+    cv2.rectangle(image, pt1, pt2, COLOR_BRG["black"], 1)
     text_x = x + _WHITE_TEXT_X_OFFSET
     text_y = _WHITE_TEXT_Y_OFFSET
     _white_text(image, label, (text_x, text_y))
