@@ -1,4 +1,5 @@
 """Piano drawing utils"""
+
 # pylint: disable=no-member
 from typing import Optional, Union
 

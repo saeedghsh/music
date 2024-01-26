@@ -1,4 +1,5 @@
 """Piano drawing utils"""
+
 # pylint: disable=no-member
 from functools import partial
 from typing import Dict, Tuple

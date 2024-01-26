@@ -1,4 +1,5 @@
 """Musical note and utils"""
+
 import re
 from dataclasses import dataclass
 from typing import Any, Callable, Dict, List, Tuple, Union

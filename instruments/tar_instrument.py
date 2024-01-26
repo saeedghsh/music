@@ -1,4 +1,5 @@
 """Representation of the Tar"""
+
 from typing import Dict, Sequence
 
 from core.intervals import MusicalInterval

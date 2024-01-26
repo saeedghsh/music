@@ -1,4 +1,5 @@
 """Representation of the Piano"""
+
 from typing import Dict, Tuple
 
 from core.frequency import Frequency

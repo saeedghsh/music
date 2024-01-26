@@ -1,4 +1,5 @@
 """Tar drawing utils"""
+
 # pylint: disable=no-member
 from typing import Dict, List, Sequence, Tuple
 

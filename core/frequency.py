@@ -1,4 +1,5 @@
 """A representation of Frequency"""
+
 import operator
 from dataclasses import dataclass
 from functools import total_ordering

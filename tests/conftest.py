@@ -3,6 +3,7 @@
 With the entry points we execute with -m and things are OK.
 But pytest fails at adding the root to python path, so we enforce it via this file.
 """
+
 import os
 import sys
 

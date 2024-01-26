@@ -1,4 +1,5 @@
 """Entry point for Tar"""
+
 import argparse
 import os
 import sys

@@ -1,4 +1,5 @@
 """Entry point for circle of notes"""
+
 import argparse
 import os
 import sys

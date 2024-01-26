@@ -1,4 +1,5 @@
 """Musical Accidentals"""
+
 from dataclasses import dataclass
 from enum import Enum
 from typing import Any
@@ -18,7 +19,6 @@ SYMBOL_TO_INTERVAL_MAP = {
 
 @dataclass
 class Accidental:
-
     """Accidentals are symbols that pair with a notes to create new notes.
     Three common accidentals are:
     * the sharp: half-step higher,

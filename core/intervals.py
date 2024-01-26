@@ -1,4 +1,5 @@
 """The common musical intervals"""
+
 from enum import Enum
 
 
