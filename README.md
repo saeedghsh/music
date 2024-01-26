@@ -25,10 +25,10 @@ $ python3 -m entry_points.notes_disk_entry -s -f <path-to-save-file>
 $ python3 -m entry_points.piano_entry -v
 $ python3 -m entry_points.piano_entry -s -f <path-to-save-file>
 
-$ python3 -m entry_points.tar_entry --fret-count 27 --string-number 1 -p
-$ python3 -m entry_points.tar_entry --fret-count 27 --string-number 1 -v
-$ python3 -m entry_points.tar_entry --fret-count 27 --string-number 1 -s -f <path-to-save-file>
-$ python3 -m entry_points.tar_entry --fret-count 27 --string-number 1 -v --annotate
+$ python3 -m entry_points.tar_entry --fret-count 27 --base-note C4 -p
+$ python3 -m entry_points.tar_entry --fret-count 27 --base-note C4 -v
+$ python3 -m entry_points.tar_entry --fret-count 27 --base-note C4 -s -f <path-to-save-file>
+$ python3 -m entry_points.tar_entry --fret-count 27 --base-note C4 -v --annotate
 ```
 
 * Circle of notes entry point output:
