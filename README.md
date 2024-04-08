@@ -121,7 +121,7 @@ $ pyreverse -o png -p music_uml **/*.py
 ```
 
 ### Future Work
-* [ ] Figure out how to print Sori/Koron
+* [ ] Figure out how to print Sori/Koron - see [lilypond](http://lilypond.org/doc/v2.23/Documentation/notation/persian-classical-music.html).
 * [ ] Add Qt gui? Or maybe a Web-Gui frame-work, whichever easier!
 * [ ] Add keys, scales and chords?
 * [ ] add audio analysis?
