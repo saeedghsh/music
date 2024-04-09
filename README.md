@@ -123,8 +123,9 @@ $ pyreverse -o png -p music_uml **/*.py
 ### Future Work
 * [ ] Figure out how to print Sori/Koron - see [lilypond](http://lilypond.org/doc/v2.23/Documentation/notation/persian-classical-music.html).
 * [ ] Add Qt gui? Or maybe a Web-Gui frame-work, whichever easier!
+* [ ] Add tone (actual audio) from frequency
 * [ ] Add keys, scales and chords?
-* [ ] add audio analysis?
+* [ ] add audio analysis? like a Tuner?
 * [ ] extend to other instruments, start with Guitar and then Ney?
 
 # Reference
