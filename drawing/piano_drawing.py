@@ -33,12 +33,10 @@ def _text_on_key(
 ):
     (text_width, text_height), _ = cv2.getTextSize(text, _FONT_FACE, _FONT_SCALE, 1)
     text_img = np.zeros((text_height + 1, text_width + 1, 3), dtype=np.uint8)
-    if key_color == "black":
-        text_color = COLOR_BRG["white"]
-        text_img.fill(0)
-    if key_color == "white":
-        text_color = COLOR_BRG["black"]
-        text_img.fill(255)
+    fill_color = {"white": 255, "black": 0}[key_color]
+    text_img.fill(fill_color)
+    text_color = {"white": COLOR_BRG["black"], "black": COLOR_BRG["white"]}[key_color]
+
     cv2.putText(
         text_img,
         text,

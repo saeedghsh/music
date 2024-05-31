@@ -213,15 +213,7 @@ class Note:
         """Return a Note that is the transposed version of self by the specified interval"""
         if not isinstance(other, MusicalInterval):
             raise NotImplementedError(f"Type {type(other)} is not supported")
-
-        if other == MusicalInterval.OCTAVE:
-            quartertone_steps = 24
-        if other == MusicalInterval.TONE:
-            quartertone_steps = 4
-        if other == MusicalInterval.SEMITONE:
-            quartertone_steps = 2
-        if other == MusicalInterval.QUARTERTONE:
-            quartertone_steps = 1
+        quartertone_steps = MusicalInterval.as_quartertone_steps(other)
 
         note_index = _index_in_standard_notes_list(f"{self.letter}{self.accidental}")
         if note_index + quartertone_steps >= len(STANDARD_NOTES["quartertone"]):

@@ -40,14 +40,14 @@ FRET_DIFFERENTIAL_INTERVAL = {
 
 
 def _fret_indices(fret_count: int) -> Sequence[int]:
-    if fret_count not in [25, 27, 28]:
-        raise ValueError(f"Valid values for fret count are [25, 27, 28], provided: {fret_count}")
     if fret_count == 25:
         fret_indices = [n for n in range(0, 28) if n not in [8, 19]]
-    if fret_count == 27:
+    elif fret_count == 27:
         fret_indices = list(range(0, 28))
-    if fret_count == 28:
+    elif fret_count == 28:
         fret_indices = list(range(0, 29))
+    else:
+        raise ValueError(f"Valid values for fret count are [25, 27, 28], provided: {fret_count}")
     return fret_indices
 
 

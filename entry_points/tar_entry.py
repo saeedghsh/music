@@ -87,10 +87,10 @@ def main(argv: Sequence[str]):
         else:
             image = draw_tar(string)
 
-    if args.save_to_file:
-        save_image(image, args.file_path)
-    if args.visualize:
-        show_image(image, "Tar")
+        if args.save_to_file:
+            save_image(image, args.file_path)
+        if args.visualize:
+            show_image(image, "Tar")
     return os.EX_OK
 
 
