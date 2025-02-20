@@ -129,6 +129,7 @@ $ pyreverse -o png -p music_uml **/*.py
 * [ ] extend to other instruments, start with Guitar and then Ney?
 * [ ] https://en.m.wikipedia.org/wiki/Concert_pitch
 * [ ] dynamics are the amplitude of the sound wave
+* [ ] check out [Circle of Fifth](https://en.m.wikipedia.org/wiki/Circle_of_fifths)
 
 # Reference
 * Proposal to encode two accidentals for Iranian classical music: [Unicode proposal](https://www.unicode.org/L2/L2020/20159-iran-music-symbols.pdf).
